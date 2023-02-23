@@ -9,6 +9,10 @@ import polaris_logo from "../images/polaris_logo.png";
 import react_logo from "../images/react_logo.png";
 import twitter_logo from "../images/twitter_logo.png";
 import type_script_logo from "../images/type_script_logo.png";
+import dot_line from "../images/dot_line.png";
+import blue_bg from "../images/blue_bg.png";
+import chart_Pie from "../images/ChartPie.png";
+import square from "../images/square.png";
 
 export {
   bg,
@@ -22,4 +26,8 @@ export {
   react_logo,
   twitter_logo,
   type_script_logo,
+  dot_line,
+  blue_bg,
+  chart_Pie,
+  square,
 };

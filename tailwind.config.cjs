@@ -12,6 +12,7 @@ module.exports = {
         success: "#4F772D",
       },
       fontFamily: {
+        sen: ["Sen", "sans-serif"],
         lato: ["Lato", "sans-serif"],
       },
       fontSize: {
