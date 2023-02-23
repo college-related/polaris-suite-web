@@ -13,7 +13,7 @@ import Button from "../components/Button";
 const HeroSection = () => {
   return (
     <div className="font-lato">
-      <div className="main_container  w-full sm:flex sm:items-center  px-7 sm:px-14">
+      <div className="main_container  w-full sm:flex sm:items-center  px-7 sm:px-24">
         <div className="text_container text-center sm:flex-col ">
           <p className="text-h3 font-bold sm:text-start sm:text-h1 sm:tracking-wide">
             Automate Test with ease
@@ -39,7 +39,7 @@ const HeroSection = () => {
       </div>
 
       {/* Technologies Polaris Built on */}
-      <div className="hero_btm_section px-9  sm:px-12 py-7">
+      <div className="hero_btm_section px-9  sm:px-24 py-7">
         <p className="text-h6 font-bold sm:text-h2 sm:font-light sm:tracking-wider sm:pb-6">
           Technologies Polaris is built on
         </p>
@@ -54,7 +54,7 @@ const HeroSection = () => {
       </div>
 
       {/* Features */}
-      {/* <div className="feature_section w-full bg-primary text-white">
+      <div className="feature_section w-full bg-primary text-white">
         <div className="feature_text px-9 py-10 ">
           <div className="border w-full border-dashed"></div>
           <p className="text-h5 font-bold pb-2 pt-2">Features</p>
@@ -64,7 +64,7 @@ const HeroSection = () => {
             utility functions available to you.
           </p>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

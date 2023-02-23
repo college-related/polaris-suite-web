@@ -18,7 +18,7 @@ const Navbar = () => {
           <li>About</li>
           <li>Docs</li>
           <li className="text-primary ">Install</li>
-          <li className="shadow-xl">
+          <li className="shadow-lg">
             <Button
               onClick={() => alert("Button 1 is clicked !")}
               variant="default"
