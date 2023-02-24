@@ -56,7 +56,7 @@ const HeroSection = () => {
       </div>
 
       {/* Features */}
-      <div className="feature_section w-full bg-primary text-white">
+      <div className="feature_section w-full bg-primary text-white sm:w-fit">
         <div className="feature_text py-10 ">
           <div className="flex justify-end pl-12">
             <img src={dot_line}></img>
@@ -92,7 +92,7 @@ const HeroSection = () => {
             </div> */}
             {/* Boxes */}
 
-            <div className="second_third_box_container  flex flex-col sm:flex sm:flex-row sm:w-full sm:justify-start sm:items-center sm:space-x-28">
+            <div className="second_third_box_container w-fit  flex flex-col xs:flex xs:flex-row  xs:w-fit sm:flex sm:flex-row sm:justify-start sm:items-center sm:space-x-28 ">
               <div className="second_boxes pt-6  sm:ml-2">
                 <div className="first_row_flex flex space-x-4 pr-11 sm:pt-18 sm:pr-0 sm:flex sm:items-center sm:space-x-7">
                   <img
@@ -105,8 +105,19 @@ const HeroSection = () => {
               </div>
 
               {/* Boxes */}
-              <div className="third_boxes pt-6 ">
-                <div className="first_row_flex flex justify-end space-x-4 pr-14 sm:pt-18 sm:pr-0 sm:flex sm:items-center">
+              {/* <div className="third_boxes pt-6 border-2 border-red">
+                <div className="first_row_flex flex justify-end space-x-4 pr-14 sm:pt-18 sm:pr-0 sm:flex sm:items-center  ">
+                  <div className="container w-24 h-24 rounded-md bg-white bg-opacity-90 mt-4 sm:w-48 sm:h-48"></div>
+                  <div className="container w-24 h-24 mt-4 rounded-md bg-white bg-opacity-90 sm:w-48 sm:h-48"></div>
+                </div>
+              </div> */}
+
+              <div className="second_boxes pt-6  sm:ml-2">
+                <div className="first_row_flex flex space-x-4 pr-11 sm:pt-18 sm:pr-0 sm:flex sm:items-center sm:space-x-7">
+                  <img
+                    src={square}
+                    className=" sm:hidden w-24 relative h-24 sm:w-48 sm:h-48 ml-0 sm:mb-10 opacity-0"
+                  ></img>
                   <div className="container w-24 h-24 rounded-md bg-white bg-opacity-90 mt-4 sm:w-48 sm:h-48"></div>
                   <div className="container w-24 h-24 mt-4 rounded-md bg-white bg-opacity-90 sm:w-48 sm:h-48"></div>
                 </div>
