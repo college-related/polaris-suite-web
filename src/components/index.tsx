@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import HeroSection from "./HeroSection";
+import HeroSection from "../pages/HeroSectionPage";
 import Footer from "./Footer";
 
 export { Navbar, HeroSection, Footer };
