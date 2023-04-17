@@ -9,6 +9,7 @@ import {
   flutter_logo,
   dot_line,
   square,
+  domo_logo,
 } from "../assets/images";
 import Button from "../components/Button";
 
@@ -126,6 +127,37 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Used by all these amazing products */}
+      <div className="footer_above_section m-7 sm:m-16">
+        <p className="text-h6 font-sen text-center m-2 sm:text-start sm:text-h3 ">
+          Used by all these amazing products
+        </p>
+        <div className="images flex justify-between py-2 flex-wrap sm:flex sm:justify-between sm:px-7 sm:py-10">
+          <img
+            className="w-36 h-36 sm:w-56 sm:h-48"
+            src={domo_logo}
+            alt="node_logo"
+          />
+          <img
+            className="w-36 h-36 sm:w-56 sm:h-48"
+            src={domo_logo}
+            alt="node_logo"
+          />
+          <img
+            className="w-36 h-36 sm:w-56 sm:h-48"
+            src={domo_logo}
+            alt="node_logo"
+          />
+          <img
+            className="w-36 h-36 sm:w-56 sm:h-48"
+            src={domo_logo}
+            alt="node_logo"
+          />
+        </div>
+      </div>
+
+      {/*Footer Section */}
     </div>
   );
 };

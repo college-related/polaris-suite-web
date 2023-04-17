@@ -10,6 +10,7 @@ module.exports = {
         neutralDark: "#131515",
         danger: "#DA4944",
         success: "#4F772D",
+        textfield: "B9BCFF",
       },
       fontFamily: {
         sen: ["Sen", "sans-serif"],

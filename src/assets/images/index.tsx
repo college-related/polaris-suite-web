@@ -13,6 +13,7 @@ import dot_line from "../images/dot_line.png";
 import blue_bg from "../images/blue_bg.png";
 import chart_Pie from "../images/ChartPie.png";
 import square from "../images/square.png";
+import domo_logo from "../images/domo_logo.png";
 
 export {
   bg,
@@ -30,4 +31,5 @@ export {
   blue_bg,
   chart_Pie,
   square,
+  domo_logo,
 };
