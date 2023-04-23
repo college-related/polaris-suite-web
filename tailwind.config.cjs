@@ -15,6 +15,7 @@ module.exports = {
       fontFamily: {
         sen: ["Sen", "sans-serif"],
         lato: ["Lato", "sans-serif"],
+        quicksand: ["Quicksand", "sans-serif"],
       },
       fontSize: {
         h1: "48px",
@@ -37,7 +38,6 @@ module.exports = {
       transitionDuration: {
         0: "0ms",
         2000: "2000ms",
-        2000: "3000ms",
       },
     },
   },

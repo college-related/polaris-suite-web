@@ -13,22 +13,31 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" navbar font-lato font-extralight flex justify-between items-center px-6 py-7 sm:px-24 sm:pt-20">
-      <div className="logo_container w-10">
-        <Link to="/">
-          <img src={polaris_logo} alt="logo"></img>
-        </Link>
+    <div className=" navbar font-quicksand font-extralight flex justify-between items-center py-7 sm:px-24 sm:pt-20 ">
+      <div className="padding_cls flex items-center w-full justify-between px-7">
+        <div className="logo_container w-10">
+          <Link to="/">
+            <img src={polaris_logo} alt="logo"></img>
+          </Link>
+        </div>
+        <div className="hamburger_icon sm:hidden" onClick={handleShowNavbar}>
+          <div className="w-7 h-1 mb-1 bg-black"></div>
+          <div className="w-7 h-1 mb-1 bg-black"></div>
+          <div className="w-5 h-1 bg-black"></div>
+        </div>
       </div>
-      <div className="hamburger_icon sm:hidden" onClick={handleShowNavbar}>
-        <div className="w-7 h-1 mb-1 bg-black"></div>
-        <div className="w-7 h-1 mb-1 bg-black"></div>
-        <div className="w-5 h-1 bg-black"></div>
-      </div>
-      {showNavbar && (
-        <div className="bg-primary w-full fixed h-screen top-0 transition ease-in-out duration-[3000ms] flex flex-col justify-center items-center font-extralight text-2xl bg-opacity-90 rounded-md">
-          <div className="cross">{<X onClick={handleShowNavbar} />}</div>
 
-          <ul>
+      {
+        <div
+          className={`bg-primary w-full fixed h-screen top-0 ease-in-out transition-all duration-300 items-center font-extralight text-2xl z-30 ${
+            showNavbar ? "right-0" : "-right-full"
+          } `}
+        >
+          <div className="flex items-center justify-between  w-full  px-7 py-7 shadow-xl">
+            <h1 className="font-sen text-white">Polaris Suite</h1>
+            <X onClick={handleShowNavbar} />
+          </div>
+          <ul className="flex flex-col items-center pt-5">
             <Link
               to="/about"
               className={`${
@@ -36,7 +45,7 @@ const Navbar = () => {
               }`}
               onClick={handleShowNavbar}
             >
-              <li>About</li>
+              <li className="bg-primary h-16 flex items-center my-3">About</li>
             </Link>
             <Link
               to="/docs"
@@ -45,7 +54,7 @@ const Navbar = () => {
               }`}
               onClick={handleShowNavbar}
             >
-              <li>Docs</li>
+              <li className="bg-primary h-16 flex items-center my-3">Docs</li>
             </Link>
             <Link
               to="/install"
@@ -56,11 +65,11 @@ const Navbar = () => {
               }`}
               onClick={handleShowNavbar}
             >
-              <li>Install</li>
+              <li className="bg-primary h-16 flex items-center">Install</li>
             </Link>
           </ul>
         </div>
-      )}
+      }
       <div className="nav_items hidden sm:flex">
         <ul className="flex space-x-14 items-center">
           <Link
