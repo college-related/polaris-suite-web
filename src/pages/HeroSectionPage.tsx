@@ -15,7 +15,7 @@ import Button from "../components/Button";
 
 const HeroSection = () => {
   return (
-    <div className="font-lato">
+    <div className="font-quicksand">
       <div className="main_container  w-full sm:flex sm:items-center  px-7 sm:px-24">
         <div className="text_container text-center sm:flex-col ">
           <p className="text-h3 font-bold sm:text-start sm:text-h1 sm:tracking-wide font-sen">
@@ -67,7 +67,7 @@ const HeroSection = () => {
             <div className="sm:flex sm:flex-row-reverse sm:justify-between">
               <p className="pb-1 pt-2 text-center sm:text-start sm:w-1/3 sm:pr-16">
                 <p className="font-sen text-h3">Features</p>
-                <p className="text-center  text-body font-lato font-thin pl-12 pr-9 pb-7  sm:text-start sm:pl-0 sm:pr-9 sm:pb-0 sm:text-body ">
+                <p className="text-center text-body font-thin pl-12 pr-9 pb-7  sm:text-start sm:pl-0 sm:pr-9 sm:pb-0 sm:text-body ">
                   Automate your test cases with all these features of Polaris
                   Suite. It is easy to implement and readjust your test with all
                   the awesome utility functions available to you.
