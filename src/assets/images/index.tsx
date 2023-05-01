@@ -14,6 +14,10 @@ import blue_bg from "../images/blue_bg.png";
 import chart_Pie from "../images/ChartPie.png";
 import square from "../images/square.png";
 import domo_logo from "../images/domo_logo.png";
+import about_bg from "../images/about_bg.png";
+import unit_test from "../images/unit_testing.png";
+import collab_test from "../images/collaboration_testing.png";
+import auto_test from "../images/automation_testing.png";
 
 export {
   bg,
@@ -32,4 +36,8 @@ export {
   chart_Pie,
   square,
   domo_logo,
+  about_bg,
+  unit_test,
+  collab_test,
+  auto_test,
 };
