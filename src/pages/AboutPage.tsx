@@ -1,5 +1,11 @@
 import React from "react";
-import { auto_test, bg, collab_test, unit_test } from "../assets/images";
+import {
+  auto_test,
+  bg,
+  collab_test,
+  github_logo,
+  unit_test,
+} from "../assets/images";
 
 const AboutPage = () => {
   return (
@@ -62,48 +68,61 @@ const AboutPage = () => {
 
       {/* Below Section */}
       <div className="px-8 pt-10 flex justify-start items-center sm:mx-10 ">
-        <p className="font-sen ss:text-2xl text- font-bold">Our Team</p>
+        <p className="font-sen text-h3 ss:text-2xl text- font-bold">Our Team</p>
       </div>
 
-      <div className="pt-6 px-8 pb-12 font-quicksand flex space-x-7 ss:justify-around relative md:mb-36">
-        <div className="container_first w-fit h-36 shadow-2xl sm:w-1/5 sm:h-56">
-          <a href="https://github.com/alsongarbuja" target="_blank">
-            <p className="pt-4 px-1 ss:pt-9">
+      <div className="font-quicksand bg-gray-100 flex flex-col sm:flex-row sm:items-baseline space-y-7 justify-around items-center pt-12 pb-12 sm:flex">
+        {/*  */}
+        <div className="max-w-xs container bg-white rounded-xl shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100 pt-5 pb-4">
               Alson
               <br />
               Garbuja
-            </p>
-          </a>
-
+            </h1>
+            <a href="https://github.com/alsongarbuja" target="_blank">
+              <img src={github_logo} alt="" className="w-10 h-10 mr-5" />
+            </a>
+          </div>
           <img
+            className="w-full cursor-pointer"
             src="https://avatars.githubusercontent.com/u/42911859?v=4"
             alt="alson_img"
-            className="w-28 sm:w-full"
           />
         </div>
-        <div className="container_first w-fit h-36 shadow-2xl sm:w-1/5 sm:h-56">
-          <a href="https://github.com/salipa-gurung" target="_blank">
-            <p className="pt-4 px-1 ss:pt-9">
-              Salipa <br />
+
+        {/*  */}
+        <div className="max-w-xs container bg-white rounded-xl shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100 pt-5 pb-4">
+              Salipa
+              <br />
               Gurung
-            </p>
-          </a>
+            </h1>
+            <a href="https://github.com/salipa-gurung" target="_blank">
+              <img src={github_logo} alt="" className="w-10 h-10 mr-5" />
+            </a>
+          </div>
           <img
+            className="w-full cursor-pointer"
             src="https://avatars.githubusercontent.com/u/53458341?v=4"
             alt="salipa_img"
-            className="w-28 sm:w-full"
           />
         </div>
-        <div className="container_first w-fit h-36 shadow-2xl sm:w-1/5 sm:h-56 ">
-          <a href="https://github.com/prasiddha777" target="_blank">
-            <p className="pt-4 px-1 ss:pt-9">
+
+        {/*  */}
+        <div className="max-w-xs container bg-white rounded-xl shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100 pt-5 pb-4">
               Prasiddha <br />
               Khadka
-            </p>
-          </a>
-
+            </h1>
+            <a href="https://github.com/Prasiddha777" target="_blank">
+              <img src={github_logo} alt="" className="w-10 h-10 mr-5" />
+            </a>
+          </div>
           <img
-            className="w-28 sm:w-full"
+            className="w-full cursor-pointer"
             src="https://avatars.githubusercontent.com/u/53443661?v=4"
             alt="prasid_img"
           />
