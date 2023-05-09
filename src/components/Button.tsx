@@ -6,6 +6,7 @@ interface ButtonProps {
   variant: "default" | "primary" | "info" | "dark";
   size?: "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
+  classes?: string;
 }
 
 // button component, consuming props
@@ -15,11 +16,12 @@ const Button = ({
   variant = 'default',
   size = 'md',
   disabled = false,
+  classes = '',
   ...rest
 }: ButtonProps) => {
   return (
     <button
-      className={`btn ${variant} ${size}` + (disabled ? ' disabled' : '')}
+      className={`btn ${variant} ${size} ${classes}` + (disabled ? ' disabled' : '')}
       onClick={onClick}
       disabled={disabled}
       {...rest}
