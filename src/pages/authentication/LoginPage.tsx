@@ -1,7 +1,21 @@
 import { Link } from "react-router-dom"
 import Button from "../../components/Button"
+import Input from "../../components/form/Input";
+import { useState } from "react";
 
 const LoginPage = () => {
+    const [user, setUser] = useState({
+        email: "",
+        password: ""
+    });
+    const [error, setError] = useState({});
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value
+        })
+    }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -14,9 +28,25 @@ const LoginPage = () => {
         <p>Don't have an account? <Link to="/auth/register">Create one</Link></p>
 
         <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Email" className="border border-gray-300 px-4 py-2 rounded-md" />
-            <input type="password" placeholder="Password" className="border border-gray-300 px-4 py-2 rounded-md" />
-            <button className="bg-primary text-white px-4 py-2 rounded-md">Login</button>
+            <Input 
+                type="email"
+                label="Email"
+                name="email"
+                placeholder="Email"
+                value={user.email}
+                onChange={handleInputChange}
+                errors={error}
+            />
+            <Input 
+                type="password"
+                label="Password"
+                name="password"
+                placeholder="Password"
+                value={user.password}
+                onChange={handleInputChange}
+                errors={error} 
+            />
+            <button className="bg-primary text-white px-4 py-2 rounded-sm" type="submit">Login</button>
         </form>
 
         <p className="text-center mt-10">OR</p>
