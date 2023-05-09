@@ -21,7 +21,7 @@ const AboutPage = () => {
         </div>
       </div>
 
-      <div className="bg-bg text-center py-5 h-[700px] flex flex-col justify-center">
+      <div className="bg-bg text-center py-5 h-fit sm:h-[700px] flex flex-col justify-center">
           <p className="text-h4 font-bold font-sen">Our Story</p>
           <p className="w-3/4 mx-auto my-4">
             We are a group of 3 students from Gandaki College Of Engineering and Science who are
