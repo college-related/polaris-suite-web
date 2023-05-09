@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import {
   polaris_logo,
   github_logo,
@@ -67,7 +67,7 @@ const Footer = () => {
             <p className="font-bold">About</p>
             <ul>
               <li className="my-1 sm:my-2">
-                <a href="">Polaris</a>
+                <Link to="/about">Polaris</Link>
               </li>
               <li className="my-1 sm:my-2">
                 <a href="">Developers</a>
@@ -86,7 +86,7 @@ const Footer = () => {
                 <a href="">LinkedIn</a>
               </li>
               <li className="my-1 sm:my-2">
-                <a href="">Github</a>
+                <a href="https://github.com/Major-Project-BE2018SE" target="_blank" rel="noopener noreferrer">Github</a>
               </li>
             </ul>
           </div>

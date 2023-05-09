@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import {
   bg,
   node_logo,
@@ -13,7 +13,7 @@ import {
 } from "../assets/images";
 import Button from "../components/Button";
 
-const HeroSection = () => {
+const LandingPage = () => {
   return (
     <div className="font-quicksand">
       <div className="main_container  w-full sm:flex sm:items-center  px-7 sm:px-24">
@@ -29,11 +29,11 @@ const HeroSection = () => {
             <Button
               onClick={() => alert("Button 1 is clicked !")}
               variant="default"
-              size="sm"
+              size="md"
             >
               &#62; Install Polaris
             </Button>
-            <p className="text-primary">Documentation</p>
+            <Link to="/docs" className="text-primary font-bold">Documentation</Link>
           </div>
         </div>
         <div className="img_container">
@@ -156,10 +156,8 @@ const HeroSection = () => {
           />
         </div>
       </div>
-
-      {/*Footer Section */}
     </div>
   );
 };
 
-export default HeroSection;
+export default LandingPage;

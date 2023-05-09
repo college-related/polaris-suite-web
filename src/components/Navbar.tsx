@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { polaris_logo } from "../assets/images";
 import Button from "./Button";
 import { Link, useLocation } from "react-router-dom";
@@ -56,17 +56,7 @@ const Navbar = () => {
             >
               <li className="bg-primary h-16 flex items-center my-3">Docs</li>
             </Link>
-            <Link
-              to="/install"
-              className={`${
-                location.pathname === "/" || location.pathname === "/install"
-                  ? "text-white"
-                  : "text-black"
-              }`}
-              onClick={handleShowNavbar}
-            >
-              <li className="bg-primary h-16 flex items-center">Install</li>
-            </Link>
+            <li onClick={handleShowNavbar} className="bg-primary h-16 flex items-center">Install</li>
           </ul>
         </div>
       }
@@ -88,17 +78,7 @@ const Navbar = () => {
           >
             <li>Docs</li>
           </Link>
-          <Link
-            to="/install"
-            className={`${
-              location.pathname === "/" || location.pathname === "/install"
-                ? "text-primary"
-                : "text-black"
-            }`}
-          >
-            <li>Install</li>
-          </Link>
-
+          <li className="cursor-pointer">Install</li>
           <li className="shadow-lg w-48 bg-primary">
             <Button
               onClick={() => alert("Button 1 is clicked !")}
