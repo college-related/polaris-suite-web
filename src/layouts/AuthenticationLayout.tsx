@@ -7,11 +7,11 @@ interface AuthenticationLayoutProps {
 
 const AuthenticationLayout = ({ children }: AuthenticationLayoutProps) => {
   return (
-    <main className="flex h-screen">
-        <div className="bg-[#D1D4FF] px-8 py-12 w-fit">
+    <main className="grid grid-cols-1 sm:grid-cols-3 h-screen">
+        <div className="bg-[#D1D4FF] px-8 py-6 min-w-fit w-full">
             {children}
         </div>
-        <div className="flex-1 hidden xs:flex items-center justify-center">
+        <div className="flex-1 w-full hidden sm:col-span-2 sm:flex items-center justify-center">
             <img src={bg} alt="background image"  />
         </div>
     </main>

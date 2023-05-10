@@ -37,7 +37,7 @@ const RegisterPage = () => {
         <h1>Register</h1>
         <p>Already have an account? <Link to="/auth/login">Login</Link></p>
 
-        <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4 mt-6" onSubmit={handleSubmit}>
             <Input 
                 type="email"
                 label="Email"
@@ -96,7 +96,7 @@ const RegisterPage = () => {
             Github
         </Button>
 
-        <div className="text-right mt-5">
+        <div className="text-right mt-2">
             <Link to="/auth/forgot-password">Forgot Password?</Link>
         </div>
     </>
