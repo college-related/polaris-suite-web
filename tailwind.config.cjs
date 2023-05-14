@@ -14,7 +14,6 @@ module.exports = {
       },
       fontFamily: {
         sen: ["Sen", "sans-serif"],
-        lato: ["Lato", "sans-serif"],
         quicksand: ["Quicksand", "sans-serif"],
       },
       fontSize: {
@@ -31,6 +30,7 @@ module.exports = {
         xs: "480px",
         ss: "620px",
         sm: "768px",
+        smd: "917px",
         md: "1060px",
         lg: "1200px",
         xl: "1700px",
@@ -38,6 +38,9 @@ module.exports = {
       transitionDuration: {
         0: "0ms",
         2000: "2000ms",
+      },
+      backgroundImage: {
+        bg: "url('/src/assets/images/about_bg.png')",
       },
     },
   },
