@@ -7,6 +7,7 @@ interface ButtonProps {
   size?: "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
   classes?: string;
+  [key: string]: any;
 }
 
 // button component, consuming props
