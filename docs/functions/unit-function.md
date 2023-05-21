@@ -41,8 +41,6 @@ __Return Object Properties:__
 
 Unit function used to check return of `function`'s equality with `actual` value.
 
-The actual value can be of any type from `string` to `functions` but the parameter of call() function must be a function
-
 It takes in a function and parameter optionally and returns an `Call Object`
 
 ```js
@@ -57,3 +55,26 @@ __Return Object Properties:__
 
 
 ## api()
+
+Unit function used to check status code, response, throws, etc from an API call.
+
+It takes url, method, payload, header and returns an `API Object`
+
+```js
+api(
+    url: string, 
+    method: "POST" | "PUT" | "GET" | "PATCH" | "DELETE", 
+    payload?: null | BodyInit, 
+    header?: AxiosHeaders 
+): API
+```
+
+__Return Object Properties:__
+- statusCode(status: number): _check the status code sent back by the api with the given status for similarity_
+- hasResponse(payload: object): _check if the returned response contains or has the given payload_
+- throwsError(): _check if the api throws error_
+- not
+    - statusCode(status: number): _check the status code sent back by the api with the given status for not similar_
+    - hasResponse(payload: object): _check if the returned response doesnot contains or has the given payload_
+    - throwsError(): _check if the api doesnot throws error_
+
