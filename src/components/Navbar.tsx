@@ -45,15 +45,16 @@ const Navbar = () => {
           >
             <li className="bg-primary h-16 flex items-center my-3">About</li>
           </Link>
-          <Link
-            to="/docs"
+          <a
+            href="http://localhost:3000/#/"
+            target="_blank"
             className={`${
               location.pathname === "/docs" ? "text-white" : "text-black"
             }`}
             onClick={handleShowNavbar}
           >
             <li className="bg-primary h-16 flex items-center my-3">Docs</li>
-          </Link>
+          </a>
           <li onClick={handleShowNavbar} className="bg-primary h-16 flex items-center">Install</li>
         </ul>
       </div>
@@ -67,14 +68,15 @@ const Navbar = () => {
           >
             <li>About</li>
           </Link>
-          <Link
-            to="/docs"
+          <a
+            href="http://localhost:3000/#/"
+            target="_blank"
             className={`${
               location.pathname === "/docs" ? "text-primary" : "text-black"
             }`}
           >
             <li>Docs</li>
-          </Link>
+          </a>
           <li className="cursor-pointer">Install</li>
           <li>
             <NavLink to="/auth/login" className="bg-primary text-white px-4 py-2">
