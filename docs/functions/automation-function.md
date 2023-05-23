@@ -4,14 +4,15 @@ Functions that are available for automating behaviour driven test scenarios.
 
 __Table of Content:__
 
-- [goto]()
-    - [find]()
-    - [click]()
-    - [scroll]()
-    - [hover]()
-    - [dblClick]()
-    - [rightClick]()
-    - [isUrl]()
+- [goto](#goto)
+    - [find](#find)
+    - [click](#click)
+    - [scroll](#scroll)
+    - [hover](#hover)
+    - [dblClick](#dblclick)
+    - [rightClick](#rightclick)
+    - [isUrl](#isurl)
+    - [type](#type)
 
 ## goto()
 
@@ -30,7 +31,7 @@ goto() function returns a [`Page object`](/typescript.md?id=page-object) that wi
 Used to find the element provided as the parameter of the function.
 
 ```js
-find(ele: HTMLElement): HTMLElement | null
+find(selector: string): Promise<ElementHandle<HTMLElement>>
 ```
 
 It returns the HTMLElement that is found or null for no such element found in the target page.
@@ -40,7 +41,7 @@ It returns the HTMLElement that is found or null for no such element found in th
 Used to find and click an element in the page.
 
 ```js
-click(selector: string): HTMLElement | null
+click(selector: string): Promise<ElementHandle<HTMLElement>>
 ```
 
 It returns the HTMLElement that was clicked or null if no such element is found.
@@ -50,7 +51,7 @@ It returns the HTMLElement that was clicked or null if no such element is found.
 Used to scroll to the given __coordinate__ either __vertically or horizontally__ specified by the second parameter.
 
 ```js
-scroll(c: number, direction?: 'horizontal' | 'vertical'): void
+scroll(c: number, direction?: 'horizontal' | 'vertical'): Promise<void>
 ```
 
 The direction will be `vertical` by default.
@@ -60,7 +61,7 @@ The direction will be `vertical` by default.
 Used to scroll and mouse hover over the given __x and y__ coordinates.
 
 ```js
-hover(x: number, y: number): void
+hover(x: number, y: number): Promise<void>
 ```
 
 ### dblClick()
@@ -68,7 +69,7 @@ hover(x: number, y: number): void
 Used to find and double click the provided element as parameter.
 
 ```js
-dblClick(ele: HTMLElement): HTMLElement | null
+dblClick(selector: string): Promise<ElementHandle<HTMLElement>>
 ```
 
 It returns the found HTMLElement or null if not found any.
@@ -78,7 +79,7 @@ It returns the found HTMLElement or null if not found any.
 Used to find and right click the provided element as parameter.
 
 ```js
-rightClick(ele: HTMLElement): HTMLElement | null
+rightClick(selector: string): Promise<ElementHandle<HTMLElement>>
 ```
 
 It returns the found HTMLElement or null if not found any.
@@ -92,3 +93,11 @@ isUrl(url: string): boolean
 ```
 
 It returns true or false according to the equality.
+
+### type()
+
+Used to type or input text into input fields.
+
+```js
+type(selector: string, text: string) => Promise<ElementHandle<HTMLElement>>
+```

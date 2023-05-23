@@ -106,13 +106,13 @@ type of the return object of the [`api() function`](/functions/unit-function.md?
 
 ```js
 type PageResult = {
-    find: (ele: HTMLElement) => HTMLElement | null,
-    find: (ele: HTMLElement) => HTMLElement | null,
-    click: (ele: HTMLElement) => HTMLElement | null,
-    dblClick: (ele: HTMLElement) => HTMLElement | null,
-    rightClick: (ele: HTMLElement) => HTMLElement | null,
-    scroll: (c: number, direction?: 'vertical' | 'horizontal' = 'vertical') => void,
-    hover: (x: number, y: number) => void,
+    find: (selector: string) => Promise<<HTMLElement>>,
+    click: (selector: string) => Promise<<HTMLElement>>,
+    dblClick: (selector: string) => Promise<<HTMLElement>>,
+    rightClick: (selector: string) => Promise<<HTMLElement>>,
+    type: (selector: string, text: string) => Promise<ElementHandle<HTMLElement>>,
+    scroll: (c: number, direction?: 'vertical' | 'horizontal' = 'vertical') => Promise<void>,
+    hover: (x: number, y: number) => Promise<void>,
     isUrl: (url: string) => boolean
 }
 ```
