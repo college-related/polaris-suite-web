@@ -41,22 +41,22 @@ used in parameter typing of `call()` function as the optional parameters to spec
 ### Expectation Object
 
 ```js
-type Expectation = {
-    equalsTo: (actual: any) => {},
-    toBeString: () => {},
-    toBeBoolean: () => {},
-    toBeNumber: () => {},
-    toBeObject: () => {},
-    toBeArray: () => {},
-    toBeUndefined: () => {},
+type ExpectationResult = {
+    equalsTo: (actual: any) => void,
+    toBeString: () => void,
+    toBeBoolean: () => void,
+    toBeNumber: () => void,
+    toBeObject: () => void,
+    toBeArray: () => void,
+    toBeUndefined: () => void,
     not: {
-        equalsTo: (actual: any) => {},
-        toBeString: () => {},
-        toBeBoolean: () => {},
-        toBeNumber: () => {},
-        toBeObject: () => {},
-        toBeArray: () => {},
-        toBeUndefined: () => {},
+        equalsTo: (actual: any) => void,
+        toBeString: () => void,
+        toBeBoolean: () => void,
+        toBeNumber: () => void,
+        toBeObject: () => void,
+        toBeArray: () => void,
+        toBeUndefined: () => void,
     }
 }
 ```
@@ -69,11 +69,11 @@ type of the return object of the [`expect() function`](/functions/unit-function.
 ### Call Object
 
 ```js
-type Call = {
-    returns: (actual: any) => {},
-    iterateWithData: (datas: DataTable) => {},
+type CallResult = {
+    returns: (actual: any) => void,
+    iterateWithData: (datas: DataTable) => void,
     not: {
-        returns: (actual: any) => {},
+        returns: (actual: any) => void,
     }
 }
 ```
@@ -85,14 +85,14 @@ type of the return object of the [`call() function`](/functions/unit-function.md
 ### API Object
 
 ```js
-type API = {
-    statusCode: (status: number) => {},
-    hasResponse: (payload: object) => {},
-    throwsError: () => {},
+type APIResult = {
+    statusCode: (status: number) => void,
+    hasResponse: (payload: object) => void,
+    throwsError: () => void,
     not: {
-        statusCode: (status: number) => {},
-        hasResponse: (payload: object) => {},
-        throwsError: () => {},
+        statusCode: (status: number) => void,
+        hasResponse: (payload: object) => void,
+        throwsError: () => void,
     }
 }
 ```
@@ -105,14 +105,15 @@ type of the return object of the [`api() function`](/functions/unit-function.md?
 ### Page Object
 
 ```js
-type Page = {
-    find: (ele: HTMLElement): HTMLElement | null => {},
-    click: (ele: HTMLElement): HTMLElement | null => {},
-    dblClick: (ele: HTMLElement): HTMLElement | null => {},
-    rightClick: (ele: HTMLElement): HTMLElement | null => {},
-    scroll: (c: number, direction?: 'vertical' | 'horizontal' = 'vertical'): void => {},
-    hover: (x: number, y: number): void => {},
-    isUrl: (url: string): boolean => {}
+type PageResult = {
+    find: (ele: HTMLElement) => HTMLElement | null,
+    find: (ele: HTMLElement) => HTMLElement | null,
+    click: (ele: HTMLElement) => HTMLElement | null,
+    dblClick: (ele: HTMLElement) => HTMLElement | null,
+    rightClick: (ele: HTMLElement) => HTMLElement | null,
+    scroll: (c: number, direction?: 'vertical' | 'horizontal' = 'vertical') => void,
+    hover: (x: number, y: number) => void,
+    isUrl: (url: string) => boolean
 }
 ```
 
