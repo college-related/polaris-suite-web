@@ -23,7 +23,7 @@ goto(url: string): Page
 
 __Returns the Page object__
 
-goto() function returns a Page object that will contain many utility functions like `find()`, `click()`, etc.
+goto() function returns a [`Page object`](/typescript.md?id=page-object) that will contain many utility functions like `find()`, `click()`, etc.
 
 ### find()
 

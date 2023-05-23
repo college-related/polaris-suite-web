@@ -14,7 +14,7 @@ Unit function used to check equality of two values `expectation` and `actual`.
 
 The expectation and actual values can be of any type from `string` to `functions`
 
-It takes in an expectation value and returns an `Expectation Object`
+It takes in an expectation value and returns an [`Expectation Object`](/typescript.md?id=expectation-object)
 
 ```js
 expect(expectation: any): Expectation
@@ -41,7 +41,7 @@ __Return Object Properties:__
 
 Unit function used to check return of `function`'s equality with `actual` value.
 
-It takes in a function and parameter optionally and returns an `Call Object`
+It takes in a function and parameter optionally and returns an [`Call Object`](/typescript?id=call-object)
 
 ```js
 call(fn: Funciton, params?: any[]): Call
@@ -49,7 +49,7 @@ call(fn: Funciton, params?: any[]): Call
 
 __Return Object Properties:__
 - returns(actual: any): _check the return value of the function_
-- iterateWithData(datas: WithDataOptions): _iterate over the data provided_
+- iterateWithData(datas: DataTable): _iterate over the data provided_
 - not
     - returns(actual: any): _check the return value of the function and passes if different_
 
@@ -58,7 +58,7 @@ __Return Object Properties:__
 
 Unit function used to check status code, response, throws, etc from an API call.
 
-It takes url, method, payload, header and returns an `API Object`
+It takes url, method, payload, header and returns an [`API Object`](/typescript.md?id=api-object)
 
 ```js
 api(
