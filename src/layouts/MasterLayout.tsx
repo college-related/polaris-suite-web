@@ -1,11 +1,10 @@
-import React from "react";
 import { Footer, Navbar } from "../components";
 
-interface MasterLayoutProps {
+interface IMasterLayoutProps {
   children: JSX.Element;
 }
 
-const MasterLayout = ({ children }: MasterLayoutProps) => {
+const MasterLayout = ({ children }: IMasterLayoutProps) => {
   return (
     <div>
       <Navbar />

@@ -1,5 +1,5 @@
 
-interface InputProps {
+interface IInputProps {
     label: string;
     type?: "text" | "number" | "email" | "password" | "date" | "time";
     value: string | number;
@@ -24,7 +24,7 @@ const Input = ({
     classes="", 
     errors=null,
     ...rest 
-}: InputProps) => {
+}: IInputProps) => {
   return (
     <div>
         <label htmlFor={name} className="text-gray-700 font-bold font-quicksand">{label}</label>
