@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import { useState } from "react";
 import Input from "../../components/form/Input";
@@ -12,6 +12,7 @@ const RegisterPage = () => {
         confirmPassword: ""
     });
     const [error, setError] = useState<dynamicObject>({});
+    const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUser({
@@ -32,7 +33,7 @@ const RegisterPage = () => {
             });
 
             if(statusCode === 201) {
-                console.log(data, " registered");
+                navigate("/polaris/dashboard");
             } else { 
                 console.log(error);
             }

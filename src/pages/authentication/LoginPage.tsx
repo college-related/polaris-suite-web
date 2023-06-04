@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import Input from "../../components/form/Input";
 import { useState } from "react";
@@ -10,6 +10,7 @@ const LoginPage = () => {
         password: ""
     });
     const [error, setError] = useState<dynamicObject>({});
+    const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUser({
@@ -25,7 +26,7 @@ const LoginPage = () => {
         const { statusCode, data, error } = await APICaller("/auth/login", "POST", user);
 
         if(statusCode === 200) {
-            console.log(data, " logged in");
+            navigate("/polaris/dashboard");
         } else { 
             if(statusCode === 401) {
                 setError({
