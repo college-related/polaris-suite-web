@@ -1,11 +1,41 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
+import Input from "../../components/form/Input";
+import { useState } from "react";
+import { APICaller } from "../../helpers/api";
 
 const LoginPage = () => {
+    const [user, setUser] = useState({
+        email: "",
+        password: ""
+    });
+    const [error, setError] = useState<dynamicObject>({});
+    const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setError({});
+        const { statusCode, data, error } = await APICaller("/auth/login", "POST", user);
+
+        if(statusCode === 200) {
+            navigate("/polaris/dashboard");
+        } else { 
+            if(statusCode === 401) {
+                setError({
+                    message: error.message,
+                })
+            } else {
+                console.log(error);
+            }
+        }
     }
 
   return (
@@ -14,9 +44,32 @@ const LoginPage = () => {
         <p>Don't have an account? <Link to="/auth/register">Create one</Link></p>
 
         <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Email" className="border border-gray-300 px-4 py-2 rounded-md" />
-            <input type="password" placeholder="Password" className="border border-gray-300 px-4 py-2 rounded-md" />
-            <button className="bg-primary text-white px-4 py-2 rounded-md">Login</button>
+            {
+                error && error.hasOwnProperty("message") && (
+                    <div className="px-3 py-4 rounded-md border border-red-500 bg-red-100">
+                        <p className="text-red-500">{error.message}</p>
+                    </div>
+                )
+            }
+            <Input 
+                type="email"
+                label="Email"
+                name="email"
+                placeholder="Email"
+                value={user.email}
+                onChange={handleInputChange}
+                errors={error}
+            />
+            <Input 
+                type="password"
+                label="Password"
+                name="password"
+                placeholder="Password"
+                value={user.password}
+                onChange={handleInputChange}
+                errors={error} 
+            />
+            <button className="bg-primary text-white px-4 py-2 rounded-sm" type="submit">Login</button>
         </form>
 
         <p className="text-center mt-10">OR</p>

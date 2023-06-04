@@ -8,6 +8,7 @@ import LoginPage from "../pages/authentication/LoginPage";
 import RegisterPage from "../pages/authentication/RegisterPage";
 import ForgotPasswordPage from "../pages/authentication/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/authentication/ResetPasswordPage";
+import Dashboard from "../pages/(protected)/Dashboard";
 
 const AppRoute = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoute = () => {
       <Routes>
         <Route path="/*" element={<PublicRoutes />} />
         <Route path="/auth/*" element={<AuthenticationRoutes />} />
+        <Route path="/polaris/*" element={<ProtectedRoutes />} />
         <Route path="/docs" element={<DocsPage />} />
       </Routes>
     </BrowserRouter>
@@ -45,5 +47,12 @@ const AuthenticationRoutes = () => {
   );
 }
   
+const ProtectedRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
+  )
+}
 
 export default AppRoute
