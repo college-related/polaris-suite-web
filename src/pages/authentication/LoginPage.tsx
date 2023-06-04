@@ -2,13 +2,14 @@ import { Link } from "react-router-dom"
 import Button from "../../components/Button"
 import Input from "../../components/form/Input";
 import { useState } from "react";
+import { APICaller } from "../../helpers/api";
 
 const LoginPage = () => {
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
-    const [error, setError] = useState({});
+    const [error, setError] = useState<dynamicObject>({});
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUser({
@@ -17,9 +18,23 @@ const LoginPage = () => {
         })
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setError({});
+        const { statusCode, data, error } = await APICaller("/auth/login", "POST", user);
+
+        if(statusCode === 200) {
+            console.log(data, " logged in");
+        } else { 
+            if(statusCode === 401) {
+                setError({
+                    message: error.message,
+                })
+            } else {
+                console.log(error);
+            }
+        }
     }
 
   return (
@@ -28,6 +43,13 @@ const LoginPage = () => {
         <p>Don't have an account? <Link to="/auth/register">Create one</Link></p>
 
         <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
+            {
+                error && error.hasOwnProperty("message") && (
+                    <div className="px-3 py-4 rounded-md border border-red-500 bg-red-100">
+                        <p className="text-red-500">{error.message}</p>
+                    </div>
+                )
+            }
             <Input 
                 type="email"
                 label="Email"

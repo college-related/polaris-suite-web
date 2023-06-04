@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import Button from "../../components/Button"
 import { useState } from "react";
 import Input from "../../components/form/Input";
+import { APICaller } from "../../helpers/api";
 
 const RegisterPage = () => {
     const [user, setUser] = useState({
@@ -10,7 +11,7 @@ const RegisterPage = () => {
         password: "",
         confirmPassword: ""
     });
-    const [error, setError] = useState({});
+    const [error, setError] = useState<dynamicObject>({});
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUser({
@@ -19,11 +20,22 @@ const RegisterPage = () => {
         })
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if(user.password === user.confirmPassword) {
+            setError({});
+            const { statusCode, data, error } = await APICaller("/auth/register", "POST", {
+                username: user.username,
+                email: user.email,
+                password: user.password
+            });
 
+            if(statusCode === 201) {
+                console.log(data, " registered");
+            } else { 
+                console.log(error);
+            }
         } else {
             setError({
                 password: "Password and Confirm Password do not match",
@@ -38,6 +50,13 @@ const RegisterPage = () => {
         <p>Already have an account? <Link to="/auth/login">Login</Link></p>
 
         <form className="flex flex-col gap-4 mt-6" onSubmit={handleSubmit}>
+            {
+                error && error.hasOwnProperty("message") && (
+                    <div className="px-3 py-4 rounded-md border border-red-500 bg-red-100">
+                        <p className="text-red-500">{error.message}</p>
+                    </div>
+                )
+            }
             <Input 
                 type="email"
                 label="Email"
