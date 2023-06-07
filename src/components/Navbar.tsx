@@ -2,6 +2,7 @@ import { useState } from "react";
 import { polaris_logo } from "../assets/images";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { X } from "react-feather";
+import { getToken } from "../helpers/cookie";
 
 const Navbar = () => {
   const location = useLocation();
@@ -79,8 +80,10 @@ const Navbar = () => {
           </a>
           <li className="cursor-pointer">Install</li>
           <li>
-            <NavLink to="/auth/login" className="bg-primary text-white px-4 py-2">
-              Get Started
+            <NavLink to={getToken()?"/polaris/dashboard":"/auth/login"} className="bg-primary text-white px-4 py-2">
+              {
+                getToken()?"Dashboard":"Get Started"
+              }
             </NavLink>
           </li>
         </ul>

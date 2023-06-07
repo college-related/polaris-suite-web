@@ -3,6 +3,7 @@ import Button from "../../components/Button"
 import { useState } from "react";
 import Input from "../../components/form/Input";
 import { APICaller } from "../../helpers/api";
+import { addToken, addUser } from "../../helpers/cookie";
 
 const RegisterPage = () => {
     const [user, setUser] = useState({
@@ -33,6 +34,11 @@ const RegisterPage = () => {
             });
 
             if(statusCode === 201) {
+                // add user and token to localstorage
+                addUser(data.token);
+                addToken(data.token);
+
+                // redirect to dashboard
                 navigate("/polaris/dashboard");
             } else { 
                 console.log(error);

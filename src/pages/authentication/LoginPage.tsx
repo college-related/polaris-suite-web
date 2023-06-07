@@ -3,6 +3,7 @@ import Button from "../../components/Button"
 import Input from "../../components/form/Input";
 import { useState } from "react";
 import { APICaller } from "../../helpers/api";
+import { addToken, addUser } from "../../helpers/cookie";
 
 const LoginPage = () => {
     const [user, setUser] = useState({
@@ -26,6 +27,11 @@ const LoginPage = () => {
         const { statusCode, data, error } = await APICaller("/auth/login", "POST", user);
 
         if(statusCode === 200) {
+            // add user and token to localstorage
+            addUser(data.token);
+            addToken(data.token);
+
+            // redirect to dashboard
             navigate("/polaris/dashboard");
         } else { 
             if(statusCode === 401) {
