@@ -17,7 +17,7 @@ export const APICaller = async (
     // headers for the api call
     const headers = customHeaders || {
         "Content-Type": "application/json",
-        "Authentication": `Bearer ${getToken()}`,
+        "Authorization": `Bearer ${getToken()}`,
     };
 
     await axios({
