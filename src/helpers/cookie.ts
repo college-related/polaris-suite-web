@@ -1,3 +1,4 @@
+import { POLARIS_LOCALSTORAGE_TOKEN, POLARIS_LOCALSTORAGE_USER } from "../utils/constants";
 
 /**
  * 
@@ -6,7 +7,7 @@
  * @returns {void} 
  */
 export const addUser = (user: dynamicObject): void => {
-    localStorage.setItem('polaris-suite--user', JSON.stringify(user));
+    localStorage.setItem(POLARIS_LOCALSTORAGE_USER, JSON.stringify(user));
 }
 
 /**
@@ -16,7 +17,7 @@ export const addUser = (user: dynamicObject): void => {
  * @returns {void}
  */
 export const addToken = (token: string): void => { 
-    localStorage.setItem('polaris-suite--token', token); 
+    localStorage.setItem(POLARIS_LOCALSTORAGE_TOKEN, JSON.stringify(token)); 
 }
 
 /**
@@ -24,14 +25,14 @@ export const addToken = (token: string): void => {
  * get the token from localstorage
  * @returns {string}
  */
-export const getToken = (): string => localStorage.getItem('polaris-suite--token') || '';
+export const getToken = (): string => localStorage.getItem(POLARIS_LOCALSTORAGE_TOKEN) || '';
 
 /**
  * 
  * get the user from localstorage
  * @returns {dynamicObject}
  */
-export const getUser = (): dynamicObject => JSON.parse(localStorage.getItem('polaris-suite--user') || '{}');
+export const getUser = (): dynamicObject => JSON.parse(localStorage.getItem(POLARIS_LOCALSTORAGE_USER) || '{}');
 
 /**
  * 
@@ -39,7 +40,7 @@ export const getUser = (): dynamicObject => JSON.parse(localStorage.getItem('pol
  * @returns {void}
  */
 export const removeUser = (): void => {
-    localStorage.removeItem('polaris-suite--user');
+    localStorage.removeItem(POLARIS_LOCALSTORAGE_USER);
 }
 
 /**
@@ -48,7 +49,7 @@ export const removeUser = (): void => {
  * @returns {void}
  */
 export const removeToken = (): void => {
-    localStorage.removeItem('polaris-suite--token');
+    localStorage.removeItem(POLARIS_LOCALSTORAGE_TOKEN);
 }
 
 /**

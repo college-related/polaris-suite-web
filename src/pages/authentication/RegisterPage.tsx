@@ -35,7 +35,7 @@ const RegisterPage = () => {
 
             if(statusCode === 201) {
                 // add user and token to localstorage
-                addUser(data.token);
+                addUser(data.user);
                 addToken(data.token);
 
                 // redirect to dashboard

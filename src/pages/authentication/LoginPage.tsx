@@ -28,7 +28,7 @@ const LoginPage = () => {
 
         if(statusCode === 200) {
             // add user and token to localstorage
-            addUser(data.token);
+            addUser(data.user);
             addToken(data.token);
 
             // redirect to dashboard
