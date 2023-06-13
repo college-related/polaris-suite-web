@@ -8,7 +8,7 @@ import { addToken, addUser } from "../../helpers/cookie";
 const RegisterPage = () => {
     const [user, setUser] = useState({
         email: "",
-        username: "",
+        name: "",
         password: "",
         confirmPassword: ""
     });
@@ -28,7 +28,7 @@ const RegisterPage = () => {
         if(user.password === user.confirmPassword) {
             setError({});
             const { statusCode, data, error } = await APICaller("/auth/register", "POST", {
-                username: user.username,
+                name: user.name,
                 email: user.email,
                 password: user.password
             });
@@ -76,9 +76,9 @@ const RegisterPage = () => {
             <Input 
                 type="text"
                 label="Username"
-                name="username"
+                name="name"
                 placeholder="Username"
-                value={user.username}
+                value={user.name}
                 onChange={handleInputChange}
                 errors={error}
             />
