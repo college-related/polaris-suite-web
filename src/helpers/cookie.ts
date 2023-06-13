@@ -27,8 +27,8 @@ export const addToken = (token: string): void => {
  */
 export const getToken = (): string => {
     const tokens = JSON.parse(localStorage.getItem(POLARIS_LOCALSTORAGE_TOKEN) || '{}')
-
-    return tokens.access.token || '';
+    
+    return tokens.access ? tokens.access.token : '';
 };
 
 /**
