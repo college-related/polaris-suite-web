@@ -9,6 +9,7 @@ import ForgotPasswordPage from "../pages/authentication/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/authentication/ResetPasswordPage";
 import Dashboard from "../pages/(protected)/Dashboard";
 import ProtectedLayout from "../layouts/ProtectedLayout";
+import ProjectsPage from "../pages/(protected)/projects";
 
 const AppRoute = () => {
   return (
@@ -51,8 +52,18 @@ const ProtectedRoutes = () => {
     <ProtectedLayout>
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/projects/*" element={<ProjectRoutes />} />
       </Routes>
     </ProtectedLayout>
+  )
+}
+
+const ProjectRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<ProjectsPage />} />
+      <Route path="/:projectId" element={<h1>Project Detail</h1>} />
+    </Routes>
   )
 }
 

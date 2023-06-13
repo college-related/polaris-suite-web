@@ -37,7 +37,7 @@ const Input = ({
             placeholder={placeholder}
             required={required}
             disabled={disabled}
-            className={`w-full p-3 rounded-sm ${(errors && errors.hasOwnProperty(name)) && 'border border-red-500'} ${classes}`}
+            className={`w-full p-3 rounded-sm border mt-2 ${(errors && errors.hasOwnProperty(name)) && 'border-red-500'} ${classes}`}
             {...rest}
         />
         {(errors && errors.hasOwnProperty(name)) && (
