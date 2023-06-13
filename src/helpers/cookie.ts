@@ -25,7 +25,11 @@ export const addToken = (token: string): void => {
  * get the token from localstorage
  * @returns {string}
  */
-export const getToken = (): string => localStorage.getItem(POLARIS_LOCALSTORAGE_TOKEN) || '';
+export const getToken = (): string => {
+    const tokens = JSON.parse(localStorage.getItem(POLARIS_LOCALSTORAGE_TOKEN) || '{}')
+
+    return tokens.access.token || '';
+};
 
 /**
  * 
