@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "./cookie";
 
 export const APICaller = async (
     url: string,
@@ -16,7 +17,7 @@ export const APICaller = async (
     // headers for the api call
     const headers = customHeaders || {
         "Content-Type": "application/json",
-        "Authentication": `Bearer `,
+        "Authentication": `Bearer ${getToken()}`,
     };
 
     await axios({
