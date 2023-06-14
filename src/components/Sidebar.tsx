@@ -28,7 +28,7 @@ export default function Sidebar() {
                     {
                         sidebar.map((item, index) => (
                             <Link key={index} to={`/polaris/${item.link}`}>
-                                <li className={`py-3 px-2 rounded-md font-bold ${location.pathname.split("/")[2] === item.link && "bg-primary text-white"}`}>
+                                <li className={`py-3 px-2 my-4 rounded-md font-bold ${location.pathname.split("/")[2] === item.link && "bg-primary text-white"}`}>
                                     {item.title}
                                 </li>
                             </Link>

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import moment from "moment";
 
 interface IProjectCardProps {
     project: Project,
@@ -29,7 +30,7 @@ const ProjectCard = ({ project }: IProjectCardProps) => {
             </div>
             <div className="w-full">
                 <p>Last Updated</p>
-                <b>{project.updatedAt}</b>
+                <b>{moment(project.updatedAt).fromNow()}</b>
             </div>
         </div>
     </Link>
