@@ -10,6 +10,14 @@
   font-family: "quicksand", sans-serif;
 }
 
+::-webkit-scrollbar {
+  width: 0.4em;
+  @apply bg-primary/20;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-md;
+}
+
 @layer base {
   h1, h2, h3, h4, h5, h6 {
     font-family: "sen", sans-serif;
