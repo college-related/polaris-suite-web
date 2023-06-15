@@ -33,7 +33,7 @@ export default function ProjectsPage() {
                     PLUS
                 </div>
             </div>
-            {showModel && (<ProjectModel closeModel={()=>setShowModel(false)} />)}
+            {showModel && (<ProjectModel setProjects={setProjects} closeModel={()=>setShowModel(false)} />)}
         </main>
     )
 }

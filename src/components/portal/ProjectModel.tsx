@@ -7,9 +7,10 @@ import { getUser } from "../../helpers/cookie";
 
 interface IProjectModelProps {
     closeModel: () => void;
+    setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
 }
 
-const ProjectModel = ({ closeModel }: IProjectModelProps) => {
+const ProjectModel = ({ closeModel, setProjects }: IProjectModelProps) => {
 
     const [project, setProject] = useState<Partial<Project>>({
         name: '',
@@ -27,7 +28,7 @@ const ProjectModel = ({ closeModel }: IProjectModelProps) => {
         });
         
         if(statusCode === 201) {
-            console.log(data);
+            setProjects(prev => ([...prev, data.project]));
         } else {
             console.log(error);
         }
@@ -64,7 +65,7 @@ const ProjectModel = ({ closeModel }: IProjectModelProps) => {
                         value={project.description || ""}
                         onChange={handleChange}
                         placeholder="Project Description"
-                        required={false}
+                        required
                         classes="mb-4"
                         errors={null}
                     />
