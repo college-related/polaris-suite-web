@@ -1,4 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Grid, HardDrive, Settings } from "react-feather";
+
 import { sidebar } from "../utils/sidebar";
 import { POLARIS_LOCALSTORAGE_TOKEN, POLARIS_LOCALSTORAGE_USER } from "../utils/constants";
 import { polaris_logo } from "../assets/images";
@@ -17,6 +19,8 @@ export default function Sidebar() {
         navigate("/auth/login");
     }
 
+    const sidebarIcons = [<Grid />, <HardDrive />, <Settings />];
+
     return (
     <div className="col-span-1 p-5 h-screen border-r font-quicksand flex flex-col justify-between tracking-wide">
         <div>
@@ -29,7 +33,8 @@ export default function Sidebar() {
                     {
                         sidebar.map((item, index) => (
                             <Link key={index} to={`/polaris/${item.link}`}>
-                                <li className={`py-3 px-2 my-4 rounded-md font-bold ${location.pathname.split("/")[2] === item.link && "bg-primary text-white"}`}>
+                                <li className={`flex gap-5 py-3 px-2 my-4 rounded-md font-bold ${location.pathname.split("/")[2] === item.link && "bg-primary text-white"}`}>
+                                    {sidebarIcons[index]}
                                     {item.title}
                                 </li>
                             </Link>
