@@ -10,6 +10,7 @@ import ResetPasswordPage from "../pages/authentication/ResetPasswordPage";
 import Dashboard from "../pages/(protected)/Dashboard";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 import ProjectsPage from "../pages/(protected)/projects";
+import SettingPage from "../pages/(protected)/Settings";
 
 const AppRoute = () => {
   return (
@@ -52,6 +53,7 @@ const ProtectedRoutes = () => {
     <ProtectedLayout>
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/settings" element={<SettingPage />} />
         <Route path="/projects/*" element={<ProjectRoutes />} />
       </Routes>
     </ProtectedLayout>
