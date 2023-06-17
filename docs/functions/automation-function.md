@@ -89,10 +89,10 @@ It returns the found HTMLElement or null if not found any.
 Used to check the current URL with the provided url.
 
 ```js
-isUrl(url: string): boolean
+isUrl(url: string): void
 ```
 
-It returns true or false according to the equality.
+It returns void and throws error if the url doesnot matches.
 
 ### type()
 

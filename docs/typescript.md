@@ -113,7 +113,7 @@ type PageResult = {
     type: (selector: string, text: string) => Promise<ElementHandle<HTMLElement>>,
     scroll: (c: number, direction?: 'vertical' | 'horizontal' = 'vertical') => Promise<void>,
     hover: (x: number, y: number) => Promise<void>,
-    isUrl: (url: string) => boolean
+    isUrl: (url: string) => void
 }
 ```
 
