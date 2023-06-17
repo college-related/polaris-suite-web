@@ -6,10 +6,27 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: "quicksand", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 0.4em;
+  @apply bg-primary/20;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-md;
+}
+
 @layer base {
-  h1 {
-    @apply text-3xl font-bold;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "sen", sans-serif;
+    @apply font-bold;
   }
+
+  h1 { @apply text-3xl; }
+  h2 { @apply text-2xl; }
+  h3 { @apply text-xl; }
 }
 
 @layer components {
