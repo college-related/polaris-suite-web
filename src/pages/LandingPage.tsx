@@ -12,8 +12,12 @@ import {
   domo_logo,
 } from "../assets/images";
 import Button from "../components/Button";
+import InstallModel from "../components/portal/InstallModel";
+import { useState } from "react";
 
 const LandingPage = () => {
+  const [showInsallModel, setShowInstallModel] = useState(false);
+
   return (
     <div className="font-quicksand">
       <div className="main_container  w-full sm:flex sm:items-center  px-7 sm:px-24">
@@ -27,13 +31,13 @@ const LandingPage = () => {
           </p>
           <div className="buttons pt-3 flex items-center space-x-4 justify-center sm:justify-start">
             <Button
-              onClick={() => alert("Button 1 is clicked !")}
+              onClick={() => setShowInstallModel(true)}
               variant="default"
               size="md"
             >
               &#62; Install Polaris
             </Button>
-            <Link to="/docs" className="text-primary font-bold">Documentation</Link>
+            <Link to="https://major-project-be2018se.github.io/polaris-suite-web/#/" className="text-primary font-bold">Documentation</Link>
           </div>
         </div>
         <div className="img_container">
@@ -156,6 +160,8 @@ const LandingPage = () => {
           />
         </div>
       </div>
+
+      {showInsallModel && (<InstallModel closeModel={()=>setShowInstallModel(false)} />)}
     </div>
   );
 };

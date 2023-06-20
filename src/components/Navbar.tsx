@@ -3,10 +3,12 @@ import { polaris_logo } from "../assets/images";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { X } from "react-feather";
 import { getToken } from "../helpers/cookie";
+import InstallModel from "./portal/InstallModel";
 
 const Navbar = () => {
   const location = useLocation();
   const [showNavbar, setShowNavbar] = useState(false);
+  const [showInstallModel, setShowInstallModel] = useState(false);
 
   const handleShowNavbar = () => {
     setShowNavbar((prev) => !prev);
@@ -47,16 +49,15 @@ const Navbar = () => {
             <li className="bg-primary h-16 flex items-center my-3">About</li>
           </Link>
           <a
-            href="http://localhost:3000/#/"
+            href="https://major-project-be2018se.github.io/polaris-suite-web/#/"
             target="_blank"
             className={`${
               location.pathname === "/docs" ? "text-white" : "text-black"
             }`}
-            onClick={handleShowNavbar}
           >
             <li className="bg-primary h-16 flex items-center my-3">Docs</li>
           </a>
-          <li onClick={handleShowNavbar} className="bg-primary h-16 flex items-center">Install</li>
+          <li onClick={() => setShowInstallModel(true)} className="bg-primary h-16 flex items-center">Install</li>
         </ul>
       </div>
       <div className="nav_items hidden sm:flex">
@@ -70,7 +71,7 @@ const Navbar = () => {
             <li>About</li>
           </Link>
           <a
-            href="http://localhost:3000/#/"
+            href="https://major-project-be2018se.github.io/polaris-suite-web/#/"
             target="_blank"
             className={`${
               location.pathname === "/docs" ? "text-primary" : "text-black"
@@ -78,7 +79,7 @@ const Navbar = () => {
           >
             <li>Docs</li>
           </a>
-          <li className="cursor-pointer">Install</li>
+          <li onClick={() => setShowInstallModel(true)} className="cursor-pointer">Install</li>
           <li>
             <NavLink to={getToken()?"/polaris/dashboard":"/auth/login"} className="bg-primary text-white px-4 py-2">
               {
@@ -88,6 +89,8 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
+
+      {showInstallModel && (<InstallModel closeModel={()=>setShowInstallModel(false)} />)}
     </div>
   );
 };
