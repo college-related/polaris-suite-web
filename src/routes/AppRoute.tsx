@@ -11,6 +11,7 @@ import Dashboard from "../pages/(protected)/Dashboard";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 import ProjectsPage from "../pages/(protected)/projects";
 import SettingPage from "../pages/(protected)/Settings";
+import SingleProject from "../pages/(protected)/projects/project";
 
 const AppRoute = () => {
   return (
@@ -64,7 +65,7 @@ const ProjectRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<ProjectsPage />} />
-      <Route path="/:projectId" element={<h1>Project Detail</h1>} />
+      <Route path="/:projectId" element={<SingleProject />} />
     </Routes>
   )
 }
