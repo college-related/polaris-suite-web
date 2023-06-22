@@ -11,7 +11,7 @@ type Project = {
     _id: string;
     name: string;
     description: string;
-    environments: Environment[];
+    environments: Partial<Environment>[];
     status: 'in progress' | 'hold' | 'archived' | 'draft' | 'done';
     createdAt: string;
     updatedAt: string;
