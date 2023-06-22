@@ -24,6 +24,18 @@ export default function ProjectsPage() {
             }
         })()
     }, [])
+
+    const handleDelete = async (id: string) => {
+        if(window.confirm("Are you sure you want to delete this project?") === false) return
+
+        const { statusCode, error } = await APICaller(`/projects/${id}`, "DELETE")
+
+        if(statusCode === 200) {
+            setProjects(prev => prev.filter(project => project._id !== id))
+        }else {
+            console.log(error)
+        }
+    }
   
     return (
         <main>
@@ -44,7 +56,7 @@ export default function ProjectsPage() {
                         <>
                             {
                                 Array(12).fill(0).map((_, i) => (
-                                    <div className="bg-gray-300 rounded-sm min-w-[300px] min-h-[250px] animate-pulse">
+                                    <div key={i} className="bg-gray-300 rounded-sm min-w-[300px] min-h-[250px] animate-pulse">
                                     </div>
                                 ))
                             }
@@ -52,7 +64,7 @@ export default function ProjectsPage() {
                     ) : (
                         <>
                             {
-                                projects.map((project) => <ProjectCard key={project._id} project={project} />)
+                                projects.map((project) => <ProjectCard key={project._id} project={project} handleDelete={handleDelete} />)
                             }
                         </>
                     )

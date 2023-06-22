@@ -83,6 +83,13 @@ const ProjectModel = ({ closeModel, setProjects }: IProjectModelProps) => {
                         variant="dark"
                         classes="w-full mt-4"
                     />
+                    <Button 
+                        children="Cancel"
+                        type="button"
+                        onClick={closeModel}
+                        variant="default"
+                        classes="w-full mt-4 bg-red-500"
+                    />
                 </form>
             </div>
         </Backdrop>
