@@ -4,6 +4,7 @@ import { APICaller } from "../../../helpers/api"
 import ProjectModel from "../../../components/portal/ProjectModel"
 import Button from "../../../components/Button"
 import { Plus } from "react-feather"
+import CollaboratorModel from "../../../components/portal/CollaboratorModel"
 
 export default function ProjectsPage() {
   
@@ -11,6 +12,7 @@ export default function ProjectsPage() {
     const [selectedProject, setSelectedProject] = useState<Partial<Project> | undefined>(undefined)
     const [isFetching, setIsFetching] = useState(false)
     const [showModel, setShowModel] = useState(false)
+    const [showCollabaoratorModel, setShowCollabaoratorModel] = useState(false)
 
     useEffect(() => {
         (async () => {
@@ -38,7 +40,7 @@ export default function ProjectsPage() {
         }
     }
 
-    const handleEdit = async (id: string) => {
+    const handleEdit = (id: string) => {
         const project = projects.find(project => project._id === id)
         setSelectedProject(project)
         setShowModel(true)
@@ -47,6 +49,12 @@ export default function ProjectsPage() {
     const handleCreate = () => {
         setSelectedProject(undefined)
         setShowModel(true)
+    }
+
+    const handleCollab = (id: string) => {
+        const project = projects.find(project => project._id === id)
+        setSelectedProject(project)
+        setShowCollabaoratorModel(true)
     }
   
     return (
@@ -76,13 +84,20 @@ export default function ProjectsPage() {
                     ) : (
                         <>
                             {
-                                projects.map((project) => <ProjectCard key={project._id} project={project} handleDelete={handleDelete} handleEdit={handleEdit} />)
+                                projects.map((project) => <ProjectCard 
+                                    key={project._id} 
+                                    project={project} 
+                                    handleDelete={handleDelete} 
+                                    handleEdit={handleEdit}
+                                    handleCollab={handleCollab} 
+                                />)
                             }
                         </>
                     )
                 }
             </div>
             {showModel && (<ProjectModel projectData={selectedProject} setProjects={setProjects} closeModel={()=>setShowModel(false)} />)}
+            {showCollabaoratorModel && (<CollaboratorModel setProjects={setProjects} projectData={selectedProject} closeModel={()=>setShowCollabaoratorModel(false)} />)}
         </main>
     )
 }

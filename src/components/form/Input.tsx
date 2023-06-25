@@ -26,7 +26,7 @@ const Input = ({
     ...rest 
 }: IInputProps) => {
   return (
-    <div>
+    <div className={`${classes}`}>
         <label htmlFor={name} className="text-gray-700 font-bold font-quicksand">{label}</label>
         <input 
             id={name}

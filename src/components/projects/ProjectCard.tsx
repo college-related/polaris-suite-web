@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom"
 import moment from "moment";
-import { Edit, Eye, Trash } from "react-feather";
-import { APICaller } from "../../helpers/api";
+import { Edit, Eye, Trash, UserPlus } from "react-feather";
 
 interface IProjectCardProps {
     project: Project,
     handleDelete: (id: string) => Promise<void>,
-    handleEdit: (id: string) => Promise<void>,
+    handleEdit: (id: string) => void,
+    handleCollab: (id: string) => void,
 }
 
-const ProjectCard = ({ project, handleDelete, handleEdit }: IProjectCardProps) => {
+const ProjectCard = ({ project, handleDelete, handleEdit, handleCollab }: IProjectCardProps) => {
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -46,11 +46,16 @@ const ProjectCard = ({ project, handleDelete, handleEdit }: IProjectCardProps) =
                 <p>Last Updated</p>
                 <b>{moment(project.updatedAt).fromNow()}</b>
             </div>
-            <Link to={`${project._id}`}>
-                <div className="p-2 border-2 hover:border-primary rounded-full">
-                    <Eye />
+            <div className="flex gap-2 items-center">
+                <div onClick={()=>handleCollab(project._id)} className="p-2 border-2 hover:bg-primary hover:border-primary hover:text-white rounded-full cursor-pointer">
+                    <UserPlus />
                 </div>
-            </Link>
+                <Link to={`${project._id}`}>
+                    <div className="p-2 border-2 hover:border-primary rounded-full">
+                        <Eye />
+                    </div>
+                </Link>
+            </div>
         </div>
     </div>
   )
