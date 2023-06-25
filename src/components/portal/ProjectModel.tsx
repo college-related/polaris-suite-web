@@ -8,27 +8,43 @@ import { getUser } from "../../helpers/cookie";
 interface IProjectModelProps {
     closeModel: () => void;
     setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+    projectData: Partial<Project> | undefined;
 }
 
-const ProjectModel = ({ closeModel, setProjects }: IProjectModelProps) => {
+const ProjectModel = ({ closeModel, setProjects, projectData }: IProjectModelProps) => {
 
     const [project, setProject] = useState<Partial<Project>>({
-        name: '',
-        description: '',
+        name: projectData?.name || '',
+        description: projectData?.description || '',
     })
     const [status, setStatus] = useState<string>("in progress");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        const { statusCode, data, error } = await APICaller("/projects", "POST", {
-            ...project,
+
+        let url = "/projects";
+        let method: "POST" | "PATCH" = "POST";
+
+        let toSendProjectData = {
+            name: project.name,
+            description: project.description,
+            status: status,
             ownerID: getUser()._id,
-            status,
-        });
+        }
+
+        if(projectData) {
+            url = `/projects/${projectData._id}`;
+            method = "PATCH";
+
+            delete toSendProjectData.ownerID;
+        }
+        
+        const { statusCode, data, error } = await APICaller(url, method, toSendProjectData);
         
         if(statusCode === 201) {
             setProjects(prev => ([...prev, data.project]));
+        } else if(statusCode === 200) {
+            setProjects(prev => (prev.map(proj => proj._id === data.project._id ? data.project : proj)));
         } else {
             console.log(error);
         }
@@ -70,19 +86,23 @@ const ProjectModel = ({ closeModel, setProjects }: IProjectModelProps) => {
                         errors={null}
                     />
                     <Button 
-                        children="Create Project"
+                        children={`${projectData?'Edit':'Create'} Project`}
                         type="submit"
                         onClick={() => {}}
                         variant="primary"
                         classes="w-full"
                     />
-                    <Button 
-                        children="Save as Draft"
-                        type="submit"
-                        onClick={() => setStatus("draft")}
-                        variant="dark"
-                        classes="w-full mt-4"
-                    />
+                    {
+                        !projectData && (
+                            <Button 
+                                children="Save as Draft"
+                                type="submit"
+                                onClick={() => setStatus("draft")}
+                                variant="dark"
+                                classes="w-full mt-4"
+                            />
+                        ) 
+                    }
                     <Button 
                         children="Cancel"
                         type="button"

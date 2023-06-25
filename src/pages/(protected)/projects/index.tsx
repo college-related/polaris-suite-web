@@ -8,6 +8,7 @@ import { Plus } from "react-feather"
 export default function ProjectsPage() {
   
     const [projects, setProjects] = useState<Project[]>([])
+    const [selectedProject, setSelectedProject] = useState<Partial<Project> | undefined>(undefined)
     const [isFetching, setIsFetching] = useState(false)
     const [showModel, setShowModel] = useState(false)
 
@@ -36,12 +37,23 @@ export default function ProjectsPage() {
             console.log(error)
         }
     }
+
+    const handleEdit = async (id: string) => {
+        const project = projects.find(project => project._id === id)
+        setSelectedProject(project)
+        setShowModel(true)
+    }
+
+    const handleCreate = () => {
+        setSelectedProject(undefined)
+        setShowModel(true)
+    }
   
     return (
         <main>
             <div className="flex justify-between items-center">
                 <h1>Projects</h1>
-                <Button variant="primary" onClick={()=>setShowModel(true)}>
+                <Button variant="primary" onClick={handleCreate}>
                     <span className="flex gap-2">
                         <Plus />
                         Create Project
@@ -64,13 +76,13 @@ export default function ProjectsPage() {
                     ) : (
                         <>
                             {
-                                projects.map((project) => <ProjectCard key={project._id} project={project} handleDelete={handleDelete} />)
+                                projects.map((project) => <ProjectCard key={project._id} project={project} handleDelete={handleDelete} handleEdit={handleEdit} />)
                             }
                         </>
                     )
                 }
             </div>
-            {showModel && (<ProjectModel setProjects={setProjects} closeModel={()=>setShowModel(false)} />)}
+            {showModel && (<ProjectModel projectData={selectedProject} setProjects={setProjects} closeModel={()=>setShowModel(false)} />)}
         </main>
     )
 }

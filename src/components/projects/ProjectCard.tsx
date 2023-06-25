@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom"
 import moment from "moment";
-import { Eye, Trash } from "react-feather";
+import { Edit, Eye, Trash } from "react-feather";
 import { APICaller } from "../../helpers/api";
 
 interface IProjectCardProps {
     project: Project,
     handleDelete: (id: string) => Promise<void>,
+    handleEdit: (id: string) => Promise<void>,
 }
 
-const ProjectCard = ({ project, handleDelete }: IProjectCardProps) => {
+const ProjectCard = ({ project, handleDelete, handleEdit }: IProjectCardProps) => {
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -28,8 +29,13 @@ const ProjectCard = ({ project, handleDelete }: IProjectCardProps) => {
         <div className="w-full">
             <div className="flex items-center justify-between">
                 <h3>{project.name}</h3>
-                <div onClick={()=>handleDelete(project._id)} className="cursor-pointer bg-gray-300 rounded-sm p-2 hover:bg-red-500 hover:text-white">
-                    <Trash />
+                <div className="flex gap-2">
+                    <div onClick={()=>handleDelete(project._id)} className="cursor-pointer bg-gray-300 rounded-sm p-2 hover:bg-red-500 hover:text-white">
+                        <Trash className="h-4 w-4" />
+                    </div>
+                    <div onClick={()=>handleEdit(project._id)} className="cursor-pointer bg-gray-300 rounded-sm p-2 hover:bg-blue-500 hover:text-white">
+                        <Edit className="h-4 w-4" />
+                    </div>
                 </div>
             </div>
             <p>{project.description}</p>
