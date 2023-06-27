@@ -5,6 +5,8 @@ import ProjectModel from "../../../components/portal/ProjectModel"
 import Button from "../../../components/Button"
 import { Plus } from "react-feather"
 import CollaboratorModel from "../../../components/portal/CollaboratorModel"
+import { useModel } from "../../../utils/hooks/useModel"
+import AlertModel from "../../../components/portal/AlertModel"
 
 export default function ProjectsPage() {
   
@@ -13,6 +15,7 @@ export default function ProjectsPage() {
     const [isFetching, setIsFetching] = useState(false)
     const [showModel, setShowModel] = useState(false)
     const [showCollabaoratorModel, setShowCollabaoratorModel] = useState(false)
+    const { isModelOpen, openModel, closeModel } = useModel();
 
     useEffect(() => {
         (async () => {
@@ -28,16 +31,22 @@ export default function ProjectsPage() {
         })()
     }, [])
 
-    const handleDelete = async (id: string) => {
-        if(window.confirm("Are you sure you want to delete this project?") === false) return
+    const handleDeleteSelect = async (id: string) => {
+        openModel();
+        setSelectedProject(projects.find(project => project._id === id))
+    }
 
-        const { statusCode, error } = await APICaller(`/projects/${id}`, "DELETE")
+    const handleDelete = async () => {
+        const { statusCode, error } = await APICaller(`/projects/${selectedProject?._id}`, "DELETE")
 
         if(statusCode === 200) {
-            setProjects(prev => prev.filter(project => project._id !== id))
+            setProjects(prev => prev.filter(project => project._id !== selectedProject?._id))
         }else {
             console.log(error)
         }
+
+        setSelectedProject(undefined);
+        closeModel();
     }
 
     const handleEdit = (id: string) => {
@@ -87,7 +96,7 @@ export default function ProjectsPage() {
                                 projects.map((project) => <ProjectCard 
                                     key={project._id} 
                                     project={project} 
-                                    handleDelete={handleDelete} 
+                                    handleDelete={handleDeleteSelect} 
                                     handleEdit={handleEdit}
                                     handleCollab={handleCollab} 
                                 />)
@@ -98,6 +107,7 @@ export default function ProjectsPage() {
             </div>
             {showModel && (<ProjectModel projectData={selectedProject} setProjects={setProjects} closeModel={()=>setShowModel(false)} />)}
             {showCollabaoratorModel && (<CollaboratorModel setProjects={setProjects} projectData={selectedProject} closeModel={()=>setShowCollabaoratorModel(false)} />)}
+            {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={handleDelete} title="Delete Project" message="Are you sure you want to delete this project?" />)}
         </main>
     )
 }

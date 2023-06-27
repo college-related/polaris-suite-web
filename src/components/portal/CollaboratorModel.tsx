@@ -4,6 +4,8 @@ import Button from "../Button";
 import Input from "../form/Input";
 import { APICaller } from "../../helpers/api";
 import { Trash } from "react-feather";
+import { useModel } from "../../utils/hooks/useModel";
+import AlertModel from "./AlertModel";
 
 interface ICollaboratorModelProps {
     closeModel: () => void;
@@ -18,7 +20,9 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
         email: '',
         role: 'tester',
     })
+    const [selectedMail, setSelectedMail] = useState<string>('')
     const [collaborators, setCollborators] = useState<Partial<Collaborator>[]>(projectData?.members || [])
+    const { isModelOpen, openModel, closeModel: handleCloseModel } = useModel();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setCollaborator(prev => ({
@@ -44,17 +48,23 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
         }
     }
 
-    const handleDelete = async (email: string) => {
-        if(window.confirm("Are you sure you want to delete this collaborator?") === false) return
+    const handleDeleteSelect = (email: string) => {
+        openModel();
+        setSelectedMail(email);
+    }
 
-        const { statusCode, error } = await APICaller(`/projects/${projectData?._id}/members/remove`, "PATCH", { email })
+    const handleDelete = async () => {
+        const { statusCode, error } = await APICaller(`/projects/${projectData?._id}/members/remove`, "PATCH", { email: selectedMail })
 
         if(statusCode === 200) {
-            setProjects(prev => (prev.map(proj => proj._id === projectData?._id ? {...proj, members: proj.members.filter(member => member.email !== email)} : proj)));
-            setCollborators(prev => (prev.filter(collaborator => collaborator.email !== email)));
+            setProjects(prev => (prev.map(proj => proj._id === projectData?._id ? {...proj, members: proj.members.filter(member => member.email !== selectedMail)} : proj)));
+            setCollborators(prev => (prev.filter(collaborator => collaborator.email !== selectedMail)));
         }else {
             console.log(error)
         }
+
+        setSelectedMail('');
+        handleCloseModel();
     }
 
   return (
@@ -97,7 +107,7 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
                                         <p>{collaborator.email}</p>
                                         <div className="flex items-center gap-2">
                                             <p className={`text-white px-3 ${collaborator.status==='accepted'?'bg-green-600':collaborator.status==='pending'?'bg-yellow-600':'bg-red-600'}`}>{collaborator.role}</p>
-                                            <span className="text-red-400 cursor-pointer" onClick={()=>handleDelete(collaborator.email!)}>
+                                            <span className="text-red-400 cursor-pointer" onClick={()=>handleDeleteSelect(collaborator.email!)}>
                                                 <Trash />
                                             </span>
                                         </div>
@@ -123,6 +133,7 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
                 />
             </form>
         </div>
+        {isModelOpen && (<AlertModel closeModel={handleCloseModel} handleConfirm={handleDelete} title="Remove Collaborator" message="Are you sure you want to remove the person?" />)}
     </Backdrop>
   )
 }

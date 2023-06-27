@@ -4,11 +4,15 @@ import { Grid, HardDrive, Settings } from "react-feather";
 import { sidebar } from "../utils/sidebar";
 import { POLARIS_LOCALSTORAGE_TOKEN, POLARIS_LOCALSTORAGE_USER } from "../utils/constants";
 import { polaris_logo } from "../assets/images";
+import { useModel } from "../utils/hooks/useModel";
+import AlertModel from "./portal/AlertModel";
+import Button from "./Button";
 
 export default function Sidebar() {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const { isModelOpen, openModel, closeModel } = useModel();
   
     const logout = async () => {
         // remove user and token from localstorage
@@ -43,7 +47,8 @@ export default function Sidebar() {
                 </ul>
             </nav>
         </div>
-        <button onClick={logout} className="text-red-700 font-bold">Logout</button>
+        <Button onClick={openModel} classes="text-red-700 bg-white font-bold" variant="default">Logout</Button>
+        {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={logout} title="Log out" message="Do you want to log out?" />)}
     </div>
   )
 }

@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import Button from "../../../components/Button"
 import { ArrowLeft, Plus } from "react-feather"
 import EnvironmentModel from "../../../components/portal/EnvironmentModel"
+import { useModel } from "../../../utils/hooks/useModel"
+import AlertModel from "../../../components/portal/AlertModel"
 
 const SingleProject = () => {
 
@@ -12,6 +14,7 @@ const SingleProject = () => {
     const [project, setProject] = useState<Partial<Project> | null>(null);
     const [showModel, setShowModel] = useState(false);
     const [selectedEnvironment, setSelectedEnvironment] = useState<Partial<Environment> | undefined>(undefined);
+    const { isModelOpen, openModel, closeModel } = useModel();
 
     useEffect(() => {
         (async () => {
@@ -25,19 +28,25 @@ const SingleProject = () => {
         })()
     }, [])
 
-    const handleDelete = async (id: string) => {
-        if(window.confirm("Are you sure you want to delete this environment?") === false) return
+    const handleDeleteEnvSelect = (id: string) => {
+        openModel();
+        setSelectedEnvironment(project?.environments?.find(env => env._id === id))
+    }
 
-        const { statusCode, error } = await APICaller(`/environments/${projectId}/${id}`, "DELETE")
+    const handleDelete = async () => {
+        const { statusCode, error } = await APICaller(`/environments/${projectId}/${selectedEnvironment?._id}`, "DELETE")
 
         if(statusCode === 200) {
             setProject(prev => ({
                 ...prev,
-                environments: prev?.environments?.filter(env => env._id !== id)
+                environments: prev?.environments?.filter(env => env._id !== selectedEnvironment?._id)
             }))
         } else {
             console.log(error)
         }
+
+        setSelectedEnvironment(undefined);
+        closeModel();
     }
 
     const handleEditOpen = (id: string) => {
@@ -87,7 +96,7 @@ const SingleProject = () => {
                                     <Button variant="default" onClick={()=>handleEditOpen(environment._id!)} classes="px-3 py-1 bg-blue-500 text-white rounded-sm">
                                         Edit
                                     </Button>
-                                    <Button variant="default" onClick={()=>handleDelete(environment._id!)} classes="px-3 py-1 bg-red-500 text-white rounded-sm">
+                                    <Button variant="default" onClick={()=>handleDeleteEnvSelect(environment._id!)} classes="px-3 py-1 bg-red-500 text-white rounded-sm">
                                         Delete
                                     </Button>
                                 </td>
@@ -98,6 +107,7 @@ const SingleProject = () => {
             </table>
         </div>
         {showModel && <EnvironmentModel projectId={projectId!} environmentData={selectedEnvironment} closeModel={()=>setShowModel(false)} setEnvironments={setProject} />}
+        {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={handleDelete} title="Delete Project" message="Are you sure you want to delete this project?" />)}    
     </main>
   )
 }
