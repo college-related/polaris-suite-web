@@ -1,10 +1,9 @@
+import { PropsWithChildren } from "react";
 import Sidebar from "../components/Sidebar";
 
-interface IProtectedLayoutProps {
-  children: JSX.Element;
-}
+interface IProtectedLayoutProps {}
 
-const ProtectedLayout = ({ children }: IProtectedLayoutProps) => {
+const ProtectedLayout = ({ children }: PropsWithChildren<IProtectedLayoutProps>) => {
   return (
     <main className="grid grid-cols-5">
       <Sidebar />

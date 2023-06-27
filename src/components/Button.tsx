@@ -1,7 +1,6 @@
-import React from "react";
+import { PropsWithChildren } from "react";
 
 interface IButtonProps {
-  children: React.ReactNode;
   onClick: () => void;
   variant: "default" | "primary" | "info" | "dark";
   size?: "sm" | "md" | "lg" | "xl";
@@ -19,7 +18,7 @@ const Button = ({
   disabled = false,
   classes = '',
   ...rest
-}: IButtonProps) => {
+}: PropsWithChildren<IButtonProps>) => {
   return (
     <button
       className={`btn ${variant} ${size} ${classes}` + (disabled ? ' disabled' : '')}

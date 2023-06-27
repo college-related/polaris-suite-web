@@ -1,10 +1,9 @@
+import { PropsWithChildren } from "react";
 import { Footer, Navbar } from "../components";
 
-interface IMasterLayoutProps {
-  children: JSX.Element;
-}
+interface IMasterLayoutProps {}
 
-const MasterLayout = ({ children }: IMasterLayoutProps) => {
+const MasterLayout = ({ children }: PropsWithChildren<IMasterLayoutProps>) => {
   return (
     <div>
       <Navbar />

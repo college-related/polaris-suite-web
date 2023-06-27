@@ -1,11 +1,9 @@
-import React from "react"
+import { PropsWithChildren } from "react"
 import { bg } from "../assets/images"
 
-interface IAuthenticationLayoutProps {
-    children: React.ReactNode,
-}
+interface IAuthenticationLayoutProps {}
 
-const AuthenticationLayout = ({ children }: IAuthenticationLayoutProps) => {
+const AuthenticationLayout = ({ children }: PropsWithChildren<IAuthenticationLayoutProps>) => {
   return (
     <main className="grid grid-cols-1 sm:grid-cols-3 h-screen">
         <div className="bg-[#D1D4FF] px-8 py-6 min-w-fit w-full">
