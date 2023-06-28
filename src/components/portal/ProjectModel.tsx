@@ -25,11 +25,14 @@ const ProjectModel = ({ closeModel, setProjects, projectData }: IProjectModelPro
         let url = "/projects";
         let method: "POST" | "PATCH" = "POST";
 
-        let toSendProjectData = {
+        let toSendProjectData: dynamicObject = {
             name: project.name,
-            description: project.description,
             status: status,
             ownerID: getUser()._id,
+        }
+
+        if(project.description) {
+            toSendProjectData.description = project.description;
         }
 
         if(projectData) {
@@ -81,7 +84,7 @@ const ProjectModel = ({ closeModel, setProjects, projectData }: IProjectModelPro
                         value={project.description || ""}
                         onChange={handleChange}
                         placeholder="Project Description"
-                        required
+                        required={false}
                         classes="mb-4"
                         errors={null}
                     />

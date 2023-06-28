@@ -86,6 +86,13 @@ const SingleProject = () => {
                 </thead>
                 <tbody>
                     {
+                        project?.environments?.length === 0 && (
+                            <tr>
+                                <td className="p-3">No environments found</td>
+                            </tr>
+                        )
+                    }
+                    {
                         project?.environments?.map((environment) => (
                             <tr key={environment._id} className="border-b-2">
                                 <td className="p-3">{environment.name}</td>

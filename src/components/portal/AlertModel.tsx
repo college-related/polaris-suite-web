@@ -15,8 +15,8 @@ const AlertModel = ({ closeModel, title, message, handleConfirm }: IAlertModel) 
             <h2>{title}</h2>
             <p>{message}</p>
             <div className="mt-4 flex gap-2 items-center justify-end">
-                <Button variant="default" classes="bg-red-500 text-white" onClick={closeModel}>Cancel</Button>
-                <Button variant="default" classes="bg-green-500 text-white" onClick={handleConfirm}>Confirm</Button>
+              <Button variant="default" classes="bg-green-500 text-white" onClick={handleConfirm}>Confirm</Button>
+              <Button variant="default" classes="bg-red-500 text-white" onClick={closeModel}>Cancel</Button>
             </div>
         </div>
     </Backdrop>
