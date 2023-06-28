@@ -6,6 +6,7 @@ import { APICaller } from "../../helpers/api";
 import { Trash } from "react-feather";
 import { useModel } from "../../utils/hooks/useModel";
 import AlertModel from "./AlertModel";
+import Select from "../form/Select";
 
 interface ICollaboratorModelProps {
     closeModel: () => void;
@@ -83,11 +84,16 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
                         classes="col-span-2"
                         errors={null}
                     />
-                    <select name="role" onChange={handleChange}>
-                        <option value="tester">Tester</option>
-                        <option value="developer">Developer</option>
-                        <option value="stakeholder">Stakeholder</option>
-                    </select>
+                    <Select 
+                        name="role"
+                        label="Role"
+                        onChange={handleChange}
+                        options={[
+                            { name: "Tester", value: "tester" },
+                            { name: "Developer", value: "developer" },
+                            { name: "Stakeholder", value: "stakeholder" },
+                        ]}
+                    />
                 </div>
                 {
                     projectData && (
