@@ -21,6 +21,7 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
         email: '',
         role: 'tester',
     })
+    const [inviationSending, setInviationSending] = useState(false)
     const [selectedMail, setSelectedMail] = useState<string>('')
     const [collaborators, setCollborators] = useState<Partial<Collaborator>[]>(projectData?.members || [])
     const { isModelOpen, openModel, closeModel: handleCloseModel } = useModel();
@@ -35,6 +36,7 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     
+        setInviationSending(true);
         const { statusCode, data, error } = await APICaller(`/projects/${projectData?._id}/invite`, "PATCH", collaborator);
 
         if(statusCode === 200) {
@@ -47,6 +49,8 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
         } else {
             console.log(error);
         }
+
+        setInviationSending(false);
     }
 
     const handleDeleteSelect = (email: string) => {
@@ -129,6 +133,7 @@ const CollaboratorModel = ({ closeModel, setProjects, projectData }: ICollaborat
                     onClick={() => {}}
                     variant="primary"
                     classes="w-full"
+                    isLoading={inviationSending}
                 />
                 <Button 
                     children="Cancel"

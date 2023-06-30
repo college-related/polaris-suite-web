@@ -13,6 +13,7 @@ const RegisterPage = () => {
         confirmPassword: ""
     });
     const [error, setError] = useState<dynamicObject>({});
+    const [isRegistering, setIsRegistering] = useState(false);
     const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +25,8 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setIsRegistering(true);
 
         if(user.password === user.confirmPassword) {
             setError({});
@@ -49,6 +52,8 @@ const RegisterPage = () => {
                 confirmPassword: "Password and Confirm Password do not match",
             })
         }
+
+        setIsRegistering(false);
     }
 
   return (
@@ -100,7 +105,7 @@ const RegisterPage = () => {
                 onChange={handleInputChange} 
                 errors={error}
             />
-            <button className="bg-primary text-white px-4 py-2 rounded-sm">Register</button>
+            <Button variant="default" onClick={()=>{}} classes="rounded-sm" isLoading={isRegistering}>Register</Button>
         </form>
 
         <p className="text-center mt-10">OR</p>

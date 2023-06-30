@@ -11,6 +11,7 @@ const LoginPage = () => {
         password: ""
     });
     const [error, setError] = useState<dynamicObject>({});
+    const [isLogging, setIsLogging] = useState(false);
     const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,6 +24,7 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setIsLogging(true);
         setError({});
         const { statusCode, data, error } = await APICaller("/auth/login", "POST", user);
 
@@ -42,6 +44,8 @@ const LoginPage = () => {
                 console.log(error);
             }
         }
+
+        setIsLogging(false);
     }
 
   return (
@@ -75,7 +79,7 @@ const LoginPage = () => {
                 onChange={handleInputChange}
                 errors={error} 
             />
-            <button className="bg-primary text-white px-4 py-2 rounded-sm" type="submit">Login</button>
+            <Button variant="default" onClick={()=>{}} isLoading={isLogging} classes="rounded-sm" type="submit">Login</Button>
         </form>
 
         <p className="text-center mt-10">OR</p>

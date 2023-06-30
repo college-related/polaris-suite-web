@@ -18,9 +18,12 @@ const ProjectModel = ({ closeModel, setProjects, projectData }: IProjectModelPro
         description: projectData?.description || '',
     })
     const [status, setStatus] = useState<string>("in progress");
+    const [isCreating, setIsCreating] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setIsCreating(true);
 
         let url = "/projects";
         let method: "POST" | "PATCH" = "POST";
@@ -53,6 +56,7 @@ const ProjectModel = ({ closeModel, setProjects, projectData }: IProjectModelPro
         }
 
         closeModel();
+        setIsCreating(false);
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,6 +98,7 @@ const ProjectModel = ({ closeModel, setProjects, projectData }: IProjectModelPro
                         onClick={() => {}}
                         variant="primary"
                         classes="w-full"
+                        isLoading={isCreating}
                     />
                     {
                         !projectData && (
@@ -103,6 +108,7 @@ const ProjectModel = ({ closeModel, setProjects, projectData }: IProjectModelPro
                                 onClick={() => setStatus("draft")}
                                 variant="dark"
                                 classes="w-full mt-4"
+                                isLoading={isCreating}
                             />
                         ) 
                     }

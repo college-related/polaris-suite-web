@@ -19,6 +19,7 @@ const EnvironmentModel = ({ closeModel, setEnvironments, projectId, environmentD
         description: environmentData?.description || '',
         variables: environmentData?.variables || [],
     })
+    const [isCreating, setIsCreating] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setEnvironment(prev => ({
         ...prev,
@@ -37,6 +38,8 @@ const EnvironmentModel = ({ closeModel, setEnvironments, projectId, environmentD
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setIsCreating(true);
 
         let toSendEnvironment: Partial<Environment> = {
             name: environment.name,
@@ -80,6 +83,7 @@ const EnvironmentModel = ({ closeModel, setEnvironments, projectId, environmentD
         }
 
         closeModel();
+        setIsCreating(false);
     }
 
     return (
@@ -142,7 +146,7 @@ const EnvironmentModel = ({ closeModel, setEnvironments, projectId, environmentD
                 <div className="flex justify-end gap-2 mt-4">
                     <Button type="button" onClick={addVariables} variant="default" classes="rounded-sm">Add Variables</Button>
                     <Button type="button" onClick={closeModel} variant="default" classes="bg-red-500 rounded-sm">Cancel</Button>
-                    <button className="px-3 py-1 bg-green-500 text-white rounded-sm" type="submit">{environmentData ? 'Edit' : 'Create'}</button>
+                    <Button variant="default" onClick={()=>{}} isLoading={isCreating} classes="bg-green-500 rounded-sm" type="submit">{environmentData ? 'Edit' : 'Create'}</Button>
                 </div>
             </form>
         </div>
