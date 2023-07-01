@@ -37,7 +37,7 @@ const LandingPage = () => {
             >
               &#62; Install Polaris
             </Button>
-            <Link to="https://major-project-be2018se.github.io/polaris-suite-web/#/" className="text-primary font-bold">Documentation</Link>
+            <Link target="_blank" to="https://major-project-be2018se.github.io/polaris-suite-web/#/" className="text-primary font-bold">Documentation</Link>
           </div>
         </div>
         <div className="img_container">
