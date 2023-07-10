@@ -5,11 +5,11 @@ interface IMasterLayoutProps {}
 
 const MasterLayout = ({ children }: PropsWithChildren<IMasterLayoutProps>) => {
   return (
-    <div>
+    <main>
       <Navbar />
       {children}
       <Footer />
-    </div>
+    </main>
   );
 };
 

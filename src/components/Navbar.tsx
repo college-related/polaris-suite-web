@@ -15,8 +15,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" navbar font-quicksand font-extralight flex justify-between items-center py-7 sm:px-24 sm:pt-20 ">
-      <div className="padding_cls flex items-center w-full sm:w-fit justify-between px-7">
+    <header className="flex justify-between items-center py-10 w-[80%] mx-auto">
+      <div className="flex items-center w-full sm:w-fit justify-between">
         <div className="logo_container w-10">
           <Link to="/">
             <img src={polaris_logo} alt="logo"></img>
@@ -61,7 +61,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="nav_items hidden sm:flex">
-        <ul className="flex space-x-14 items-center">
+        <ul className="flex space-x-14 items-center uppercase font-bold">
           <Link
             to="/about"
             className={`${
@@ -91,7 +91,7 @@ const Navbar = () => {
       </div>
 
       {showInstallModel && (<InstallModel closeModel={()=>setShowInstallModel(false)} />)}
-    </div>
+    </header>
   );
 };
 
