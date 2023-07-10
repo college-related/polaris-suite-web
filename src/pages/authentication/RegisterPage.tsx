@@ -58,8 +58,8 @@ const RegisterPage = () => {
 
   return (
     <>
-        <h1>Register</h1>
-        <p>Already have an account? <Link to="/auth/login">Login</Link></p>
+        <h2 className="text-h2 font-bold">Register</h2>
+        <p>Already have an account? <Link to="/auth/login" className="text-primary">Login</Link></p>
 
         <form className="flex flex-col gap-4 mt-6" onSubmit={handleSubmit}>
             {
@@ -128,7 +128,7 @@ const RegisterPage = () => {
         </Button>
 
         <div className="text-right mt-2">
-            <Link to="/auth/forgot-password">Forgot Password?</Link>
+            <Link to="/auth/forgot-password" className="text-primary">Forgot Password?</Link>
         </div>
     </>
   )

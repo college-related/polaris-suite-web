@@ -1,5 +1,5 @@
-import bg from "../images/bg.png";
 import hero_illustration from "../images/hero_illustration.png";
+import auth_illustration from "../images/authentication_illustration.png";
 import feature_illustration_1 from "../images/feature_illustration_1.png";
 import feature_illustration_2 from "../images/feature_illustration_2.png";
 import feature_illustration_3 from "../images/feature_illustration_3.png";
@@ -22,8 +22,8 @@ import collab_test from "../images/collaboration_testing.png";
 import auto_test from "../images/automation_testing.png";
 
 export {
-  bg,
   hero_illustration,
+  auth_illustration,
   feature_illustration_1,
   feature_illustration_2,
   feature_illustration_3,

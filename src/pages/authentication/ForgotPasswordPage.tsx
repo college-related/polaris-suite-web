@@ -17,10 +17,10 @@ const ForgotPasswordPage = () => {
 
   return (
     <>
-        <h1>Forgot password</h1>
-        <p>Already have an account? <Link to="/auth/login">Login</Link></p>
+        <h2 className="text-h2 font-bold">Forgot password</h2>
+        <p>Already have an account? <Link to="/auth/login" className="text-primary">Login</Link></p>
 
-        <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4 mt-12" onSubmit={handleSubmit}>
             <Input 
               type="email"
               label="Email"

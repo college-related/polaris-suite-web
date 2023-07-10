@@ -50,8 +50,8 @@ const LoginPage = () => {
 
   return (
     <>
-        <h1>Login Page</h1>
-        <p>Don't have an account? <Link to="/auth/register">Create one</Link></p>
+        <h2 className="text-h2 font-bold">Login Page</h2>
+        <p>Don't have an account? <Link to="/auth/register" className="text-primary">Create one</Link></p>
 
         <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
             {
@@ -102,7 +102,7 @@ const LoginPage = () => {
         </Button>
 
         <div className="text-right mt-5">
-            <Link to="/auth/forgot-password">Forgot Password?</Link>
+            <Link to="/auth/forgot-password" className="text-primary">Forgot Password?</Link>
         </div>
     </>
   )
