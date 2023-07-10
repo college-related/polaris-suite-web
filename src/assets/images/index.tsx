@@ -1,4 +1,10 @@
 import bg from "../images/bg.png";
+import hero_illustration from "../images/hero_illustration.png";
+import feature_illustration_1 from "../images/feature_illustration_1.png";
+import feature_illustration_2 from "../images/feature_illustration_2.png";
+import feature_illustration_3 from "../images/feature_illustration_3.png";
+import feature_line from "../images/feature_line.png";
+
 import dart_logo from "../images/dart_logo.png";
 import flutter_logo from "../images/flutter_logo.png";
 import github_logo from "../images/github_logo.png";
@@ -9,10 +15,6 @@ import polaris_logo from "../images/polaris_logo.png";
 import react_logo from "../images/react_logo.png";
 import twitter_logo from "../images/twitter_logo.png";
 import type_script_logo from "../images/type_script_logo.png";
-import dot_line from "../images/dot_line.png";
-import blue_bg from "../images/blue_bg.png";
-import chart_Pie from "../images/ChartPie.png";
-import square from "../images/square.png";
 import domo_logo from "../images/domo_logo.png";
 import about_bg from "../images/about_bg.png";
 import unit_test from "../images/unit_testing.png";
@@ -21,6 +23,11 @@ import auto_test from "../images/automation_testing.png";
 
 export {
   bg,
+  hero_illustration,
+  feature_illustration_1,
+  feature_illustration_2,
+  feature_illustration_3,
+  feature_line,
   dart_logo,
   flutter_logo,
   github_logo,
@@ -31,10 +38,6 @@ export {
   react_logo,
   twitter_logo,
   type_script_logo,
-  dot_line,
-  blue_bg,
-  chart_Pie,
-  square,
   domo_logo,
   about_bg,
   unit_test,
