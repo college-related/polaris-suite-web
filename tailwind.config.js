@@ -6,15 +6,18 @@ module.exports = {
     extend: {
       colors: {
         primary: "#535BF2",
-        secondary: "#FFAB12",
-        neutralDark: "#131515",
-        danger: "#DA4944",
-        success: "#4F772D",
-        textfield: "B9BCFF",
-      },
-      fontFamily: {
-        sen: ["Sen", "sans-serif"],
-        quicksand: ["Quicksand", "sans-serif"],
+        primary_light: "#E3E5FF",
+        dark: "#131515",
+        dark_light: "#13151533",
+        neutral_white: "#FFFFFF",
+        neutral_gray: "#FAFAFA",
+        deep_blue: "#3F3D56",
+        danger: "#FF6584",
+        danger_light: "#FF658433",
+        success: "#58D865",
+        success_light: "#58D86533",
+        warning: "#FFAB12",
+        warning_light: "#FFAB1233",
       },
       fontSize: {
         h1: "48px",
