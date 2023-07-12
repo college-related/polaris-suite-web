@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { Circle, Hexagon, RotateCcw } from "react-feather";
+import { Hexagon } from "react-feather";
 
 interface IButtonProps {
   onClick: () => void;
