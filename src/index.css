@@ -27,7 +27,7 @@
 
 @layer components {
   .btn {
-    @apply py-2 px-4  rounded-sm;
+    @apply p-3 rounded-md;
   }
   .sm {
     @apply px-2;
@@ -46,32 +46,19 @@
   }
 
   /*button colors: default, primary, info, success, warning, danger, dark */
-  .default {
-    @apply bg-primary text-white;
-  }
-  /* .default:hover {
-    @apply bg-gray-200 text-gray-800;
-  } */
-
-  .primary {
-    @apply bg-primary text-white;
-  }
-  .primary:hover {
-    @apply bg-primary text-white;
-  }
+  .default { @apply bg-gray-300 text-dark; }
+  .primary { @apply bg-primary_light text-primary; }
+  .success { @apply bg-success_light text-success; }
+  .warning { @apply bg-warning_light text-warning; }
+  .danger { @apply bg-danger_light text-danger; }
+  .clear { @apply bg-transparent text-primary; }
 
   .info {
     @apply bg-blue-500 text-white;
   }
-  .info:hover {
-    @apply bg-blue-600 text-white;
-  }
 
   .dark {
     @apply bg-gray-800 text-white;
-  }
-  .dark:hover {
-    @apply bg-gray-900 text-white;
   }
 
   .disabled {
