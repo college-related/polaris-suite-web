@@ -16,7 +16,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-5">
-      <h1 className="mb-4">Welcome, {user}</h1>
+      <h3 className="text-h3 mb-4">Welcome, {user}</h3>
 
       <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
         <DashboardTile title="Total Projects" value={5} icon={<HardDrive />} />
@@ -26,12 +26,12 @@ const Dashboard = () => {
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-8">
         <section>
-          <h2>Recent Activities</h2>
+          <h4 className="text-h4">Recent Activities</h4>
           
         </section>
         <section>
           <div className="flex justify-between items-start">
-            <h2>Shortcuts</h2>
+            <h4 className="text-h4">Shortcuts</h4>
             <IconButton onClick={()=>{}} variant="clear" icon={<Edit3 className="w-5 h-5" />} />
           </div>
           {
