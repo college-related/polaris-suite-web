@@ -38,12 +38,13 @@ const LandingPage = () => {
           <div className="pt-3 flex items-center space-x-4 justify-center lg:justify-start">
             <Button
               onClick={() => setShowInstallModel(true)}
-              variant="default"
+              variant="primary"
+              classes="font-bold"
               size="md"
             >
               &#62; Install Polaris
             </Button>
-            <Link target="_blank" to="https://major-project-be2018se.github.io/polaris-suite-web/#/" className="text-primary font-bold">Documentation</Link>
+            <Link target="_blank" to="https://major-project-be2018se.github.io/polaris-suite-web/#/" className="text-deep_blue font-bold">Documentation</Link>
           </div>
         </div>
         <img src={hero_illustration} alt="ilustration of a man working in computer and laptop" className="w-[600px]" />

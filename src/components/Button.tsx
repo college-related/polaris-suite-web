@@ -3,7 +3,7 @@ import { Hexagon } from "react-feather";
 
 interface IButtonProps {
   onClick: () => void;
-  variant: "default" | "primary" | "info" | "dark";
+  variant: "default" | "primary" | "warning" | "success" | "clear" | "danger";
   size?: "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
   classes?: string;
