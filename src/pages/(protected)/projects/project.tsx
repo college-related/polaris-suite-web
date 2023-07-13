@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useState } from "react"
 import { Edit, Plus, Trash } from "react-feather"
 
 import { APICaller } from "../../../helpers/api"
@@ -7,28 +6,19 @@ import Button from "../../../components/Button"
 import EnvironmentModel from "../../../components/portal/EnvironmentModel"
 import { useModel } from "../../../utils/hooks/useModel"
 import AlertModel from "../../../components/portal/AlertModel"
-import ProjectLayout from "../../../layouts/ProjectLayout"
 import IconButton from "../../../components/IconButton"
 
-const SingleProject = () => {
+interface ISingleProjectProps {
+  project: Partial<Project>;
+  setProject: React.Dispatch<React.SetStateAction<Partial<Project> | null>>;
+  projectId: string;
+}
 
-  const { projectId } = useParams();
-  const [project, setProject] = useState<Partial<Project> | null>(null);
+const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) => {
+
   const [showModel, setShowModel] = useState(false);
   const [selectedEnvironment, setSelectedEnvironment] = useState<Partial<Environment> | undefined>(undefined);
   const { isModelOpen, openModel, closeModel } = useModel();
-
-  useEffect(() => {
-    (async () => {
-      const { statusCode, data, error } = await APICaller(`/projects/${projectId}`, "GET")
-
-      if(statusCode === 200) {
-        setProject(data.project)
-      } else {
-        console.log(error)
-      }
-    })()
-  }, [])
 
   const handleDeleteEnvSelect = (id: string) => {
     openModel();
@@ -62,7 +52,7 @@ const SingleProject = () => {
   }
 
   return (
-    <ProjectLayout title={project?.name!} description={project?.description!}>
+    <>
       <div className="flex justify-between items-center mb-4">
         <Button variant="primary" onClick={handleCreateOpen}>
           <span className="flex gap-2">
@@ -73,9 +63,9 @@ const SingleProject = () => {
       </div>
       {
         project?.environments?.length === 0 && (
-          <tr>
-            <td className="p-3">No environments found</td>
-          </tr>
+          <>
+            <p className="p-3">No environments found</p>
+          </>
         )
       }
       <div className="flex gap-4 items-center flex-wrap">
@@ -98,7 +88,7 @@ const SingleProject = () => {
       </div>
       {showModel && <EnvironmentModel projectId={projectId!} environmentData={selectedEnvironment} closeModel={()=>setShowModel(false)} setEnvironments={setProject} />}
       {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={handleDelete} title="Delete Project" message="Are you sure you want to delete this project?" />)}    
-    </ProjectLayout>
+    </>
   )
 }
 

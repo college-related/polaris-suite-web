@@ -1,17 +1,24 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom"
+
 import MasterLayout from "../layouts/MasterLayout";
+import ProjectLayout from "../layouts/ProjectLayout";
+import ProtectedLayout from "../layouts/ProtectedLayout";
 import AuthenticationLayout from "../layouts/AuthenticationLayout";
+
 import AboutPage from "../pages/AboutPage";
 import LandingPage from "../pages/LandingPage";
-import LoginPage from "../pages/authentication/LoginPage";
-import RegisterPage from "../pages/authentication/RegisterPage";
-import ForgotPasswordPage from "../pages/authentication/ForgotPasswordPage";
-import ResetPasswordPage from "../pages/authentication/ResetPasswordPage";
-import Dashboard from "../pages/(protected)/Dashboard";
-import ProtectedLayout from "../layouts/ProtectedLayout";
-import ProjectsPage from "../pages/(protected)/projects";
-import SettingPage from "../pages/(protected)/Settings";
-import SingleProject from "../pages/(protected)/projects/project";
+import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from "../pages/authentication";
+import { 
+  Dashboard, 
+  ProjectsPage, 
+  Settings, 
+  SingleProject, 
+  TestCases, 
+  ProjectActivityPage, 
+  ProjectSettingPage 
+} from "../pages/(protected)";
+
+import { useApiRead } from "../utils/hooks/useApiRead";
 
 const AppRoute = () => {
   return (
@@ -54,7 +61,7 @@ const ProtectedRoutes = () => {
     <ProtectedLayout>
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/settings" element={<SettingPage />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/projects/*" element={<ProjectRoutes />} />
       </Routes>
     </ProtectedLayout>
@@ -65,9 +72,27 @@ const ProjectRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<ProjectsPage />} />
-      <Route path="/:projectId" element={<SingleProject />} />
+      <Route path="/:projectId/*" element={<ProjectTabRoutes />} />
     </Routes>
   )
+}
+
+const ProjectTabRoutes = () => {
+  const { projectId } = useParams();
+  const { data, isLoading, setData } = useApiRead(`/projects/${projectId}`, "project");
+
+  if(isLoading) return <div>Loading...</div>;
+
+  return (
+    <ProjectLayout title={data?.name || ""} description={data?.description || ""}>
+      <Routes>
+        <Route path="/" element={<SingleProject project={data!} projectId={projectId!} setProject={setData} />} />
+        <Route path="test-cases" element={<TestCases />} />
+        <Route path="settings" element={<ProjectSettingPage />} />
+        <Route path="activities" element={<ProjectActivityPage />} />
+      </Routes>
+    </ProjectLayout>
+  );
 }
 
 export default AppRoute
