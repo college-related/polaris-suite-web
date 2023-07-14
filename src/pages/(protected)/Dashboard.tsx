@@ -1,10 +1,12 @@
-import { Download, DownloadCloud, Edit3, File, HardDrive, Layers } from "react-feather"
+import { DownloadCloud, Edit3, File, HardDrive, Layers } from "react-feather"
 
 import { useState } from "react"
 import { getUser } from "../../helpers/cookie"
 
 import DashboardTile from "../../components/DashboardTile"
 import IconButton from "../../components/IconButton"
+import Activities from "../../components/Activities"
+import { activities } from "../../utils/data"
 
 const Dashboard = () => {
   const [user] = useState(getUser().name)
@@ -27,7 +29,7 @@ const Dashboard = () => {
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-8">
         <section>
           <h4 className="text-h4">Recent Activities</h4>
-          
+          <Activities activities={activities} />
         </section>
         <section>
           <div className="flex justify-between items-start">

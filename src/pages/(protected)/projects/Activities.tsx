@@ -1,10 +1,12 @@
+import Activities from "../../../components/Activities"
+import { activities } from "../../../utils/data"
 
-const Activities = () => {
+const ActivitiesTab = () => {
   return (
     <>
-      Activities
+      <Activities activities={activities} />
     </>
   )
 }
 
-export default Activities
+export default ActivitiesTab
