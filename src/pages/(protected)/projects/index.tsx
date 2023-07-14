@@ -44,7 +44,7 @@ export default function ProjectsPage() {
             <>
               {
                 Array(12).fill(0).map((_, i) => (
-                  <div key={i} className="bg-gray-300 rounded-sm min-w-[300px] min-h-[250px] animate-pulse">
+                  <div key={i} className="bg-gray-300 rounded-sm min-w-[350px] min-h-[200px] animate-pulse">
                   </div>
                 ))
               }
