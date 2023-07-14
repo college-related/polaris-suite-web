@@ -88,7 +88,7 @@ const ProjectTabRoutes = () => {
       <Routes>
         <Route path="/" element={<SingleProject project={data!} projectId={projectId!} setProject={setData} />} />
         <Route path="test-cases" element={<TestCases />} />
-        <Route path="settings" element={<ProjectSettingPage />} />
+        <Route path="settings" element={<ProjectSettingPage project={data!} />} />
         <Route path="activities" element={<ProjectActivityPage />} />
       </Routes>
     </ProjectLayout>

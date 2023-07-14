@@ -24,7 +24,7 @@ const ProjectLayout = ({ children, title, description }: IProjectLayoutProps) =>
           <p>{description}</p>
         </div>
       </div>
-      <div className="my-12 flex gap-16 items-center relative">
+      <div className="my-8 flex gap-16 items-center relative border-b-2">
         <Link to={newPathname}>
           <div className={`flex gap-4 items-center pb-2 transition-all ${path===undefined&&'border-b-4 border-primary'}`}>
             <Copy className="w-5 h-5" /> Environments
