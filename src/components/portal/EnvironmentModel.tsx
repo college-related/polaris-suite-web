@@ -110,7 +110,7 @@ const EnvironmentModel = ({
         className="bg-white rounded-md p-4 w-1/2 mt-20 mx-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h1 className="text-2xl font-bold">Create Environment</h1>
+        <h1 className="text-2xl font-bold">{environmentData ? "Edit" : "Create"} Environment</h1>
         <br />
         <form onSubmit={handleSubmit}>
           <Input

@@ -7,6 +7,7 @@ import EnvironmentModel from "../../../components/portal/EnvironmentModel"
 import { useModel } from "../../../utils/hooks/useModel"
 import AlertModel from "../../../components/portal/AlertModel"
 import IconButton from "../../../components/IconButton"
+import Input from "../../../components/form/Input"
 
 interface ISingleProjectProps {
   project: Partial<Project>;
@@ -50,6 +51,10 @@ const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) 
     setSelectedEnvironment(undefined)
     setShowModel(true)
   }
+  const handleSelectEnv = (id: string) => {
+    const environment = project?.environments?.find(env => env._id === id)
+    setSelectedEnvironment(environment)
+  }
 
   return (
     <>
@@ -71,7 +76,7 @@ const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) 
       <div className="flex gap-4 items-center flex-wrap">
         {
           project?.environments?.map((environment) => (
-            <div key={environment._id} className="bg-white rounded-md p-4 flex items-center gap-8">
+            <div key={environment._id} className={`bg-white rounded-md p-4 flex items-center gap-8 cursor-pointer ${selectedEnvironment?._id===environment._id&&'border-2 border-primary'}`} onClick={()=>handleSelectEnv(environment._id!)}>
               <div>
                 <h5 className="text-h5">{environment.name}</h5>
                 <p>
@@ -87,7 +92,7 @@ const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) 
         }
       </div>
       {showModel && <EnvironmentModel projectId={projectId!} environmentData={selectedEnvironment} closeModel={()=>setShowModel(false)} setEnvironments={setProject} />}
-      {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={handleDelete} title="Delete Project" message="Are you sure you want to delete this project?" />)}    
+      {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={handleDelete} title="Delete Environment" message="Are you sure you want to delete this environment?" />)}    
     </>
   )
 }
