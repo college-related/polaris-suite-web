@@ -147,17 +147,18 @@ const CollaborationTab = ({ project }: { project: Partial<Project> }) => {
         <IconButton variant="success" icon={<UserPlus />} onClick={()=>{}} />
       </div>
       {
-        project?.members?.length === 0 && (
+        project?.members?.length === 0 ? (
           <h6 className="text-h6 font-bold text-center">No collaborators found</h6>
+        ) : (
+          <h6 className="text-h6">Collaborators</h6>
         )
       }
       {
         project?.members?.map((collaborator) => (
           <>
-            <h6 className="text-h6">Collaborators</h6>
             <div className="flex gap-2 items-end">
               <Input 
-                label="Email"
+                label=""
                 name="email"
                 type="email"
                 value={collaborator.email || ''}
@@ -168,7 +169,7 @@ const CollaborationTab = ({ project }: { project: Partial<Project> }) => {
                 errors={null}
               />
               <Select 
-                name="role"
+                name=""
                 label="Role"
                 onChange={()=>{}}
                 options={[
