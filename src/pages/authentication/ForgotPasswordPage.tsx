@@ -30,7 +30,7 @@ const ForgotPasswordPage = () => {
           onChange={handleInputChange} 
           errors={error}
         />
-        <Button onClick={()=>navigate("/auth/reset-password")} variant="success" classes="font-bold">Send Reset Email</Button>
+        <Button onClick={()=>navigate("/auth/reset-password")} variant="default" classes="bg-success text-white font-bold">Send Reset Email</Button>
       </form>
     </>
   )

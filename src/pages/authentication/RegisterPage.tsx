@@ -115,7 +115,7 @@ const RegisterPage = () => {
         <Button
           variant="default"
           onClick={() => {}}
-          classes="rounded-sm"
+          classes="rounded-sm bg-success text-white"
           isLoading={isRegistering}
         >
           Register
@@ -132,7 +132,7 @@ const RegisterPage = () => {
       >
         Google
       </Button>
-      <Button onClick={() => {}} size="xl" variant="success" classes="font-bold">
+      <Button onClick={() => {}} size="xl" variant="dark" classes="font-bold w-full">
         Github
       </Button>
 

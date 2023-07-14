@@ -90,7 +90,7 @@ const LoginPage = () => {
           variant="default"
           onClick={() => {}}
           isLoading={isLogging}
-          classes="rounded-sm"
+          classes="rounded-sm bg-success text-white"
           type="submit"
         >
           Login
@@ -109,7 +109,7 @@ const LoginPage = () => {
       </Button>
       <Button
         onClick={() => {}}
-        variant="success"
+        variant="dark"
         classes="font-bold w-full"
         size="xl"
       >
