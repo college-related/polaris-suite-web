@@ -17,21 +17,21 @@ const ForgotPasswordPage = () => {
 
   return (
     <>
-        <h2 className="text-h2 font-bold">Forgot password</h2>
-        <p>Already have an account? <Link to="/auth/login" className="text-primary">Login</Link></p>
+      <h2 className="text-h2 font-bold">Forgot password</h2>
+      <p>Already have an account? <Link to="/auth/login" className="text-primary">Login</Link></p>
 
-        <form className="flex flex-col gap-4 mt-12" onSubmit={handleSubmit}>
-            <Input 
-              type="email"
-              label="Email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={handleInputChange} 
-              errors={error}
-            />
-            <Button onClick={()=>navigate("/auth/reset-password")} variant="dark">Send Reset Email</Button>
-        </form>
+      <form className="flex flex-col gap-4 mt-12" onSubmit={handleSubmit}>
+        <Input 
+          type="email"
+          label="Email"
+          name="email"
+          placeholder="Email"
+          value={email}
+          onChange={handleInputChange} 
+          errors={error}
+        />
+        <Button onClick={()=>navigate("/auth/reset-password")} variant="success" classes="font-bold">Send Reset Email</Button>
+      </form>
     </>
   )
 }
