@@ -169,8 +169,8 @@ const CollaborationTab = ({ project }: { project: Partial<Project> }) => {
                 errors={null}
               />
               <Select 
-                name=""
-                label="Role"
+                name="role"
+                label=""
                 onChange={()=>{}}
                 options={[
                   { name: "Tester", value: "tester" },
