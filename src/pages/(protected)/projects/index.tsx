@@ -1,40 +1,72 @@
 import { useEffect, useState } from "react"
-import { PlusSquare } from "react-feather"
+import { Eye, EyeOff, PlusSquare } from "react-feather"
 
 import ProjectCard from "../../../components/projects/ProjectCard"
 import { APICaller } from "../../../helpers/api"
 import ProjectModel from "../../../components/portal/ProjectModel"
+import Button from "../../../components/Button"
 
 export default function ProjectsPage() {
 
-  const [projects, setProjects] = useState<Project[]>([])
-  const [selectedProject, setSelectedProject] = useState<Partial<Project> | undefined>(undefined)
-  const [isFetching, setIsFetching] = useState(false)
-  const [showModel, setShowModel] = useState(false)
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Partial<Project> | undefined>(undefined);
+  const [isFetching, setIsFetching] = useState(false);
+  const [showModel, setShowModel] = useState(false);
+  const [isShowingAll, setIsShowingAll] = useState(false);
+
+  const fetchProjects = async (query?: string) => {
+    setIsFetching(true);
+
+    const q = query ? `?${query}` : "";
+    const { statusCode, data, error } = await APICaller(`/projects${q}`, "GET");
+
+    if(statusCode === 200) {
+      setProjects(data.projects);
+      setIsFetching(false);
+    } else {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    (async () => {
-      setIsFetching(true);
-      const { statusCode, data, error } = await APICaller("/projects", "GET");
-
-      if(statusCode === 200) {
-        setProjects(data.projects);
-        setIsFetching(false);
-      } else {
-        console.log(error);
-      }
-    })()
+    fetchProjects();
   }, [])
 
   const handleCreate = () => {
     setSelectedProject(undefined)
     setShowModel(true)
   }
+
+  const handleShow = () => {
+    setIsShowingAll(!isShowingAll);
+    fetchProjects(!isShowingAll ? "status=all" : "");
+  }
   
   return (
     <main>
-      <h3 className="text-h3">Projects</h3>
-      <p>You have <span className="text-primary font-bold">{projects.length}</span> projects</p>
+      <div className="flex items-end justify-between">
+        <div>
+          <h3 className="text-h3">Projects</h3>
+          <p>You have <span className="text-primary font-bold">{projects.length}</span> projects</p>
+        </div>
+        <Button variant={`${isShowingAll?'danger':'success'}`} onClick={handleShow}>
+          <span className="flex gap-2 items-center">
+            {
+              isShowingAll ? (
+                <>
+                  <EyeOff />
+                  Hide archived
+                </>
+              ) : (
+                <>
+                  <Eye />
+                  Show archived
+                </>
+              )
+            }
+          </span>
+        </Button>
+      </div>
       <br />
 
       <div className="flex gap-4 flex-wrap">

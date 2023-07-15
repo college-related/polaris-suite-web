@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Archive, Edit3, Loader, Trash, UserMinus, UserPlus } from "react-feather";
+import { Edit3, Loader, Lock, Trash, Unlock, UserMinus, UserPlus } from "react-feather";
 
 import Input from "../../../components/form/Input";
 import Button from "../../../components/Button";
@@ -8,6 +8,7 @@ import IconButton from "../../../components/IconButton";
 import { APICaller } from "../../../helpers/api";
 import { useModel } from "../../../utils/hooks/useModel";
 import AlertModel from "../../../components/portal/AlertModel";
+import { useNavigate } from "react-router-dom";
 
 interface ISettingsProps {
   project: Partial<Project>;
@@ -70,7 +71,14 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
             </div>
           )
         }
-        { tab===TABS.DETAIL && <DetailSetting project={project} handleChange={handleChange} /> }
+        {
+          project.status === "archieved" && (
+            <div className="p-2 mb-4 bg-danger_light border-2 border-danger text-danger rounded-md">
+              <span className="text-sm font-bold">This project is archived</span>
+            </div>
+          )
+        }
+        { tab===TABS.DETAIL && <DetailSetting project={project} handleChange={handleChange} setProject={setProject} /> }
         { tab===TABS.COLLABORATION && <CollaborationTab project={project} setProject={setProject} /> }
         { tab===TABS.NOTIFICATIONS && <NotificationTab project={project} /> }
       </form>
@@ -80,18 +88,76 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
 
 // Details TAB
 const DetailSetting = ({ 
-  project, handleChange 
+  project, handleChange , setProject,
 }: { 
   project: Partial<Project>, 
+  setProject: React.Dispatch<React.SetStateAction<Partial<Project>>>,
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void 
 }) => {
+
+  const navigate = useNavigate();
+  const { openModel, closeModel, isModelOpen } = useModel();
+  const [alertDetails, setAlertDetails] = useState({
+    title: "",
+    description: "",
+    action: () => {},
+  });
+
+  const handleOpenAlert = (type: "delete" | "archieve") => {
+    if (type === "delete") {
+      setAlertDetails({
+        title: "Delete Project",
+        description: "Are you sure you want to delete this project?",
+        action: deleteProject,
+      })
+    } else {
+      setAlertDetails({
+        title: `${project.status==="archieved"?'Unarchieve':'Archieve'} Project`,
+        description: `Are you sure you want to ${project.status==="archieved"?'unarchieve':'archieve'} this project?`,
+        action: archieveProject,
+      })
+    }
+    
+    openModel();
+  }
+
+  const deleteProject = async () => {
+    const { statusCode, error } = await APICaller(`/projects/${project._id}`,"DELETE");
+
+    if (statusCode === 200) {
+      closeModel();
+      navigate("/polaris/projects");
+    } else {
+      console.log(error);
+    }
+  }
+
+  const archieveProject = async () => {
+
+    let status = "archieved";
+
+    if (project.status === "archieved") {
+      status = "in progress";
+    }
+
+    const { statusCode, error, data } = await APICaller(`/projects/${project._id}`,"PATCH",{ status });
+
+    if (statusCode === 200) {
+      setProject(data.project)
+    } else {
+      console.log(error);
+    }
+    closeModel();
+  }
+
   return (
     <div className="flex flex-col gap-4">
-      <Input label="Project Name" name="name" onChange={handleChange} value={project?.name || ""} />
-      <Input label="Project Description" name="description" onChange={handleChange} value={project?.description || ""} />
+      <Input disabled={project.status==="archieved"} label="Project Name" name="name" onChange={handleChange} value={project?.name || ""} />
+      <Input disabled={project.status==="archieved"} label="Project Description" name="description" onChange={handleChange} value={project?.description || ""} required={false} />
       <Select 
         label="Project Status"
-        name="status"
+        name="status" 
+        disabled={project.status==="archieved"}
         value={project?.status || "in progress"}
         onChange={handleChange}
         options={[
@@ -106,8 +172,8 @@ const DetailSetting = ({
         <h6 className="text-h6">Project Linking</h6>
         <p className="text-sm my-2">Link this project to a repository or drop project folder</p>
         <div className="flex items-center gap-4">
-          <input type="file" />
-          <Button variant="primary" onClick={()=>{}}>
+          <input type="file" disabled={project.status==="archieved"} />
+          <Button type="button" variant="primary" onClick={()=>{}} disabled={project.status==="archieved"}>
             <span className="flex gap-2">
               <span>Link to Github</span>
             </span>
@@ -117,7 +183,7 @@ const DetailSetting = ({
       <h6 className="text-h6 text-danger">Danger Area</h6>
       <div className="flex items-center justify-between">
         <p className="font-bold">Delete the Project</p>
-        <Button variant="danger" onClick={()=>{}}>
+        <Button type="button" variant="danger" onClick={()=>handleOpenAlert("delete")}>
           <span className="flex gap-2">
             <Trash />
             Delete Project
@@ -126,18 +192,28 @@ const DetailSetting = ({
       </div>
       <div className="flex items-center justify-between">
         <p className="font-bold">Archieve the Project</p>
-        <Button variant="danger" onClick={()=>{}}>
-          <span className="flex gap-2">
-            <Archive />
-            Archieve Project
-          </span>
+        <Button type="button" variant={`${project.status==="archieved"?"success":"danger"}`} onClick={()=>handleOpenAlert("archieve")}>
+          {
+            project.status === "archieved" ? (
+              <span className="flex gap-2">
+                <Unlock />
+                Unarchieve Project
+              </span>
+            ) : (
+              <span className="flex gap-2">
+                <Lock />
+                Archieve Project
+              </span>
+            )
+          }
         </Button>
       </div>
       <div className="col-span-5 text-right py-4 px-2">
-        <Button form="project-form" type="submit" variant="success" onClick={()=>{}}>
+        <Button form="project-form" type="submit" variant="success" onClick={()=>{}} disabled={project.status==="archieved"}>
           Update
         </Button>
       </div>
+      {isModelOpen && (<AlertModel title={alertDetails.title} message={alertDetails.description} handleConfirm={alertDetails.action} closeModel={closeModel} />)}
     </div>
   )
 }
@@ -152,6 +228,7 @@ const NotificationTab = ({ project }: { project: Partial<Project> }) => {
         label=""
         name="notification"
         value={project?.status || "email"}
+        disabled={project.status==="archieved"}
         onChange={()=>{}}
         options={[
           { name: "Email", value: "email" },
@@ -264,7 +341,7 @@ const CollaborationTab = ({
           label="Email"
           name="email"
           type="email"
-          disabled={isSending}
+          disabled={isSending || project.status === 'archieved'}
           value={member.email!}
           onChange={handleChange}
           classes="w-[50%]"
@@ -277,14 +354,14 @@ const CollaborationTab = ({
           label="Role"
           value={member.role}
           onChange={handleChange}
-          disabled={isSending}
+          disabled={isSending || project.status === 'archieved'}
           options={[
             { name: "Tester", value: "tester" },
             { name: "Developer", value: "developer" },
             { name: "Stakeholder", value: "stakeholder" },
           ]}
         />
-        <Button variant="success" onClick={handleCollabAdd}>
+        <Button variant="success" onClick={handleCollabAdd} disabled={isSending || project.status === 'archieved'}>
           {
             isSending ? (
               <span className="flex items-center gap-2">
@@ -314,7 +391,7 @@ const CollaborationTab = ({
               label=""
               name="email"
               type="email"
-              disabled={isUpdating.status && isUpdating.index === i}
+              disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}
               value={oldMembers[i]?.email || ""}
               onChange={e=>handleOldChange(e, i)}
               placeholder="Email"
@@ -326,7 +403,7 @@ const CollaborationTab = ({
               label=""
               name="role"
               value={oldMembers[i]?.role || "tester"}
-              disabled={isUpdating.status && isUpdating.index === i}
+              disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}
               onChange={e=>handleOldChange(e, i)}
               options={[
                 { name: "Tester", value: "tester" },
@@ -334,7 +411,7 @@ const CollaborationTab = ({
                 { name: "Stakeholder", value: "stakeholder" },
               ]}
             />
-            <Button variant="primary" onClick={()=>handleCollabUpdate(i)}>
+            <Button variant="primary" onClick={()=>handleCollabUpdate(i)} disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}>
               {
                 isUpdating.status && isUpdating.index === i ? (
                   <span className="flex items-center gap-2">
@@ -349,7 +426,7 @@ const CollaborationTab = ({
                 )
               }
             </Button>
-            <IconButton variant="danger" icon={<UserMinus />} onClick={()=>handleMemberSelect(i)} />
+            <IconButton variant="danger" icon={<UserMinus />} onClick={()=>handleMemberSelect(i)} disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}  />
           </div>
         ))
       }

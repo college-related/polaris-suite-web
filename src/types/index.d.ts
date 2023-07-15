@@ -13,7 +13,7 @@ type Project = {
   description: string;
   members: Collaborator[];
   environments: Partial<Environment>[];
-  status: 'in progress' | 'hold' | 'archived' | 'draft' | 'done';
+  status: 'in progress' | 'hold' | 'archieved' | 'draft' | 'done';
   createdAt: string;
   updatedAt: string;
 }

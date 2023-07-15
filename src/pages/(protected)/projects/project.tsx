@@ -58,7 +58,7 @@ const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) 
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        <Button variant="primary" onClick={handleCreateOpen}>
+        <Button variant="primary" onClick={handleCreateOpen} disabled={project?.status==='archieved'}>
           <span className="flex gap-2">
             <Plus />
             Add Environment
