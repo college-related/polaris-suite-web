@@ -84,7 +84,7 @@ export default function ProjectsPage() {
           ) : (
             <>
               <div 
-                className="bg-primary_light text-primary p-5 w-[350px] flex items-center justify-center cursor-pointer rounded-md hover:shadow-md"
+                className="bg-primary_light text-primary p-5 w-[350px] min-h-[200px] flex items-center justify-center cursor-pointer rounded-md hover:shadow-md"
                 onClick={handleCreate}
               >
                 <PlusSquare className="w-20 h-20" />

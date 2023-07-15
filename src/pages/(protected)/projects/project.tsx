@@ -75,7 +75,7 @@ const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) 
       <div className="flex gap-4 items-center flex-wrap">
         {
           project?.environments?.map((environment) => (
-            <div key={environment._id} className={`bg-white rounded-md p-4 flex items-center gap-8 cursor-pointer ${selectedEnvironment?._id===environment._id&&'border-2 border-primary'}`} onClick={()=>handleSelectEnv(environment._id!)}>
+            <div key={environment._id!} className={`bg-white rounded-md p-4 flex items-center gap-8 cursor-pointer ${selectedEnvironment?._id===environment._id&&'border-2 border-primary'}`} onClick={()=>handleSelectEnv(environment._id!)}>
               <div>
                 <h5 className="text-h5">{environment.name}</h5>
                 <p>

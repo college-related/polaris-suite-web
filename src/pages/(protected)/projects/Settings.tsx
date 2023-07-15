@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Edit3, Loader, Lock, Trash, Unlock, UserMinus, UserPlus } from "react-feather";
+import { Edit3, Lock, Trash, Unlock, UserMinus, UserPlus } from "react-feather";
 
 import Input from "../../../components/form/Input";
 import Button from "../../../components/Button";
@@ -24,6 +24,7 @@ const TABS = {
 const Settings = ({ project, setProject }: ISettingsProps) => {
   const [tab, setTab] = useState(TABS.DETAIL);
   const [hasUpdate, setHasUpdate] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setProject(prev => ({
@@ -36,9 +37,11 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsUpdating(true);
+
     const toSendProjectData: dynamicObject = {
       name: project.name,
-      status: project.status,
+      status: project?.status,
       description: project.description,
       members: project.members,
     };
@@ -51,6 +54,7 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
       console.log(error);
     }
 
+    setIsUpdating(false);
     setHasUpdate(false);
   }
 
@@ -72,13 +76,30 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
           )
         }
         {
-          project.status === "archieved" && (
+          project?.status === "archieved" && (
             <div className="p-2 mb-4 bg-danger_light border-2 border-danger text-danger rounded-md">
               <span className="text-sm font-bold">This project is archived</span>
             </div>
           )
         }
-        { tab===TABS.DETAIL && <DetailSetting project={project} handleChange={handleChange} setProject={setProject} /> }
+        { tab===TABS.DETAIL && (
+          <>
+            <DetailSetting project={project} handleChange={handleChange} setProject={setProject} />
+            <div className="text-right py-4 px-2">
+              <Button 
+                form="project-form" 
+                type="submit" 
+                variant="success" 
+                onClick={()=>{}} 
+                disabled={project?.status==="archieved" || isUpdating}
+                isLoading={isUpdating}
+                loadingText="Updating"
+              >
+                Update
+              </Button>
+            </div>
+          </>
+        )}
         { tab===TABS.COLLABORATION && <CollaborationTab project={project} setProject={setProject} /> }
         { tab===TABS.NOTIFICATIONS && <NotificationTab project={project} /> }
       </form>
@@ -112,8 +133,8 @@ const DetailSetting = ({
       })
     } else {
       setAlertDetails({
-        title: `${project.status==="archieved"?'Unarchieve':'Archieve'} Project`,
-        description: `Are you sure you want to ${project.status==="archieved"?'unarchieve':'archieve'} this project?`,
+        title: `${project?.status==="archieved"?'Unarchieve':'Archieve'} Project`,
+        description: `Are you sure you want to ${project?.status==="archieved"?'unarchieve':'archieve'} this project?`,
         action: archieveProject,
       })
     }
@@ -136,7 +157,7 @@ const DetailSetting = ({
 
     let status = "archieved";
 
-    if (project.status === "archieved") {
+    if (project?.status === "archieved") {
       status = "in progress";
     }
 
@@ -152,12 +173,12 @@ const DetailSetting = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Input disabled={project.status==="archieved"} label="Project Name" name="name" onChange={handleChange} value={project?.name || ""} />
-      <Input disabled={project.status==="archieved"} label="Project Description" name="description" onChange={handleChange} value={project?.description || ""} required={false} />
+      <Input disabled={project?.status==="archieved"} label="Project Name" name="name" onChange={handleChange} value={project?.name || ""} />
+      <Input disabled={project?.status==="archieved"} label="Project Description" name="description" onChange={handleChange} value={project?.description || ""} required={false} />
       <Select 
         label="Project Status"
         name="status" 
-        disabled={project.status==="archieved"}
+        disabled={project?.status==="archieved"}
         value={project?.status || "in progress"}
         onChange={handleChange}
         options={[
@@ -172,8 +193,8 @@ const DetailSetting = ({
         <h6 className="text-h6">Project Linking</h6>
         <p className="text-sm my-2">Link this project to a repository or drop project folder</p>
         <div className="flex items-center gap-4">
-          <input type="file" disabled={project.status==="archieved"} />
-          <Button type="button" variant="primary" onClick={()=>{}} disabled={project.status==="archieved"}>
+          <input type="file" disabled={project?.status==="archieved"} />
+          <Button type="button" variant="primary" onClick={()=>{}} disabled={project?.status==="archieved"}>
             <span className="flex gap-2">
               <span>Link to Github</span>
             </span>
@@ -192,9 +213,9 @@ const DetailSetting = ({
       </div>
       <div className="flex items-center justify-between">
         <p className="font-bold">Archieve the Project</p>
-        <Button type="button" variant={`${project.status==="archieved"?"success":"danger"}`} onClick={()=>handleOpenAlert("archieve")}>
+        <Button type="button" variant={`${project?.status==="archieved"?"success":"danger"}`} onClick={()=>handleOpenAlert("archieve")}>
           {
-            project.status === "archieved" ? (
+            project?.status === "archieved" ? (
               <span className="flex gap-2">
                 <Unlock />
                 Unarchieve Project
@@ -206,11 +227,6 @@ const DetailSetting = ({
               </span>
             )
           }
-        </Button>
-      </div>
-      <div className="col-span-5 text-right py-4 px-2">
-        <Button form="project-form" type="submit" variant="success" onClick={()=>{}} disabled={project.status==="archieved"}>
-          Update
         </Button>
       </div>
       {isModelOpen && (<AlertModel title={alertDetails.title} message={alertDetails.description} handleConfirm={alertDetails.action} closeModel={closeModel} />)}
@@ -228,7 +244,7 @@ const NotificationTab = ({ project }: { project: Partial<Project> }) => {
         label=""
         name="notification"
         value={project?.status || "email"}
-        disabled={project.status==="archieved"}
+        disabled={project?.status==="archieved"}
         onChange={()=>{}}
         options={[
           { name: "Email", value: "email" },
@@ -341,7 +357,7 @@ const CollaborationTab = ({
           label="Email"
           name="email"
           type="email"
-          disabled={isSending || project.status === 'archieved'}
+          disabled={isSending || project?.status === 'archieved'}
           value={member.email!}
           onChange={handleChange}
           classes="w-[50%]"
@@ -354,27 +370,24 @@ const CollaborationTab = ({
           label="Role"
           value={member.role}
           onChange={handleChange}
-          disabled={isSending || project.status === 'archieved'}
+          disabled={isSending || project?.status === 'archieved'}
           options={[
             { name: "Tester", value: "tester" },
             { name: "Developer", value: "developer" },
             { name: "Stakeholder", value: "stakeholder" },
           ]}
         />
-        <Button variant="success" onClick={handleCollabAdd} disabled={isSending || project.status === 'archieved'}>
-          {
-            isSending ? (
-              <span className="flex items-center gap-2">
-                <Loader />
-                Sending
-              </span>
-            ) : (
-              <span className="flex items-center gap-2">
-                <UserPlus />
-                Send Invitation
-              </span>
-            )
-          }
+        <Button 
+          variant="success" 
+          onClick={handleCollabAdd} 
+          disabled={isSending || project?.status === 'archieved'}
+          isLoading={isSending}
+          loadingText="Sending"
+        >
+          <span className="flex items-center gap-2">
+            <UserPlus />
+            Send Invitation
+          </span>
         </Button>
       </div>
       {
@@ -391,7 +404,7 @@ const CollaborationTab = ({
               label=""
               name="email"
               type="email"
-              disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}
+              disabled={(isUpdating.status && isUpdating.index === i) || project?.status === 'archieved'}
               value={oldMembers[i]?.email || ""}
               onChange={e=>handleOldChange(e, i)}
               placeholder="Email"
@@ -403,7 +416,7 @@ const CollaborationTab = ({
               label=""
               name="role"
               value={oldMembers[i]?.role || "tester"}
-              disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}
+              disabled={(isUpdating.status && isUpdating.index === i) || project?.status === 'archieved'}
               onChange={e=>handleOldChange(e, i)}
               options={[
                 { name: "Tester", value: "tester" },
@@ -411,22 +424,19 @@ const CollaborationTab = ({
                 { name: "Stakeholder", value: "stakeholder" },
               ]}
             />
-            <Button variant="primary" onClick={()=>handleCollabUpdate(i)} disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}>
-              {
-                isUpdating.status && isUpdating.index === i ? (
-                  <span className="flex items-center gap-2">
-                    <Loader />
-                    Updating
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Edit3 />
-                    Update
-                  </span>
-                )
-              }
+            <Button 
+              variant="primary" 
+              onClick={()=>handleCollabUpdate(i)} 
+              disabled={(isUpdating.status && isUpdating.index === i) || project?.status === 'archieved'}
+              isLoading={isUpdating.status && isUpdating.index === i}
+              loadingText="Updating"
+            >
+              <span className="flex items-center gap-2">
+                <Edit3 />
+                Update
+              </span>
             </Button>
-            <IconButton variant="danger" icon={<UserMinus />} onClick={()=>handleMemberSelect(i)} disabled={(isUpdating.status && isUpdating.index === i) || project.status === 'archieved'}  />
+            <IconButton variant="danger" icon={<UserMinus />} onClick={()=>handleMemberSelect(i)} disabled={(isUpdating.status && isUpdating.index === i) || project?.status === 'archieved'}  />
           </div>
         ))
       }
