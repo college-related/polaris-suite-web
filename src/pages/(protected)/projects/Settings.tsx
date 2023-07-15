@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { Archive, Edit3, Loader, Trash, UserMinus, UserPlus } from "react-feather";
+
 import Input from "../../../components/form/Input";
 import Button from "../../../components/Button";
-import { Archive, Trash, UserMinus, UserPlus } from "react-feather";
 import Select from "../../../components/form/Select";
 import IconButton from "../../../components/IconButton";
+import { APICaller } from "../../../helpers/api";
+import { useModel } from "../../../utils/hooks/useModel";
+import AlertModel from "../../../components/portal/AlertModel";
 
 interface ISettingsProps {
   project: Partial<Project>;
+  setProject: React.Dispatch<React.SetStateAction<Partial<Project>>>;
 }
 
 const TABS = {
@@ -15,8 +20,38 @@ const TABS = {
   NOTIFICATIONS: "notifications",
 }
 
-const Settings = ({ project }: ISettingsProps) => {
+const Settings = ({ project, setProject }: ISettingsProps) => {
   const [tab, setTab] = useState(TABS.DETAIL);
+  const [hasUpdate, setHasUpdate] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setProject(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+    setHasUpdate(true);
+  }
+
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const toSendProjectData: dynamicObject = {
+      name: project.name,
+      status: project.status,
+      description: project.description,
+      members: project.members,
+    };
+
+    const { statusCode, data, error } = await APICaller(`/projects/${project._id}`,"PATCH",toSendProjectData);
+
+    if (statusCode === 200) {
+      setProject(data.project);
+    } else {
+      console.log(error);
+    }
+
+    setHasUpdate(false);
+  }
 
   return (
     <section className="grid grid-cols-5">
@@ -27,31 +62,38 @@ const Settings = ({ project }: ISettingsProps) => {
           <li onClick={()=>setTab(TABS.NOTIFICATIONS)} className={`font-bold rounded-md p-3 cursor-pointer ${tab===TABS.NOTIFICATIONS&&'bg-deep_blue text-white'}`}>Notifications</li>
         </ul>
       </div>
-      <div className="col-span-4 px-4 border-l-2">
-        { tab===TABS.DETAIL && <DetailSetting project={project} /> }
-        { tab===TABS.COLLABORATION && <CollaborationTab project={project} /> }
+      <form id="project-form" className="col-span-4 px-4 border-l-2" onSubmit={handleUpdate}>
+        {
+          hasUpdate && (
+            <div className="p-2 mb-4 bg-danger_light border-2 border-danger text-danger rounded-md">
+              <span className="text-sm font-bold">You have unsaved changes</span>
+            </div>
+          )
+        }
+        { tab===TABS.DETAIL && <DetailSetting project={project} handleChange={handleChange} /> }
+        { tab===TABS.COLLABORATION && <CollaborationTab project={project} setProject={setProject} /> }
         { tab===TABS.NOTIFICATIONS && <NotificationTab project={project} /> }
-      </div>
-      <div className="col-span-5 text-right py-4 px-2 mt-4">
-        <Button variant="success" onClick={()=>{}}>
-          Update
-        </Button>
-      </div>
+      </form>
     </section>
   )
 }
 
 // Details TAB
-const DetailSetting = ({ project }: { project: Partial<Project> }) => {
+const DetailSetting = ({ 
+  project, handleChange 
+}: { 
+  project: Partial<Project>, 
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void 
+}) => {
   return (
     <div className="flex flex-col gap-4">
-      <Input label="Project Name" name="name" onChange={()=>{}} value={project?.name || ""} />
-      <Input label="Project Description" name="description" onChange={()=>{}} value={project?.description || ""} />
+      <Input label="Project Name" name="name" onChange={handleChange} value={project?.name || ""} />
+      <Input label="Project Description" name="description" onChange={handleChange} value={project?.description || ""} />
       <Select 
         label="Project Status"
         name="status"
         value={project?.status || "in progress"}
-        onChange={()=>{}}
+        onChange={handleChange}
         options={[
           { name: "Active", value: "in progress" },
           { name: "Archieve", value: "archieved" },
@@ -91,6 +133,11 @@ const DetailSetting = ({ project }: { project: Partial<Project> }) => {
           </span>
         </Button>
       </div>
+      <div className="col-span-5 text-right py-4 px-2">
+        <Button form="project-form" type="submit" variant="success" onClick={()=>{}}>
+          Update
+        </Button>
+      </div>
     </div>
   )
 }
@@ -117,7 +164,97 @@ const NotificationTab = ({ project }: { project: Partial<Project> }) => {
 }
 
 // Collaboration TAB
-const CollaborationTab = ({ project }: { project: Partial<Project> }) => {
+const CollaborationTab = ({ 
+  project, 
+  setProject,
+}: { 
+  project: Partial<Project>, 
+  setProject: React.Dispatch<React.SetStateAction<Partial<Project>>>,
+}) => {
+  const [member, setMember] = useState<Partial<Collaborator>>({
+    email: "",
+    role: "tester",
+  });
+
+  const [oldMembers, setOldMembers] = useState<Collaborator[]>(project?.members || []);
+  const [isSending, setIsSending] = useState(false);
+  const [isUpdating, setIsUpdating] = useState<{status: boolean, index: number | null}>({
+    status: false,
+    index: null,
+  });
+  const [selectedMember, setSelectedMember] = useState<number | null>(null);
+  const { isModelOpen, openModel, closeModel } = useModel();
+
+
+  const handleCollabAdd = async () => {
+    if (member.email === "") return;
+
+    setIsSending(true);
+
+    const { data, statusCode, error } = await APICaller(`/projects/${project._id}/invite`, "PATCH", member);
+
+    if(statusCode === 200) {
+      setProject(data.project);
+      setMember({ email: "", role: "tester" });
+      setOldMembers(data.project.members);
+    } else {
+      console.log(error);
+    }
+
+    setIsSending(false);
+  }
+
+  const handleCollabRemove = async () => {
+    const { data, statusCode, error } = await APICaller(`projects/${project._id}/members/remove`, "PATCH", { email: oldMembers[selectedMember!].email });
+
+    if(statusCode === 200) {
+      setProject(data.project);
+      setMember({ email: "", role: "tester", status: "pending" });
+      setOldMembers(data.project.members);
+    } else {
+      console.log(error);
+    }
+
+    closeModel();
+  }
+
+  const handleCollabUpdate = async (i: number) => {
+    setIsUpdating({ status: true, index: i });
+
+    const toSend = {
+      members: oldMembers,
+    }
+
+    const { data, statusCode, error } = await APICaller(`/projects/${project._id}`, "PATCH", toSend);
+
+    if(statusCode === 200) {
+      setProject(data.project);
+      setOldMembers(data.project.members);
+    } else {
+      console.log(error);
+    }
+
+    setIsUpdating({ status: false, index: null });
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setMember(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  const handleOldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, i: number) => {
+    setOldMembers(prev => (
+      prev.map((member, index) => {
+        if (index === i) return { ...member, [e.target.name]: e.target.value };
+        return member
+      })
+    ));
+  }
+
+  const handleMemberSelect = (i: number) => {
+    setSelectedMember(i);
+    openModel();
+  }
+
   return (
     <div className="flex flex-col gap-2">
       <h6 className="text-h6">Collaboration</h6>
@@ -127,62 +264,96 @@ const CollaborationTab = ({ project }: { project: Partial<Project> }) => {
           label="Email"
           name="email"
           type="email"
-          value={""}
-          onChange={()=>{}}
-          classes="w-full"
+          disabled={isSending}
+          value={member.email!}
+          onChange={handleChange}
+          classes="w-[50%]"
           placeholder="Email"
-          required
+          required={false}
           errors={null}
         />
         <Select 
           name="role"
           label="Role"
-          onChange={()=>{}}
+          value={member.role}
+          onChange={handleChange}
+          disabled={isSending}
           options={[
-              { name: "Tester", value: "tester" },
-              { name: "Developer", value: "developer" },
-              { name: "Stakeholder", value: "stakeholder" },
+            { name: "Tester", value: "tester" },
+            { name: "Developer", value: "developer" },
+            { name: "Stakeholder", value: "stakeholder" },
           ]}
         />
-        <IconButton variant="success" icon={<UserPlus />} onClick={()=>{}} />
+        <Button variant="success" onClick={handleCollabAdd}>
+          {
+            isSending ? (
+              <span className="flex items-center gap-2">
+                <Loader />
+                Sending
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <UserPlus />
+                Send Invitation
+              </span>
+            )
+          }
+        </Button>
       </div>
       {
-        project?.members?.length === 0 ? (
+        oldMembers?.length === 0 ? (
           <h6 className="text-h6 font-bold text-center">No collaborators found</h6>
         ) : (
           <h6 className="text-h6">Collaborators</h6>
         )
       }
       {
-        project?.members?.map((collaborator) => (
-          <>
-            <div className="flex gap-2 items-end">
-              <Input 
-                label=""
-                name="email"
-                type="email"
-                value={collaborator.email || ''}
-                onChange={()=>{}}
-                placeholder="Email"
-                required
-                classes="w-full"
-                errors={null}
-              />
-              <Select 
-                name="role"
-                label=""
-                onChange={()=>{}}
-                options={[
-                  { name: "Tester", value: "tester" },
-                  { name: "Developer", value: "developer" },
-                  { name: "Stakeholder", value: "stakeholder" },
-                ]}
-              />
-              <IconButton variant="danger" icon={<UserMinus />} onClick={()=>{}} />
-            </div>
-          </>
+        oldMembers?.map((collaborator, i) => (
+          <div className="flex gap-2 items-end" key={collaborator.email}>
+            <Input 
+              label=""
+              name="email"
+              type="email"
+              disabled={isUpdating.status && isUpdating.index === i}
+              value={oldMembers[i]?.email || ""}
+              onChange={e=>handleOldChange(e, i)}
+              placeholder="Email"
+              required
+              classes="w-[50%]"
+              errors={null}
+            />
+            <Select 
+              label=""
+              name="role"
+              value={oldMembers[i]?.role || "tester"}
+              disabled={isUpdating.status && isUpdating.index === i}
+              onChange={e=>handleOldChange(e, i)}
+              options={[
+                { name: "Tester", value: "tester" },
+                { name: "Developer", value: "developer" },
+                { name: "Stakeholder", value: "stakeholder" },
+              ]}
+            />
+            <Button variant="primary" onClick={()=>handleCollabUpdate(i)}>
+              {
+                isUpdating.status && isUpdating.index === i ? (
+                  <span className="flex items-center gap-2">
+                    <Loader />
+                    Updating
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Edit3 />
+                    Update
+                  </span>
+                )
+              }
+            </Button>
+            <IconButton variant="danger" icon={<UserMinus />} onClick={()=>handleMemberSelect(i)} />
+          </div>
         ))
       }
+      {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={handleCollabRemove} title="Remove Collaborator" message="Do you want to remove this collaborator?" />)}
     </div>
   )
 }

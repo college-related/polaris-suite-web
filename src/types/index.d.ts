@@ -29,7 +29,7 @@ type Environment = {
 }
 
 type Collaborator = {
-  name: string;
+  _id?: string;
   role: string;
   email: string;
   status: "pending" | "accepted" | "declined";

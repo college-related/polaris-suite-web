@@ -7,7 +7,6 @@ import EnvironmentModel from "../../../components/portal/EnvironmentModel"
 import { useModel } from "../../../utils/hooks/useModel"
 import AlertModel from "../../../components/portal/AlertModel"
 import IconButton from "../../../components/IconButton"
-import Input from "../../../components/form/Input"
 
 interface ISingleProjectProps {
   project: Partial<Project>;
@@ -67,10 +66,10 @@ const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) 
         </Button>
       </div>
       {
-        project?.environments?.length === 0 && (
-          <>
-            <p className="p-3">No environments found</p>
-          </>
+        project?.environments?.length === 0 ? (
+          <p className="p-3">No environments found</p>
+        ) : (
+          <h6 className="text-h6 mb-4">Selected Environment: <span className="text-primary">{selectedEnvironment?.name}</span></h6>
         )
       }
       <div className="flex gap-4 items-center flex-wrap">
