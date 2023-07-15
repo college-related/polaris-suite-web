@@ -54,15 +54,7 @@
   .clear { @apply bg-transparent text-primary; }
   .dark { @apply bg-dark text-white; }
 
-  .info {
-    @apply bg-blue-500 text-white;
-  }
-
-
   .disabled {
-    @apply opacity-100 cursor-not-allowed;
-  }
-  .disabled:hover {
-    @apply opacity-100 cursor-not-allowed;
+    @apply bg-gray-300 text-gray-400;
   }
 }

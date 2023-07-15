@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { Hexagon } from "react-feather";
+import { Hexagon, Loader } from "react-feather";
 
 interface IButtonProps {
   onClick: () => void;
@@ -8,6 +8,7 @@ interface IButtonProps {
   disabled?: boolean;
   classes?: string;
   isLoading?: boolean;
+  loadingText?: string;
   [key: string]: any;
 }
 
@@ -20,20 +21,22 @@ const Button = ({
   disabled = false,
   classes = '',
   isLoading = false,
+  loadingText = '',
   ...rest
 }: PropsWithChildren<IButtonProps>) => {
   return (
     <button
       className={`btn ${variant} ${size} ${classes}` 
-        + ((disabled || isLoading) ? ' disabled' : '')
-        + (isLoading ? ' bg-primary/50 hover:bg-primary/50' : '')}
+        + ((disabled && variant==='default') ? 'disabled' : '')
+        + (disabled ? 'cursor-not-allowed' : '')}
       onClick={onClick}
       disabled={disabled || isLoading}
       {...rest}
     >
       {isLoading ? (
-        <span className="flex items-center justify-center animate-[spin_2s_ease-in-out_infinite]">
-          <Hexagon />
+        <span className="flex items-center justify-center">
+          <Loader className="animate-[spin_2s_ease-in-out_infinite]" />
+          {loadingText}
         </span>
       ) : children}
     </button>

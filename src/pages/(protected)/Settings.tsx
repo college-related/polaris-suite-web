@@ -22,7 +22,7 @@ const SettingPage = () => {
       </SettingTile>
       <SettingTile title="Github" description="Link your github account">
         <>
-          <Button variant="primary" onClick={() => {}}>
+          <Button variant="dark" onClick={() => {}}>
             <span className="flex items-center gap-2">
               <GitHub /> Github
             </span>
