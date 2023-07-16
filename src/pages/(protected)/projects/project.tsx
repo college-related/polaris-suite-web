@@ -106,91 +106,100 @@ const SingleProject = ({ project, projectId, setProject }: ISingleProjectProps) 
                   <span className="text-primary font-bold">{environment.variables?.length}</span> variables
                 </p>
               </div>
-              <IconButton variant="danger" icon={<Trash className="w-4 h-4" />} onClick={()=>handleDeleteEnvSelect(environment._id!)} />
+              <IconButton variant="danger" icon={<Trash className="w-4 h-4" />} disabled={project?.status==='archieved'} onClick={()=>handleDeleteEnvSelect(environment._id!)} />
             </div>
           ))
         }
       </div>
-      <div className="mt-8">
-        <h6><span className="text-primary">{selectedEnvironment?.name}</span> Environment</h6>
-        <p>{selectedEnvironment?.description}</p>
-        <p className="mt-4 font-bold underline">Variables</p>
-        {
-          selectedEnvironment?.variables?.map((variable, i) => (
-            <div key={i} className="flex items-end gap-4">
-              <Input
-                label=""
-                name="name"
-                onChange={(e) => {
+      {
+        selectedEnvironment && (  
+          <div className="mt-8">
+            <h6><span className="text-primary">{selectedEnvironment?.name}</span> Environment</h6>
+            <p>{selectedEnvironment?.description}</p>
+            <p className="mt-4 font-bold underline">Variables</p>
+            {
+              selectedEnvironment?.variables?.map((variable, i) => (
+                <div key={i} className="flex items-end gap-4">
+                  <Input
+                    label=""
+                    name="name"
+                    onChange={(e) => {
+                      setSelectedEnvironment((prev) => ({
+                        ...prev,
+                        variables: prev?.variables?.map((v, index) =>
+                          index === i ? { ...v, [e.target.name]: e.target.value } : v
+                        )
+                      }));
+                    }}
+                    value={variable.name}
+                    placeholder="Variable Name"
+                    required={false}
+                    classes="w-full"
+                    inpClasses={`${hasVariableEmptyError && variable.name === "" && "border-2 border-danger"}`}
+                    disabled={isSaving || project?.status==='archieved'}
+                  />
+                  <Input
+                    label=""
+                    name="value"
+                    onChange={(e) => {
+                      setSelectedEnvironment((prev) => ({
+                        ...prev,
+                        variables: prev?.variables?.map((v, index) =>
+                          index === i ? { ...v, [e.target.name]: e.target.value } : v
+                        )
+                      }));
+                    }}
+                    value={variable.value}
+                    placeholder="Variable Value"
+                    required={false}
+                    classes="w-full"
+                    inpClasses={`${hasVariableEmptyError && variable.value === "" && "border-2 border-danger"}`}
+                    disabled={isSaving || project?.status==='archieved'}
+                  />
+                  <IconButton
+                    type="button"
+                    variant="danger"
+                    icon={<Minus />}
+                    onClick={() => {
+                      setSelectedEnvironment((prev) => ({
+                        ...prev,
+                        variables: prev?.variables?.filter((_, index) => index !== i)
+                      }));
+                    }}
+                    disabled={isSaving || project?.status==='archieved'}
+                  />
+                </div>
+              ))
+            }
+            <div className="flex gap-4 mt-4">
+              <Button 
+                variant="primary" 
+                onClick={()=>{
                   setSelectedEnvironment((prev) => ({
                     ...prev,
-                    variables: prev?.variables?.map((v, index) =>
-                      index === i ? { ...v, [e.target.name]: e.target.value } : v
-                    )
+                    variables: [...prev?.variables!, { name: "", value: "" }]
                   }));
                 }}
-                value={variable.name}
-                placeholder="Variable Name"
-                required={false}
-                classes="w-full"
-                inpClasses={`${hasVariableEmptyError && variable.name === "" && "border-2 border-danger"}`}
-              />
-              <Input
-                label=""
-                name="value"
-                onChange={(e) => {
-                  setSelectedEnvironment((prev) => ({
-                    ...prev,
-                    variables: prev?.variables?.map((v, index) =>
-                      index === i ? { ...v, [e.target.name]: e.target.value } : v
-                    )
-                  }));
-                }}
-                value={variable.value}
-                placeholder="Variable Value"
-                required={false}
-                classes="w-full"
-                inpClasses={`${hasVariableEmptyError && variable.value === "" && "border-2 border-danger"}`}
-              />
-              <IconButton
-                type="button"
-                variant="danger"
-                icon={<Minus />}
-                onClick={() => {
-                  setSelectedEnvironment((prev) => ({
-                    ...prev,
-                    variables: prev?.variables?.filter((_, index) => index !== i)
-                  }));
-                }}
-              />
+                disabled={isSaving || project?.status==='archieved'}
+              >
+                <span className="flex items-center gap-2">
+                  <Plus />
+                  Add Variable
+                </span>
+              </Button>
+              <Button 
+                variant="success" 
+                onClick={updateEnviroment}
+                isLoading={isSaving}
+                loadingText="Saving changes..."
+                disabled={isSaving || project?.status==='archieved'}
+              >
+                Save Changes
+              </Button>
             </div>
-          ))
-        }
-        <div className="flex gap-4 mt-4">
-          <Button 
-            variant="primary" 
-            onClick={()=>{
-              setSelectedEnvironment((prev) => ({
-                ...prev,
-                variables: [...prev?.variables!, { name: "", value: "" }]
-              }));
-            }}
-          >
-            <span className="flex items-center gap-2">
-              <Plus />
-              Add Variable
-            </span>
-          </Button>
-          <Button 
-            variant="success" 
-            onClick={updateEnviroment}
-            isLoading={isSaving}
-            loadingText="Saving changes..."
-          >
-            Save Changes
-          </Button>
-        </div>
-      </div>
+          </div>
+        )
+      }
       {showModel && <EnvironmentModel projectId={projectId!} closeModel={()=>setShowModel(false)} setEnvironments={setProject} />}
       {isModelOpen && (<AlertModel closeModel={closeModel} handleConfirm={handleDelete} title="Delete Environment" message="Are you sure you want to delete this environment?" />)}    
     </>

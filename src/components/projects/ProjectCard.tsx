@@ -10,11 +10,11 @@ const ProjectCard = ({ project }: IProjectCardProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "in progress":
-        return "bg-yellow-400"
+        return "bg-warning"
       case "done":
-        return "bg-green-600"
+        return "bg-success"
       case "hold":
-        return "bg-red-600"
+        return "bg-danger"
       default:
         return "bg-gray-600"
     }

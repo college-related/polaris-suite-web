@@ -183,9 +183,7 @@ const DetailSetting = ({
         onChange={handleChange}
         options={[
           { name: "Active", value: "in progress" },
-          { name: "Archieve", value: "archieved" },
           { name: "On Hold", value: "hold" },
-          { name: "Draft", value: "draft" },
           { name: "Complete", value: "done" },
         ]}
       />
