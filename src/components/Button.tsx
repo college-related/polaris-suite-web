@@ -27,8 +27,7 @@ const Button = ({
   return (
     <button
       className={`btn ${variant} ${size} ${classes}` 
-        + ((disabled && variant==='default') ? 'disabled' : '')
-        + (disabled ? 'cursor-not-allowed' : '')}
+        + ((disabled && !isLoading || variant==='default') ? 'disabled cursor-not-allowed' : '')}
       onClick={onClick}
       disabled={disabled || isLoading}
       {...rest}
