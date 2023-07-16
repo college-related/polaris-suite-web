@@ -9,17 +9,15 @@ import { getUser } from "../../helpers/cookie";
 interface IProjectModelProps {
   closeModel: () => void;
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
-  projectData: Partial<Project> | undefined;
 }
 
 const ProjectModel = ({
   closeModel,
   setProjects,
-  projectData,
 }: IProjectModelProps) => {
   const [project, setProject] = useState<Partial<Project>>({
-    name: projectData?.name || "",
-    description: projectData?.description || "",
+    name: "",
+    description: "",
   });
   const [status, setStatus] = useState<string>("in progress");
   const [isCreating, setIsCreating] = useState(false);
@@ -28,9 +26,6 @@ const ProjectModel = ({
     e.preventDefault();
 
     setIsCreating(true);
-
-    let url = "/projects";
-    let method: "POST" | "PATCH" = "POST";
 
     let toSendProjectData: dynamicObject = {
       name: project.name,
@@ -42,16 +37,9 @@ const ProjectModel = ({
       toSendProjectData.description = project.description;
     }
 
-    if (projectData) {
-      url = `/projects/${projectData._id}`;
-      method = "PATCH";
-
-      delete toSendProjectData.ownerID;
-    }
-
     const { statusCode, data, error } = await APICaller(
-      url,
-      method,
+      "/projects",
+      "POST",
       toSendProjectData
     );
 
@@ -108,23 +96,21 @@ const ProjectModel = ({
             errors={null}
           />
           <Button
-            children={`${projectData ? "Edit" : "Create"} Project`}
+            children="Create Project"
             type="submit"
             onClick={() => {}}
             variant="success"
             classes="w-full font-bold"
             isLoading={isCreating}
           />
-          {!projectData && (
-            <Button
-              children="Save as Draft"
-              type="submit"
-              onClick={() => setStatus("draft")}
-              variant="warning"
-              classes="w-full mt-4 font-bold"
-              isLoading={isCreating}
-            />
-          )}
+          <Button
+            children="Save as Draft"
+            type="submit"
+            onClick={() => setStatus("draft")}
+            variant="warning"
+            classes="w-full mt-4 font-bold"
+            isLoading={isCreating}
+          />
           <Button
             children="Cancel"
             type="button"

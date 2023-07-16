@@ -5,13 +5,13 @@ import ProjectCard from "../../../components/projects/ProjectCard"
 import { APICaller } from "../../../helpers/api"
 import ProjectModel from "../../../components/portal/ProjectModel"
 import Button from "../../../components/Button"
+import { useModel } from "../../../utils/hooks/useModel"
 
 export default function ProjectsPage() {
 
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProject] = useState<Partial<Project> | undefined>(undefined);
   const [isFetching, setIsFetching] = useState(false);
-  const [showModel, setShowModel] = useState(false);
+  const { openModel, closeModel, isModelOpen } = useModel();
   const [isShowingAll, setIsShowingAll] = useState(false);
 
   const fetchProjects = async (query?: string) => {
@@ -31,11 +31,6 @@ export default function ProjectsPage() {
   useEffect(() => {
     fetchProjects();
   }, [])
-
-  const handleCreate = () => {
-    setSelectedProject(undefined)
-    setShowModel(true)
-  }
 
   const handleShow = () => {
     setIsShowingAll(!isShowingAll);
@@ -85,7 +80,7 @@ export default function ProjectsPage() {
             <>
               <div 
                 className="bg-primary_light text-primary p-5 w-[350px] min-h-[200px] flex items-center justify-center cursor-pointer rounded-md hover:shadow-md"
-                onClick={handleCreate}
+                onClick={openModel}
               >
                 <PlusSquare className="w-20 h-20" />
               </div>
@@ -94,7 +89,7 @@ export default function ProjectsPage() {
           )
         }
       </div>
-      {showModel && (<ProjectModel projectData={selectedProject} setProjects={setProjects} closeModel={()=>setShowModel(false)} />)}
+      {isModelOpen && (<ProjectModel setProjects={setProjects} closeModel={closeModel} />)}
     </main>
   )
 }
