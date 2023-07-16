@@ -11,19 +11,17 @@ interface IEnvironmentModelProps {
   closeModel: () => void;
   setEnvironments: React.Dispatch<React.SetStateAction<Partial<Project> | null>>;
   projectId: string;
-  environmentData: Partial<Environment> | undefined;
 }
 
 const EnvironmentModel = ({
   closeModel,
   setEnvironments,
   projectId,
-  environmentData,
 }: IEnvironmentModelProps) => {
   const [environment, setEnvironment] = useState<Partial<Environment>>({
-    name: environmentData?.name || "",
-    description: environmentData?.description || "",
-    variables: environmentData?.variables || [],
+    name: "",
+    description: "",
+    variables: [],
   });
   const [isCreating, setIsCreating] = useState(false);
 
@@ -70,17 +68,9 @@ const EnvironmentModel = ({
       };
     }
 
-    let url = `/environments/${projectId}`;
-    let method: "POST" | "PATCH" = "POST";
-
-    if (environmentData) {
-      url += `/${environmentData._id}`;
-      method = "PATCH";
-    }
-
     const { statusCode, data, error } = await APICaller(
-      url,
-      method,
+      `/environments/${projectId}`,
+      "POST",
       toSendEnvironment
     );
 
@@ -88,13 +78,6 @@ const EnvironmentModel = ({
       setEnvironments((prev) => ({
         ...prev,
         environments: [...prev?.environments!, data.environment],
-      }));
-    } else if (statusCode === 200) {
-      setEnvironments((prev) => ({
-        ...prev,
-        environments: prev?.environments?.map((env) =>
-          env._id === environmentData?._id ? data.environment : env
-        ),
       }));
     } else {
       console.log(error);
@@ -110,7 +93,7 @@ const EnvironmentModel = ({
         className="bg-white rounded-md p-4 w-1/2 mt-20 mx-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h1 className="text-2xl font-bold">{environmentData ? "Edit" : "Create"} Environment</h1>
+        <h1 className="text-2xl font-bold">Create Environment</h1>
         <br />
         <form onSubmit={handleSubmit}>
           <Input
@@ -195,7 +178,7 @@ const EnvironmentModel = ({
               type="submit"
               classes="font-medium"
             >
-              {environmentData ? "Edit" : "Create"}
+              Create
             </Button>
           </div>
         </form>
