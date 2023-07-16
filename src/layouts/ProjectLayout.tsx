@@ -7,9 +7,10 @@ import IconButton from '../components/IconButton';
 interface IProjectLayoutProps extends PropsWithChildren {
   title: string;
   description: string;
+  url: string;
 }
 
-const ProjectLayout = ({ children, title, description }: IProjectLayoutProps) => {
+const ProjectLayout = ({ children, title, description, url }: IProjectLayoutProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const path = pathname.split("/")[4];
@@ -18,7 +19,7 @@ const ProjectLayout = ({ children, title, description }: IProjectLayoutProps) =>
   return (
     <main>
       <div className="flex items-center gap-4">
-        <IconButton icon={<ArrowLeft />} onClick={()=>navigate('/polaris/projects')} variant='primary' />
+        <IconButton icon={<ArrowLeft />} onClick={()=>navigate(url)} variant='primary' />
         <div>
           <h2 className="text-h2">{title}</h2>
           <p>{description}</p>

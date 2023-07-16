@@ -44,3 +44,43 @@ type Activity = {
   createdAt: string;
   link: string;
 }
+
+type TestCase = {
+  _id: string;
+  linkedProject: string;
+  environment: string;
+  name: string;
+  description: string;
+  recentRun: null | "pass" | "fail";
+  status: "in progress" | "in review" | "done";
+  testRuns: TestRun[];
+  scheme: null | TestScheme;
+  type: "unit" | "integration" | "component" | "api" | "e2e";
+  createdAt: string;
+  updatedAt: string;
+}
+
+type TestRun = {
+  _id: string;
+  result: TestResult;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+type TestScheme = {
+  name: string;
+  description: string;
+  params?: {
+    name: string;
+    value: string;
+  }[];
+  children?: TestScheme;
+}
+
+type TestResult = {
+  result: string;
+  status: "pass" | "fail";
+  logs: string[];
+  createdAt: string;
+}

@@ -7,4 +7,6 @@ export { default as TestCases } from "./projects/TestCases";
 export { default as ProjectSettingPage } from "./projects/Settings";
 export { default as ProjectActivityPage } from "./projects/Activities";
 
+export { default as SingleTestCase } from "./testcases";
+
 // Path: src\pages\(protected)\Dashboard\index.ts

@@ -15,7 +15,8 @@ import {
   SingleProject, 
   TestCases, 
   ProjectActivityPage, 
-  ProjectSettingPage 
+  ProjectSettingPage, 
+  SingleTestCase
 } from "../pages/(protected)";
 
 import { useApiRead } from "../utils/hooks/useApiRead";
@@ -73,6 +74,7 @@ const ProjectRoutes = () => {
     <Routes>
       <Route path="/" element={<ProjectsPage />} />
       <Route path="/:projectId/*" element={<ProjectTabRoutes />} />
+      <Route path="/:projectId/testcase/:testcaseId/*" element={<TestCaseTabRoutes />} />
     </Routes>
   )
 }
@@ -84,12 +86,30 @@ const ProjectTabRoutes = () => {
   if(isLoading) return <div>Loading...</div>;
 
   return (
-    <ProjectLayout title={data?.name || ""} description={data?.description || ""}>
+    <ProjectLayout title={data?.name || ""} description={data?.description || ""} url={'/polaris/projects'}>
       <Routes>
         <Route path="/" element={<SingleProject project={data!} projectId={projectId!} setProject={setData} />} />
-        <Route path="test-cases" element={<TestCases />} />
+        <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />
         <Route path="settings" element={<ProjectSettingPage project={data!} setProject={setData} />} />
         <Route path="activities" element={<ProjectActivityPage />} />
+      </Routes>
+    </ProjectLayout>
+  );
+}
+
+const TestCaseTabRoutes = () => {
+  const { testcaseId, projectId } = useParams();
+  const { data, isLoading, setData } = useApiRead(`/testcases/${projectId}/${testcaseId}`, "testcase");
+
+  if(isLoading) return <div>Loading...</div>;
+
+  return (
+    <ProjectLayout title={data?.name || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
+      <Routes>
+        <Route path="/" element={<SingleTestCase />} />
+        {/* <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />
+        <Route path="settings" element={<ProjectSettingPage project={data!} setProject={setData} />} />
+        <Route path="activities" element={<ProjectActivityPage />} /> */}
       </Routes>
     </ProjectLayout>
   );
