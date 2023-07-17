@@ -402,7 +402,7 @@ const CollaborationTab = ({
               label=""
               name="email"
               type="email"
-              disabled={(isUpdating.status && isUpdating.index === i) || project?.status === 'archieved'}
+              disabled={true}
               value={oldMembers[i]?.email || ""}
               onChange={e=>handleOldChange(e, i)}
               placeholder="Email"
@@ -422,6 +422,11 @@ const CollaborationTab = ({
                 { name: "Stakeholder", value: "stakeholder" },
               ]}
             />
+            <span 
+              className={`p-2 rounded-md text-xs font-bold text-white ${oldMembers[i]?.status === 'accepted' ? 'bg-success' : oldMembers[i]?.status === 'pending' ? 'bg-warning' : 'bg-danger'}`}
+            >
+              {oldMembers[i]?.status}
+            </span>
             <Button 
               variant="primary" 
               onClick={()=>handleCollabUpdate(i)} 

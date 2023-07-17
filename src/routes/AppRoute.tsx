@@ -17,10 +17,12 @@ import {
   TestCases, 
   ProjectActivityPage, 
   ProjectSettingPage, 
-  SingleTestCase
+  SingleTestCase,
+  DeclineInvitation
 } from "../pages/(protected)";
 
 import { useApiRead } from "../utils/hooks/useApiRead";
+import AcceptInvitation from "../pages/(protected)/projects/AcceptInvitation";
 
 const AppRoute = () => {
   return (
@@ -29,6 +31,8 @@ const AppRoute = () => {
         <Route path="/*" element={<PublicRoutes />} />
         <Route path="/auth/*" element={<AuthenticationRoutes />} />
         <Route path="/polaris/*" element={<ProtectedRoutes />} />
+        <Route path="/accept-invitation" element={<AcceptInvitation />} />
+        <Route path="/decline-invitation" element={<DeclineInvitation />} />
       </Routes>
     </BrowserRouter>
   )

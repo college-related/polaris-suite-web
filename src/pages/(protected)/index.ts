@@ -6,6 +6,8 @@ export { default as SingleProject } from "./projects/project";
 export { default as TestCases } from "./projects/TestCases";
 export { default as ProjectSettingPage } from "./projects/Settings";
 export { default as ProjectActivityPage } from "./projects/Activities";
+export { default as AccepInvitation } from "./projects/AcceptInvitation";
+export { default as DeclineInvitation } from "./projects/DeclineInvitation";
 
 export { default as SingleTestCase } from "./testcases";
 
