@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { APICaller } from "../../helpers/api";
 
-export const useApiRead = (url: string, key: string) => {
+export const useApiRead = (url: string, key: string, dependencies: Array<any>=[]) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<dynamicObject|null>(null);
 
@@ -9,7 +9,7 @@ export const useApiRead = (url: string, key: string) => {
     setIsLoading(true);
 
     (async () => {
-      const { statusCode, data, error } = await APICaller(url, "GET")
+      const { statusCode, data, error } = await APICaller(url, "GET");
 
       if(statusCode === 200) {
         setData(data[key])
@@ -19,7 +19,7 @@ export const useApiRead = (url: string, key: string) => {
     })();
 
     setIsLoading(false);
-  }, [])
+  }, dependencies)
 
   return {
     isLoading,
