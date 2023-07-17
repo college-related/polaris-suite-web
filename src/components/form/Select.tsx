@@ -1,9 +1,7 @@
 interface ISelectProps {
   label: string;
   name: string;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   options: dynamicObjectString[];
   required?: boolean;
   disabled?: boolean;
@@ -41,6 +39,7 @@ const Select = (props: ISelectProps) => {
         className={`w-full p-3 rounded-sm border mt-2 ${
           errors && errors.hasOwnProperty(name) && "border-red-500"
         } ${classes}`}
+        {...rest}
       >
         {options.map((option, index) => (
           <option key={index} value={option.value}>
