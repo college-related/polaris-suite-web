@@ -1,37 +1,32 @@
-import type { PropsWithChildren } from 'react'
-import { ArrowLeft, Clipboard, Copy, GitBranch, Sliders } from 'react-feather';
+import { ArrowLeft, Clipboard, GitBranch, Sliders } from 'react-feather'
+import { PropsWithChildren } from 'react';
+import IconButton from '../components/IconButton'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import IconButton from '../components/IconButton';
-
-interface IProjectLayoutProps extends PropsWithChildren {
+interface ITestCaseLayoutProps extends PropsWithChildren {
   title: string;
   description: string;
+  url: string;
 }
 
-const ProjectLayout = ({ children, title, description }: IProjectLayoutProps) => {
+const TestCaseLayout = ({ children, title, description, url }: ITestCaseLayoutProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const path = pathname.split("/")[4];
-  const newPathname = pathname.split("/").slice(0, 4).join("/");
-  
+  const path = pathname.split("/")[7];
+  const newPathname = pathname.split("/").slice(0, 7).join("/");
+
   return (
     <main>
       <div className="flex items-center gap-4">
-        <IconButton icon={<ArrowLeft />} onClick={()=>navigate('/polaris/projects')} variant='primary' />
+        <IconButton icon={<ArrowLeft />} onClick={()=>navigate(url)} variant='primary' />
         <div>
           <h2 className="text-h2">{title}</h2>
           <p>{description}</p>
         </div>
       </div>
       <div className="my-8 flex gap-16 items-center relative border-b-2">
-        <Link to={newPathname}>
+        <Link to={`${newPathname}`}>
           <div className={`flex gap-4 items-center pb-2 transition-all ${path===undefined&&'border-b-4 border-primary'}`}>
-            <Copy className="w-5 h-5" /> Environments
-          </div>
-        </Link>
-        <Link to={`${newPathname}/test-cases`}>
-          <div className={`flex gap-4 items-center pb-2 transition-all ${path==='test-cases'&&'border-b-4 border-primary'}`}>
             <Clipboard className="w-5 h-5" /> Test Cases
           </div>
         </Link>
@@ -45,11 +40,10 @@ const ProjectLayout = ({ children, title, description }: IProjectLayoutProps) =>
             <GitBranch className="w-5 h-5" /> Activities
           </div>
         </Link>
-        {/* <div className="w-32 h-1 bg-primary absolute -bottom-3 left-3"></div> */}
       </div>
       {children}
     </main>
   )
 }
 
-export default ProjectLayout
+export default TestCaseLayout

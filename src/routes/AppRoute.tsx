@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes, useParams } from "react-router-dom"
 
 import MasterLayout from "../layouts/MasterLayout";
 import ProjectLayout from "../layouts/ProjectLayout";
+import TestCaseLayout from "../layouts/TestCaseLayout";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 import AuthenticationLayout from "../layouts/AuthenticationLayout";
 
@@ -74,7 +75,7 @@ const ProjectRoutes = () => {
     <Routes>
       <Route path="/" element={<ProjectsPage />} />
       <Route path="/:projectId/*" element={<ProjectTabRoutes />} />
-      <Route path="/:projectId/testcase/:testcaseId/*" element={<TestCaseTabRoutes />} />
+      <Route path="/:projectId/testcase/:environmentId/:testcaseId/*" element={<TestCaseTabRoutes />} />
     </Routes>
   )
 }
@@ -86,7 +87,7 @@ const ProjectTabRoutes = () => {
   if(isLoading) return <div>Loading...</div>;
 
   return (
-    <ProjectLayout title={data?.name || ""} description={data?.description || ""} url={'/polaris/projects'}>
+    <ProjectLayout title={data?.name || ""} description={data?.description || ""}>
       <Routes>
         <Route path="/" element={<SingleProject project={data!} projectId={projectId!} setProject={setData} />} />
         <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />
@@ -98,20 +99,20 @@ const ProjectTabRoutes = () => {
 }
 
 const TestCaseTabRoutes = () => {
-  const { testcaseId, projectId } = useParams();
-  const { data, isLoading, setData } = useApiRead(`/testcases/${projectId}/${testcaseId}`, "testcase");
+  const { testcaseId, projectId, environmentId } = useParams();
+  const { data, isLoading, setData } = useApiRead(`/testcases/${projectId}/${environmentId}/${testcaseId}`, "testcase");
 
   if(isLoading) return <div>Loading...</div>;
 
   return (
-    <ProjectLayout title={data?.name || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
+    <TestCaseLayout title={data?.name || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
       <Routes>
-        <Route path="/" element={<SingleTestCase />} />
+        <Route path="/" element={<SingleTestCase testcase={data!} setTestCase={setData!} testcaseId={testcaseId!} environmentId={environmentId!} />} />
         {/* <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />
         <Route path="settings" element={<ProjectSettingPage project={data!} setProject={setData} />} />
         <Route path="activities" element={<ProjectActivityPage />} /> */}
       </Routes>
-    </ProjectLayout>
+    </TestCaseLayout>
   );
 }
 

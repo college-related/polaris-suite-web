@@ -47,40 +47,51 @@ type Activity = {
 
 type TestCase = {
   _id: string;
-  linkedProject: string;
-  environment: string;
+  creatorId: string;
+  linkedProject: string | Project;
+  environment: string | Environment;
   name: string;
   description: string;
-  recentRun: null | "pass" | "fail";
+  recentRun?: "pass" | "fail";
   status: "in progress" | "in review" | "done";
   testRuns: TestRun[];
-  scheme: null | TestScheme;
+  testSchema: TestSchema[];
   type: "unit" | "integration" | "component" | "api" | "e2e";
+  comments: Partial<CommentData>[];
   createdAt: string;
   updatedAt: string;
 }
 
 type TestRun = {
   _id: string;
-  result: TestResult;
-  createdBy: string;
+  result: string;
+  status: "pass" | "fail";
+  logs: string[];
+  initiatedBy: string;
   createdAt: string;
   updatedAt: string;
 }
 
-type TestScheme = {
+type TestSchema = {
   name: string;
   description: string;
   params?: {
     name: string;
     value: string;
   }[];
-  children?: TestScheme;
+  returns?: any;
 }
 
-type TestResult = {
-  result: string;
-  status: "pass" | "fail";
-  logs: string[];
-  createdAt: string;
+type CommentData = {
+  _id: string;
+  userId: string | User;
+  comment: string;
+  replies: Partial<CommentData>[];
+  likes: string[] | User[];
+}
+
+type User = {
+  _id: string;
+  name: string;
+  email: string;
 }

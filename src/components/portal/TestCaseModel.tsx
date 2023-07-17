@@ -5,6 +5,7 @@ import Input from "../form/Input";
 import Button from "../Button";
 import { APICaller } from "../../helpers/api";
 import Select from "../form/Select";
+import { getUser } from "../../helpers/cookie";
 
 interface ITestCaseModelProps {
   closeModel: () => void;
@@ -41,7 +42,8 @@ const TestCaseModel = ({
       name: testCase.name,
       type: testCase.type,
       linkedProject: projectId,
-      environment: envId,
+      environment: envId || "all",
+      creatorId: getUser()?._id,
     };
 
     if (testCase.description !== "") {
@@ -51,14 +53,20 @@ const TestCaseModel = ({
       };
     }
 
-    const { statusCode, data, error } = await APICaller(
-      '/testcases',
-      "POST",
-      toSendTestCase
-    );
+    let url = `/testcases/${projectId}/${envId}`
+
+    if (envId === undefined) {
+      url = `/testcases/${projectId}`;
+    }
+
+    const { statusCode, data, error } = await APICaller(url, "POST", toSendTestCase);
 
     if (statusCode === 201) {
-      setTestCases((prev) => ([...prev!, data.testcases]));
+      if(envId === undefined) {
+        setTestCases((prev) => ([...prev!, ...data.testcases]));
+      } else {
+        setTestCases((prev) => ([...prev!, data.testcase]));
+      }
     } else {
       console.log(error);
     }
