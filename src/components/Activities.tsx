@@ -1,8 +1,9 @@
 import moment from "moment";
 import { AlertTriangle, AtSign, Check, FileMinus, FilePlus, MessageSquare, UserMinus, UserPlus } from "react-feather";
+import { Link } from "react-router-dom";
 
 interface IActivitiesProps {
-  activities: Activity[];
+  activities: Partial<Activity[]>;
 }
 
 const Activities = ({ activities }: IActivitiesProps) => {
@@ -33,18 +34,26 @@ const Activities = ({ activities }: IActivitiesProps) => {
         activities.map((activity, index) => (
           <div key={index} className="flex items-center gap-4 p-4">
             <div className="flex items-center gap-4">
-              <span className={`text-white ${activity.status==="test-fail"?'bg-danger':activity.status==="test-pass"?'bg-success':'bg-deep_blue border-b border-black'} rounded-full p-3`}>
-                {typeIcon(activity.status)}
+              <span className={`text-white ${activity?.status==="test-fail"?'bg-danger':activity?.status==="test-pass"?'bg-success':'bg-deep_blue border-b border-black'} rounded-full p-3`}>
+                {typeIcon(activity?.status!)}
               </span>
-              <div>
-                <h6 className="text-h6">{activity.name} - {moment(activity.createdAt).fromNow()}</h6>
-                <p className="text-sm">{activity.description}</p>
-              </div>
+              <Link to={activity?.link!}>
+                <h6 className="text-h6">{activity?.name} - {moment(activity?.createdAt).fromNow()}</h6>
+                <p className="text-sm">{activity?.description}</p>
+              </Link>
             </div>
           </div>
         ))
       }
-      <div className="absolute top-0 left-[2.1rem] -z-10 bg-deep_blue w-1 h-full" />
+      {
+        activities.length !== 0 ? (
+          <div className="absolute top-0 left-[2.1rem] -z-10 bg-deep_blue w-1 h-full" />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-gray-500">No activities yet.</p>
+          </div>
+        )
+      }
     </div>
   )
 }

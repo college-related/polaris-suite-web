@@ -1,12 +1,12 @@
 import { DownloadCloud, Edit3, File, HardDrive, Layers } from "react-feather"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { getUser } from "../../helpers/cookie"
 
 import DashboardTile from "../../components/DashboardTile"
 import IconButton from "../../components/IconButton"
 import Activities from "../../components/Activities"
-import { activities } from "../../utils/data"
+import { APICaller } from "../../helpers/api"
 
 const Dashboard = () => {
   const [user] = useState(getUser().name)
@@ -15,6 +15,21 @@ const Dashboard = () => {
     { title: "E Guru", icon: <DownloadCloud /> },
     { title: "Rails", icon: <DownloadCloud /> },
   ]);
+  const [activities, setActivities] = useState<Partial<Activity[]>>([])
+
+  const fetchActivities = async () => {
+    const { data, statusCode, error } = await APICaller("/activities", "POST", { email: getUser().email, userId: getUser()._id });
+
+    if (statusCode === 200) {
+      setActivities(data.activities)
+    } else {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchActivities()
+  }, [])
 
   return (
     <div className="p-5">

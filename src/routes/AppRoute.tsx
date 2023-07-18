@@ -96,7 +96,7 @@ const ProjectTabRoutes = () => {
         <Route path="/" element={<SingleProject project={data!} projectId={projectId!} setProject={setData} />} />
         <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />
         <Route path="settings" element={<ProjectSettingPage project={data!} setProject={setData} />} />
-        <Route path="activities" element={<ProjectActivityPage />} />
+        <Route path="activities" element={<ProjectActivityPage projectId={projectId!} />} />
       </Routes>
     </ProjectLayout>
   );
@@ -112,6 +112,7 @@ const TestCaseTabRoutes = () => {
     <TestCaseLayout title={`${data?.linkedProject?.name} > ${data?.name}` || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
       <Routes>
         <Route path="/" element={<SingleTestCase testcase={data!} setTestCase={setData!} testcaseId={testcaseId!} environmentId={environmentId!} />} />
+        <Route path="activities" element={<ProjectActivityPage projectId={projectId!} testcaseId={testcaseId!} />} />
         {/* <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />
         <Route path="settings" element={<ProjectSettingPage project={data!} setProject={setData} />} />
         <Route path="activities" element={<ProjectActivityPage />} /> */}
