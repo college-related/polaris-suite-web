@@ -55,12 +55,21 @@ const TestCases = ({ project, projectId }: ITestCasesProps) => {
   return (
     <section>
       <div className="flex justify-between items-end mb-4">
-        <Button variant="primary" onClick={openModel} disabled={project?.status==='archieved'}>
+        <Button 
+          variant="primary" 
+          onClick={openModel} 
+          disabled={project?.status==='archieved' || project?.environments?.length === 0}
+        >
           <span className="flex gap-2">
             <Plus />
             Add Test Case
           </span>
         </Button>
+        {
+          project?.environments?.length === 0 && (
+            <p className="text-danger">No environment found</p>
+          )
+        }
         <Select 
           label="Selected Environment"
           name="environment"

@@ -109,7 +109,7 @@ const TestCaseTabRoutes = () => {
   if(isLoading) return <div>Loading...</div>;
 
   return (
-    <TestCaseLayout title={data?.name || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
+    <TestCaseLayout title={`${data?.linkedProject?.name} > ${data?.name}` || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
       <Routes>
         <Route path="/" element={<SingleTestCase testcase={data!} setTestCase={setData!} testcaseId={testcaseId!} environmentId={environmentId!} />} />
         {/* <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />

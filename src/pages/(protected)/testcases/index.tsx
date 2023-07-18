@@ -78,14 +78,14 @@ const SingleTestCase = ({ testcase, setTestCase, testcaseId, environmentId }: IS
           </div>
           <h5 className="text-h6 mt-4">Type: <span className="text-primary">{testcase?.type}</span></h5>
         </div>
-        <div>
+        <div className="flex flex-col items-end">
           <Button variant="primary" onClick={() => {}}>
             <span className="flex gap-2">
               <Play />
               Run Test
             </span>
           </Button>
-          <h6 className="text-h6 mt-4">Environment: {(testcase?.environment as Partial<Environment>)?.name}</h6>
+          <h6 className="text-h6 mt-4">Environment: <span className="text-primary">{(testcase?.environment as Partial<Environment>)?.name}</span></h6>
         </div>
       </div>
 
