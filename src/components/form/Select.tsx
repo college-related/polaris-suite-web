@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { v4 } from "uuid";
+
 interface ISelectProps {
   label: string;
   name: string;
@@ -25,14 +28,16 @@ const Select = (props: ISelectProps) => {
     ...rest
   } = props;
 
+  const [id] = useState<string>(label+v4());
+
   return (
     <div className={`${classes}`}>
-      <label htmlFor={label} className="text-gray-700 font-bold font-quicksand">
+      <label htmlFor={id} className="text-gray-700 font-bold font-quicksand">
         {label}
       </label>
       <select
         name={name}
-        id={label}
+        id={id}
         value={value}
         disabled={disabled}
         onChange={onChange}
