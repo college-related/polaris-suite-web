@@ -2,13 +2,16 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import { useState } from "react";
 import Input from "../../components/form/Input";
+import { APICaller } from "../../helpers/api";
 
 const ResetPasswordPage = () => {
   const [user, setUser] = useState({
     password: "",
     confirmPassword: "",
+    token: "",
   });
   const [error, setError] = useState({});
+  const [isResetingPassword, setIsResetingPassword] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({
@@ -19,16 +22,28 @@ const ResetPasswordPage = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsResetingPassword(true);
+    setError({});
+
     if (user.password === user.confirmPassword) {
+      const { statusCode, error } = await APICaller(`/auth/reset-password?token=${user.token}`, "POST", { password: user.password });
+
+      if(statusCode === 200) {
+        navigate("/auth/login");
+      }else {
+        setError({ token: error.message });
+      }
     } else {
       setError({
         password: "Password and Confirm Password do not match",
         confirmPassword: "Password and Confirm Password do not match",
       });
     }
+
+    setIsResetingPassword(false);
   };
 
   return (
@@ -42,6 +57,15 @@ const ResetPasswordPage = () => {
       </p>
 
       <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
+        <Input
+          type="text"
+          label="Token"
+          name="token"
+          placeholder="Paste the Token here"
+          value={user.token}
+          onChange={handleInputChange}
+          errors={error}
+        />
         <Input
           type="password"
           label="Password"
@@ -60,7 +84,7 @@ const ResetPasswordPage = () => {
           onChange={handleInputChange}
           errors={error}
         />
-        <Button onClick={() => navigate("/auth/reset-password")} variant="default" classes="bg-success text-white font-bold">
+        <Button loadingText="Reseting your password.." isLoading={isResetingPassword} onClick={() => {}} variant="default" classes="bg-success text-white font-bold">
           Reset Password
         </Button>
       </form>

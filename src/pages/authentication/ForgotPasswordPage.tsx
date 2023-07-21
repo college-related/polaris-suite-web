@@ -2,18 +2,33 @@ import { Link, useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import Input from "../../components/form/Input";
 import { useState } from "react";
+import { APICaller } from "../../helpers/api";
 
 const ForgotPasswordPage = () => {
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState({});
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState({});
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setIsSendingEmail(true);
+    setError({});
+
+    const { statusCode, error } = await APICaller("/auth/forgot-password", "POST", { email });
+
+    if(statusCode === 200) {
+      navigate("/auth/reset-password");
+    }else {
+      setError({ email: error.message });
     }
+
+    setIsSendingEmail(false);
+  }
 
   return (
     <>
@@ -30,7 +45,7 @@ const ForgotPasswordPage = () => {
           onChange={handleInputChange} 
           errors={error}
         />
-        <Button onClick={()=>navigate("/auth/reset-password")} variant="default" classes="bg-success text-white font-bold">Send Reset Email</Button>
+        <Button isLoading={isSendingEmail} loadingText="Sending email..." onClick={()=>{}} variant="default" classes="bg-success text-white font-bold">Send Reset Email</Button>
       </form>
     </>
   )
