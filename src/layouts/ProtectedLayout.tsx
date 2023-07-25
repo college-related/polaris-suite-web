@@ -2,6 +2,7 @@ import { PropsWithChildren } from "react";
 import Sidebar from "../components/Sidebar";
 import { polaris_logo } from "../assets/images";
 import { Link } from "react-router-dom";
+import { getUser } from "../helpers/cookie";
 
 interface IProtectedLayoutProps {}
 
@@ -15,7 +16,15 @@ const ProtectedLayout = ({ children }: PropsWithChildren<IProtectedLayoutProps>)
             Poalris Suite
           </span>
         </Link>
-        <span className="w-12 h-12 rounded-full bg-neutral_gray"></span>
+        <span className="w-12 h-12">
+          <Link to="/polaris/profile">
+            <img 
+              src={`https://api.dicebear.com/6.x/initials/svg?seed=${getUser().name}&backgroundType=gradientLinear&fontSize=36&fontWeight=500`}
+              alt="profile picture with initails"
+              className="rounded-full"
+            />
+          </Link>
+        </span>
       </header>
       <div className="flex justify-center">
         <Sidebar />

@@ -1,4 +1,4 @@
-import { POLARIS_LOCALSTORAGE_TOKEN, POLARIS_LOCALSTORAGE_USER } from "../utils/constants";
+import { POLARIS_LOCALSTORAGE_SETTINGS, POLARIS_LOCALSTORAGE_TOKEN, POLARIS_LOCALSTORAGE_USER } from "../utils/constants";
 
 /**
  * 
@@ -7,7 +7,7 @@ import { POLARIS_LOCALSTORAGE_TOKEN, POLARIS_LOCALSTORAGE_USER } from "../utils/
  * @returns {void} 
  */
 export const addUser = (user: dynamicObject): void => {
-    localStorage.setItem(POLARIS_LOCALSTORAGE_USER, JSON.stringify(user));
+  localStorage.setItem(POLARIS_LOCALSTORAGE_USER, JSON.stringify(user));
 }
 
 /**
@@ -17,7 +17,7 @@ export const addUser = (user: dynamicObject): void => {
  * @returns {void}
  */
 export const addToken = (token: string): void => { 
-    localStorage.setItem(POLARIS_LOCALSTORAGE_TOKEN, JSON.stringify(token)); 
+  localStorage.setItem(POLARIS_LOCALSTORAGE_TOKEN, JSON.stringify(token)); 
 }
 
 /**
@@ -26,9 +26,9 @@ export const addToken = (token: string): void => {
  * @returns {string}
  */
 export const getToken = (): string => {
-    const tokens = JSON.parse(localStorage.getItem(POLARIS_LOCALSTORAGE_TOKEN) || '{}')
-    
-    return tokens.access ? tokens.access.token : '';
+  const tokens = JSON.parse(localStorage.getItem(POLARIS_LOCALSTORAGE_TOKEN) || '{}')
+
+  return tokens.access ? tokens.access.token : '';
 };
 
 /**
@@ -44,7 +44,7 @@ export const getUser = (): dynamicObject => JSON.parse(localStorage.getItem(POLA
  * @returns {void}
  */
 export const removeUser = (): void => {
-    localStorage.removeItem(POLARIS_LOCALSTORAGE_USER);
+  localStorage.removeItem(POLARIS_LOCALSTORAGE_USER);
 }
 
 /**
@@ -53,7 +53,7 @@ export const removeUser = (): void => {
  * @returns {void}
  */
 export const removeToken = (): void => {
-    localStorage.removeItem(POLARIS_LOCALSTORAGE_TOKEN);
+  localStorage.removeItem(POLARIS_LOCALSTORAGE_TOKEN);
 }
 
 /**
@@ -62,6 +62,23 @@ export const removeToken = (): void => {
  * @returns {string}
  */
 export const getRole = (): string => {
-    const user = getUser();
-    return user.role || '';
+  const user = getUser();
+  return user.role || '';
 }
+
+/**
+ * 
+ * add the settings to localstorage
+ * @param {Partial<Settings>} settings 
+ * @returns {void}
+ */
+export const addSettings = (settings: Partial<Settings>): void => {
+  localStorage.setItem(POLARIS_LOCALSTORAGE_SETTINGS, JSON.stringify(settings));
+}
+
+/**
+ * 
+ * get the settings from localstorage
+ * @returns {Partial<Settings>}
+ */
+export const getSettings = (): Partial<Settings> => JSON.parse(localStorage.getItem(POLARIS_LOCALSTORAGE_SETTINGS) || '{}');

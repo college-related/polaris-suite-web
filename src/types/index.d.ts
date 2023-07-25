@@ -94,4 +94,17 @@ type User = {
   _id: string;
   name: string;
   email: string;
+  isEmailVerified: boolean;
+}
+
+type Settings = {
+  _id: string;
+  userId: string;
+  theme: "light" | "dark" | "system";
+  github: {
+    enabled: boolean;
+    username: string;
+    token: string;
+    repos: string[];
+  };
 }

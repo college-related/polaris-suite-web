@@ -1,5 +1,6 @@
 export { default as Dashboard } from "./Dashboard";
 export { default as Settings } from "./Settings";
+export { default as Profile } from "./Profile";
 
 export { default as ProjectsPage } from "./projects/index";
 export { default as SingleProject } from "./projects/project";
