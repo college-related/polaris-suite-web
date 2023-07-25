@@ -18,7 +18,8 @@ import {
   ProjectActivityPage, 
   ProjectSettingPage, 
   SingleTestCase,
-  DeclineInvitation
+  DeclineInvitation,
+  Profile
 } from "../pages/(protected)";
 
 import { useApiRead } from "../utils/hooks/useApiRead";
@@ -68,6 +69,7 @@ const ProtectedRoutes = () => {
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/projects/*" element={<ProjectRoutes />} />
       </Routes>
     </ProtectedLayout>
