@@ -1,2 +1,2 @@
 
-* [Website](https://github.com/Major-Project-BE2018SE/polaris-suite-web)
+* [Website](https://polaris-suite.netlify.app/)
