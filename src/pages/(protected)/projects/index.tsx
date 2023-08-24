@@ -19,7 +19,7 @@ export default function ProjectsPage() {
     setIsFetching(true);
 
     const q = query ? `?${query}` : "";
-    const { statusCode, data, error } = await APICaller(`/projects/${getUser()._id}${q}`, "GET");
+    const { statusCode, data, error } = await APICaller(`/projects/user/${getUser()._id}${q}`, "GET");
 
     if(statusCode === 200) {
       setProjects(data.projects);
