@@ -14,6 +14,7 @@ const IconButton = ({ icon, classes, onClick, variant="default", disabled=false,
       onClick={onClick}
       className={`btn ${variant} ${classes} flex items-center justify-center ${disabled && 'cursor-not-allowed disabled' }`}
       disabled={disabled}
+      type="button"
       {...rest}
     >
       {icon}

@@ -37,10 +37,14 @@ const Activities = ({ activities }: IActivitiesProps) => {
               <span className={`text-white ${activity?.status==="test-fail"?'bg-danger':activity?.status==="test-pass"?'bg-success':'bg-deep_blue border-b border-black'} rounded-full p-3`}>
                 {typeIcon(activity?.status!)}
               </span>
-              <Link to={activity?.link!}>
-                <h6 className="text-h6">{activity?.name} - {moment(activity?.createdAt).fromNow()}</h6>
+              <div>
+                <h6 className="text-h6">
+                  <Link to={activity?.link!} className="text-primary/60">
+                    {activity?.name} 
+                  </Link>  
+                  - {moment(activity?.createdAt).fromNow()}</h6>
                 <p className="text-sm">{activity?.description}</p>
-              </Link>
+              </div>
             </div>
           </div>
         ))

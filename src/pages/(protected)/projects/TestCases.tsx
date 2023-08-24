@@ -4,7 +4,6 @@ import { AlertTriangle, CheckSquare, HelpCircle, Plus } from "react-feather";
 
 import Button from "../../../components/Button";
 import { useModel } from "../../../utils/hooks/useModel";
-import { useApiRead } from "../../../utils/hooks/useApiRead";
 import TestCaseModel from "../../../components/portal/TestCaseModel";
 import Select from "../../../components/form/Select";
 import { APICaller } from "../../../helpers/api";
@@ -54,17 +53,20 @@ const TestCases = ({ project, projectId }: ITestCasesProps) => {
 
   return (
     <section>
-      <div className="flex justify-between items-end mb-4">
-        <Button 
-          variant="primary" 
-          onClick={openModel} 
-          disabled={project?.status==='archieved' || project?.environments?.length === 0}
-        >
-          <span className="flex gap-2">
-            <Plus />
-            Add Test Case
-          </span>
-        </Button>
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <Button 
+            variant="primary" 
+            onClick={openModel} 
+            disabled={project?.status==='archieved' || project?.environments?.length === 0}
+          >
+            <span className="flex gap-2">
+              <Plus />
+              Add Test Case
+            </span>
+          </Button>
+          <h3 className="mt-2 mb-4 text-h4">Currently showing the test cases from <span className="text-primary">{selectedEnv?.name ? selectedEnv?.name : "All"}</span> environment</h3>
+        </div>
         {
           project?.environments?.length === 0 && (
             <p className="text-danger">No environment found</p>
@@ -83,11 +85,11 @@ const TestCases = ({ project, projectId }: ITestCasesProps) => {
           <p className="font-bold">No test cases found</p>
         )
       }
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex flex-wrap gap-4">
         {
           testCases?.map((testcase) =>
             <Link key={testcase._id} to={`/polaris/projects/${projectId}/testcase/${testcase.environment}/${testcase._id}`}>
-              <div className="flex gap-4 items-center bg-white p-4 rounded-md">
+              <div className="flex items-center gap-4 p-4 bg-white rounded-md">
                 <div>
                     <h5 className="text-h5">{testcase.name}</h5>
                     <p className={`${

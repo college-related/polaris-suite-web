@@ -7,18 +7,26 @@ import DashboardTile from "../../components/DashboardTile"
 import IconButton from "../../components/IconButton"
 import Activities from "../../components/Activities"
 import { APICaller } from "../../helpers/api"
+import { useModel } from "../../utils/hooks/useModel"
+import ShortcutModel from "../../components/portal/ShortcutModel"
+import { Link } from "react-router-dom"
 
 const Dashboard = () => {
-  const [user] = useState(getUser().name)
-  const [shortcuts, setShortcuts] = useState([
-    { title: "Polaris Suite", icon: <DownloadCloud /> },
-    { title: "E Guru", icon: <DownloadCloud /> },
-    { title: "Rails", icon: <DownloadCloud /> },
-  ]);
+  const [user] = useState(getUser())
+  const [dashboard, setDashboard] = useState<Dashboard>({
+    projects: [],
+    totalReports: 0,
+    totalTestCases: 0,
+    shortcuts: {
+      userId: user._id,
+      shortcuts: [],
+    },
+  })
   const [activities, setActivities] = useState<Partial<Activity[]>>([])
+  const { closeModel, isModelOpen, openModel } = useModel();
 
   const fetchActivities = async () => {
-    const { data, statusCode, error } = await APICaller("/activities", "POST", { email: getUser().email, userId: getUser()._id });
+    const { data, statusCode, error } = await APICaller("/activities", "POST", { email: user.email, userId: user._id });
 
     if (statusCode === 200) {
       setActivities(data.activities)
@@ -26,40 +34,52 @@ const Dashboard = () => {
       console.log(error)
     }
   }
+  const fetchDashboardData = async () => {
+    const { data, statusCode, error } = await APICaller(`/dashboard/${user._id}`, "GET");
+
+    if (statusCode === 200) {
+      setDashboard(data.dashboard);
+    } else {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
-    fetchActivities()
+    fetchDashboardData();
+    fetchActivities();
   }, [])
 
   return (
     <div className="p-5">
-      <h3 className="text-h3 mb-4">Welcome, {user}</h3>
+      <h3 className="mb-4 text-h3">Welcome, {user.name}</h3>
 
-      <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
-        <DashboardTile title="Total Projects" value={5} icon={<HardDrive />} />
-        <DashboardTile title="Total Reports" value={3} icon={<File />} />
-        <DashboardTile title="Total Test Cases" value={30} icon={<Layers />} />
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+        <DashboardTile title="Total Projects" value={dashboard.projects.length} icon={<HardDrive />} />
+        <DashboardTile title="Total Reports" value={dashboard.totalReports} icon={<File />} />
+        <DashboardTile title="Total Test Cases" value={dashboard.totalTestCases} icon={<Layers />} />
       </div>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-8">
+      <div className="grid grid-cols-1 gap-4 mt-8 md:grid-cols-2">
         <section>
           <h4 className="text-h4">Recent Activities</h4>
           <Activities activities={activities} />
         </section>
         <section>
-          <div className="flex justify-between items-start">
+          <div className="flex items-start justify-between">
             <h4 className="text-h4">Shortcuts</h4>
-            <IconButton onClick={()=>{}} variant="clear" icon={<Edit3 className="w-5 h-5" />} />
+            <IconButton onClick={openModel} variant="clear" icon={<Edit3 className="w-5 h-5" />} />
           </div>
           {
-            shortcuts.length > 0 ? (
+            dashboard.shortcuts.shortcuts.length > 0 ? (
               <>
                 {
-                  shortcuts.map((shortcut, index) => (
-                    <div className="bg-deep_blue p-4 rounded-md my-4 text-white flex gap-6" key={index}>
-                      {shortcut.icon}
-                      <h3>{shortcut.title}</h3>
-                    </div>
+                  dashboard.shortcuts?.shortcuts.map((shortcut, index) => (
+                    <Link to={`/polaris/projects/${shortcut.project}`} key={index}>
+                      <div className="flex gap-6 p-4 my-4 text-white rounded-md bg-deep_blue/95 hover:bg-deep_blue">
+                        <DownloadCloud />
+                        <h3>{shortcut.title}</h3>
+                      </div>
+                    </Link>
                   ))
                 }
               </>
@@ -69,6 +89,7 @@ const Dashboard = () => {
           }
         </section>
       </div>
+      {isModelOpen && (<ShortcutModel closeModel={closeModel} setDashboardShortcut={setDashboard} shortcuts={dashboard.shortcuts} projects={dashboard.projects} />)}
     </div>
   )
 }

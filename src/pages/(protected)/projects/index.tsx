@@ -6,6 +6,7 @@ import { APICaller } from "../../../helpers/api"
 import ProjectModel from "../../../components/portal/ProjectModel"
 import Button from "../../../components/Button"
 import { useModel } from "../../../utils/hooks/useModel"
+import { getUser } from "../../../helpers/cookie"
 
 export default function ProjectsPage() {
 
@@ -18,7 +19,7 @@ export default function ProjectsPage() {
     setIsFetching(true);
 
     const q = query ? `?${query}` : "";
-    const { statusCode, data, error } = await APICaller(`/projects${q}`, "GET");
+    const { statusCode, data, error } = await APICaller(`/projects/${getUser()._id}${q}`, "GET");
 
     if(statusCode === 200) {
       setProjects(data.projects);
@@ -42,10 +43,10 @@ export default function ProjectsPage() {
       <div className="flex items-end justify-between">
         <div>
           <h3 className="text-h3">Projects</h3>
-          <p>You have <span className="text-primary font-bold">{projects.length}</span> projects</p>
+          <p>You have <span className="font-bold text-primary">{projects.length}</span> projects</p>
         </div>
         <Button variant={`${isShowingAll?'danger':'success'}`} onClick={handleShow}>
-          <span className="flex gap-2 items-center">
+          <span className="flex items-center gap-2">
             {
               isShowingAll ? (
                 <>
@@ -64,7 +65,7 @@ export default function ProjectsPage() {
       </div>
       <br />
 
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex flex-wrap gap-4">
         
         {
           isFetching ? (
