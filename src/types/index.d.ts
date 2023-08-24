@@ -108,3 +108,20 @@ type Settings = {
     repos: string[];
   };
 }
+interface Dashboard {
+  projects: Project[],
+  totalReports: number,
+  totalTestCases: number,
+  shortcuts: Shortcut,
+}
+
+type Shortcut = {
+  _id?: string;
+  userId: string;
+  shortcuts: ShortcutSchema[];
+}
+
+type ShortcutSchema = {
+  title: string;
+  project: string;
+}
