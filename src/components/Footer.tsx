@@ -8,9 +8,9 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="w-full py-12 bg-dark text-white">
+    <footer className="w-full py-12 text-white bg-dark">
       <div className="w-[80%] mx-auto">
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center">
             <div className="flex flex-col">
               <div className="inline-flex">
@@ -18,7 +18,7 @@ const Footer = () => {
                 <p className="text-2xl font-bold"> Polaris Suite</p>
               </div>
 
-              <div className="text-white  px-2 sm:w-80">
+              <div className="px-2 text-white sm:w-80">
                 Automating your test with the best experience you can have.
               </div>
             </div>
@@ -35,7 +35,7 @@ const Footer = () => {
                   <Link to="https://major-project-be2018se.github.io/polaris-suite-web/#/" rel="noreferrer" target="_blank">Docs</Link>
                 </li>
                 <li className="my-1 sm:my-2">
-                  <Link to="https://npmjs.org/polaris-suite" rel="noreferrer" target="_blank">Releases</Link>
+                  <Link to="https://github.com/Major-Project-BE2018SE/polaris-suite/releases" rel="noreferrer" target="_blank">Releases</Link>
                 </li>
               </ul>
             </div>
@@ -55,7 +55,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-6">
+        <div className="flex flex-col items-center justify-between gap-4 mt-6 sm:flex-row">
           <p className="text-sm tracking-widest">©2023 POLARIS SUITE. ALL RIGHTS RESERVED</p>
           <div className="flex space-x-2 sm:space-x-16">
             <Link to="https://github.com/Major-Project-BE2018SE/polaris-suite" rel="noreferrer" target="_blank">
