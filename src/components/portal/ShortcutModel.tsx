@@ -82,8 +82,13 @@ const ShortcutModel = ({
       >
         <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-2">
           {
-            setShortcutsList.length === 0 && (
-              <p className="my-4 text-center">No shortcuts yet.</p>
+            shortcutsList.length === 0 && (
+              <p className="mb-1 text-center">No shortcuts yet.</p>
+            )
+          }
+          {
+            projects.length === 0 && (
+              <p className="mb-4 text-center text-danger">No projects found.</p>
             )
           }
           {
@@ -108,13 +113,18 @@ const ShortcutModel = ({
                     options={projects.map(project => ({ name: project.name, value: project._id }))}
                   />
                   <IconButton variant="danger" icon={<Minus />} onClick={()=>{setShortcutsList(prev => 
-                    prev.filter((shortcut, i) => i !== index)  
+                    prev.filter((_, i) => i !== index)  
                   )}} />
                 </div>
               </React.Fragment>
             ))
           }
-          <IconButton variant="primary" icon={<Plus />} onClick={()=>{setShortcutsList(prev => ([...prev, { title: "", project: "" }]))}} />
+          <IconButton 
+            variant="primary" 
+            icon={<Plus />} 
+            onClick={()=>{setShortcutsList(prev => ([...prev, { title: "", project: projects[0]._id ?? "" }]))}}
+            disabled={projects.length === 0}
+          />
           {/* 
           <Input
             label="Project Description"
