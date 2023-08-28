@@ -24,6 +24,7 @@ import {
 
 import { useApiRead } from "../utils/hooks/useApiRead";
 import AcceptInvitation from "../pages/(protected)/projects/AcceptInvitation";
+import TestCaseSettings from "../pages/(protected)/testcases/Settings";
 
 const AppRoute = () => {
   return (
@@ -113,11 +114,9 @@ const TestCaseTabRoutes = () => {
   return (
     <TestCaseLayout title={`${data?.linkedProject?.name} > ${data?.name}` || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
       <Routes>
-        <Route path="/" element={<SingleTestCase testcase={data!} setTestCase={setData!} testcaseId={testcaseId!} environmentId={environmentId!} />} />
+        <Route path="/" element={<SingleTestCase testcase={data! as TestCase} setTestCase={setData!} testcaseId={testcaseId!} environmentId={environmentId!} />} />
+        <Route path="settings" element={<TestCaseSettings testcase={data!} setTestCase={setData!} environmentId={environmentId!} projectId={projectId!} />} />
         <Route path="activities" element={<ProjectActivityPage projectId={projectId!} testcaseId={testcaseId!} />} />
-        {/* <Route path="test-cases" element={<TestCases project={data!} projectId={projectId!} />} />
-        <Route path="settings" element={<ProjectSettingPage project={data!} setProject={setData} />} />
-        <Route path="activities" element={<ProjectActivityPage />} /> */}
       </Routes>
     </TestCaseLayout>
   );
