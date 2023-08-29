@@ -14,6 +14,7 @@ type Project = {
   members: Collaborator[];
   environments: Partial<Environment>[];
   status: 'in progress' | 'hold' | 'archieved' | 'draft' | 'done';
+  repo: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -107,9 +108,7 @@ type Settings = {
   theme: "light" | "dark" | "system";
   github: {
     enabled: boolean;
-    username: string;
-    token: string;
-    repos: string[];
+    installationId: string;
   };
 }
 interface Dashboard {
