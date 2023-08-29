@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Edit3, Lock, Trash, Unlock, UserMinus, UserPlus } from "react-feather";
 
 import Input from "../../../components/form/Input";
@@ -8,7 +8,8 @@ import IconButton from "../../../components/IconButton";
 import { APICaller } from "../../../helpers/api";
 import { useModel } from "../../../utils/hooks/useModel";
 import AlertModel from "../../../components/portal/AlertModel";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getSettings, getUser } from "../../../helpers/cookie";
 
 interface ISettingsProps {
   project: Partial<Project>;
@@ -44,6 +45,7 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
       status: project?.status,
       description: project.description,
       members: project.members,
+      repo: project.repo,
     };
 
     const { statusCode, data, error } = await APICaller(`/projects/${project._id}`,"PATCH",toSendProjectData);
@@ -70,14 +72,14 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
       <form id="project-form" className="col-span-4 px-4 border-l-2" onSubmit={handleUpdate}>
         {
           hasUpdate && (
-            <div className="p-2 mb-4 bg-danger_light border-2 border-danger text-danger rounded-md">
+            <div className="p-2 mb-4 border-2 rounded-md bg-danger_light border-danger text-danger">
               <span className="text-sm font-bold">You have unsaved changes</span>
             </div>
           )
         }
         {
           project?.status === "archieved" && (
-            <div className="p-2 mb-4 bg-danger_light border-2 border-danger text-danger rounded-md">
+            <div className="p-2 mb-4 border-2 rounded-md bg-danger_light border-danger text-danger">
               <span className="text-sm font-bold">This project is archived</span>
             </div>
           )
@@ -85,7 +87,7 @@ const Settings = ({ project, setProject }: ISettingsProps) => {
         { tab===TABS.DETAIL && (
           <>
             <DetailSetting project={project} handleChange={handleChange} setProject={setProject} />
-            <div className="text-right py-4 px-2">
+            <div className="px-2 py-4 text-right">
               <Button 
                 form="project-form" 
                 type="submit" 
@@ -123,6 +125,7 @@ const DetailSetting = ({
     description: "",
     action: () => {},
   });
+  const [repos, setRepos] = useState([]);
 
   const handleOpenAlert = (type: "delete" | "archieve") => {
     if (type === "delete") {
@@ -171,6 +174,18 @@ const DetailSetting = ({
     closeModel();
   }
 
+  useEffect(() => {
+    (async () => {
+      const { statusCode, data, error } = await APICaller(`/github/${getUser()._id}/repos`, "GET");
+
+      if(statusCode === 200) {
+        setRepos(data.repos);
+      } else {
+        console.log(error);
+      }
+    })()
+  }, [])
+
   return (
     <div className="flex flex-col gap-4">
       <Input disabled={project?.status==="archieved"} label="Project Name" name="name" onChange={handleChange} value={project?.name || ""} />
@@ -189,14 +204,26 @@ const DetailSetting = ({
       />
       <div className="my-4">
         <h6 className="text-h6">Project Linking</h6>
-        <p className="text-sm my-2">Link this project to a repository or drop project folder</p>
+        <p className="my-2 text-sm">Link this project to a repository</p>
         <div className="flex items-center gap-4">
-          <input type="file" disabled={project?.status==="archieved"} />
-          <Button type="button" variant="primary" onClick={()=>{}} disabled={project?.status==="archieved"}>
-            <span className="flex gap-2">
-              <span>Link to Github</span>
-            </span>
-          </Button>
+          {
+            getSettings().github?.enabled ? (
+              <select name="repo" onChange={handleChange} className="p-2 border border-gray-200 rounded-md">
+                <option value="">Select a repository</option>
+                {
+                  repos?.map((repo: dynamicObject) => (
+                    <option key={repo.id} value={repo.id} className={`${repo.id==project?.repo && "bg-success_light text-success"}`}>{repo.name}</option>
+                  ))
+                }
+              </select>
+            ) : (
+              <Link to={project?.status === "archieved" ? "#" : "https://github.com/apps/polaris-suite/installations/select_target"}>
+                <span className={`flex gap-2 p-3 rounded-md ${project?.status === "archieved" ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-primary_light text-primary"}`}>
+                  <span>Link to Github</span>
+                </span>
+              </Link>
+            )
+          }
         </div>
       </div>
       <h6 className="text-h6 text-danger">Danger Area</h6>
@@ -390,14 +417,14 @@ const CollaborationTab = ({
       </div>
       {
         oldMembers?.length === 0 ? (
-          <h6 className="text-h6 font-bold text-center">No collaborators found</h6>
+          <h6 className="font-bold text-center text-h6">No collaborators found</h6>
         ) : (
           <h6 className="text-h6">Collaborators</h6>
         )
       }
       {
         oldMembers?.map((collaborator, i) => (
-          <div className="flex gap-2 items-end" key={collaborator.email}>
+          <div className="flex items-end gap-2" key={collaborator.email}>
             <Input 
               label=""
               name="email"
