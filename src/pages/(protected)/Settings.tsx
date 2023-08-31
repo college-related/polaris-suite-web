@@ -119,7 +119,7 @@ const SettingPage = () => {
         </>
       </SettingTile>
       <div className="flex justify-end">
-        <Button isLoading={isUpdating} loadingText=" Updating..." variant="primary" onClick={updateSettings}>
+        <Button isLoading={isUpdating} loadingText=" Updating..." variant="primary" onClick={() => updateSettings(settings.github?.enabled, settings.github?.installationId)}>
           <span className="flex items-center gap-2">
             <Edit2 />
             Update
