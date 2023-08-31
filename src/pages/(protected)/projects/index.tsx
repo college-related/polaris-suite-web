@@ -45,7 +45,7 @@ export default function ProjectsPage() {
           <h3 className="text-h3">Projects</h3>
           <p>You have <span className="font-bold text-primary">{projects.length}</span> projects</p>
         </div>
-        <Button variant={`${isShowingAll?'danger':'success'}`} onClick={handleShow}>
+        <Button classes="show-archieved-btn" variant={`${isShowingAll?'danger':'success'}`} onClick={handleShow}>
           <span className="flex items-center gap-2">
             {
               isShowingAll ? (
