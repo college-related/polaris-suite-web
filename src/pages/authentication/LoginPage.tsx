@@ -1,4 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
+
 import Button from "../../components/Button";
 import Input from "../../components/form/Input";
 import { useState } from "react";
@@ -6,6 +9,8 @@ import { APICaller } from "../../helpers/api";
 import { addToken, addUser } from "../../helpers/cookie";
 
 const LoginPage = () => {
+
+  const [search] = useSearchParams();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -13,6 +18,33 @@ const LoginPage = () => {
   const [error, setError] = useState<dynamicObject>({});
   const [isLogging, setIsLogging] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(search.get("code")) {
+      (async () => {
+        const { statusCode, data, error } = await APICaller('/auth/login/github', 'POST', {
+          code: search.get("code")
+        });
+
+        if (statusCode === 200) {
+          // add user and token to localstorage
+          addUser(data.user);
+          addToken(data.token);
+
+          // redirect to dashboard
+          navigate("/polaris/dashboard");
+        } else {
+          if (statusCode === 401) {
+            setError({
+              message: error.message,
+            });
+          } else {
+            console.log(error);
+          }
+        }
+      })()
+    }
+  }, [search])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({
@@ -52,9 +84,38 @@ const LoginPage = () => {
     setIsLogging(false);
   };
 
+  const loginToGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const { statusCode, data, error } = await APICaller('/auth/login/google', 'POST', {
+        googleToken: tokenResponse.access_token,
+      });
+
+      if (statusCode === 200) {
+        // add user and token to localstorage
+        addUser(data.user);
+        addToken(data.token);
+
+        // redirect to dashboard
+        navigate("/polaris/dashboard");
+      } else {
+        if (statusCode === 401) {
+          setError({
+            message: error.message,
+          });
+        } else {
+          console.log(error);
+        }
+      }
+    },
+  })
+
+  const loginWithGithub = async () => {
+    window.location.assign(`https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_GITHUB_CLIENT_ID}`)
+  }
+
   return (
     <>
-      <h2 className="text-h2 font-bold">Login Page</h2>
+      <h2 className="font-bold text-h2">Login Page</h2>
       <p>
         Don't have an account?{" "}
         <Link to="/auth/register" className="text-primary">
@@ -64,7 +125,7 @@ const LoginPage = () => {
 
       <form className="flex flex-col gap-4 mt-16" onSubmit={handleSubmit}>
         {error && error.hasOwnProperty("message") && (
-          <div className="px-3 py-4 rounded-md border border-red-500 bg-red-100">
+          <div className="px-3 py-4 bg-red-100 border border-red-500 rounded-md">
             <p className="text-red-500">{error.message}</p>
           </div>
         )}
@@ -97,26 +158,36 @@ const LoginPage = () => {
         </Button>
       </form>
 
-      <p className="text-center mt-10">OR</p>
+      <p className="mt-10 text-center">OR</p>
 
-      <Button
-        onClick={() => {}}
-        variant="default"
-        size="xl"
-        classes="w-full my-4 bg-white text-black"
-      >
-        Google
-      </Button>
-      <Button
-        onClick={() => {}}
-        variant="dark"
-        classes="font-bold w-full"
-        size="xl"
-      >
-        Github
-      </Button>
+      <div className="flex flex-col items-center w-full gap-4 mt-2">        
+        <Button
+          onClick={loginToGoogle}
+          disabled={isLogging}
+          variant="default"
+          size="xl"
+          classes="w-full bg-white text-black"
+        >
+          <span className="flex items-center">
+            <img src="/social-logos/google-g-2015.svg" alt="google" className="w-6 mr-12" />
+            Log in with Google
+          </span>
+        </Button>
+        <Button
+          onClick={loginWithGithub}
+          variant="dark"
+          disabled={isLogging}
+          classes="font-bold w-full"
+          size="xl"
+        >
+          <span className="flex items-center">
+            <img src="/social-logos/github-white.svg" alt="github" className="w-6 mr-12" />
+            Log in with Github
+          </span>
+        </Button>
+      </div>
 
-      <div className="text-right mt-5">
+      <div className="mt-5 text-right">
         <Link to="/auth/forgot-password" className="text-primary">
           Forgot Password?
         </Link>

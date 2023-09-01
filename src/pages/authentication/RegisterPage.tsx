@@ -1,4 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
+
 import Button from "../../components/Button";
 import { useState } from "react";
 import Input from "../../components/form/Input";
@@ -60,9 +62,38 @@ const RegisterPage = () => {
     setIsRegistering(false);
   };
 
+  const registerWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const { statusCode, data, error } = await APICaller('/auth/login/google', 'POST', {
+        googleToken: tokenResponse.access_token,
+      });
+
+      if (statusCode === 200) {
+        // add user and token to localstorage
+        addUser(data.user);
+        addToken(data.token);
+
+        // redirect to dashboard
+        navigate("/polaris/dashboard");
+      } else {
+        if (statusCode === 401) {
+          setError({
+            message: error.message,
+          });
+        } else {
+          console.log(error);
+        }
+      }
+    },
+  })
+
+  const registerWithGithub = async () => {
+    window.location.assign(`https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_GITHUB_CLIENT_ID}`)
+  }
+
   return (
     <>
-      <h2 className="text-h2 font-bold">Register</h2>
+      <h2 className="font-bold text-h2">Register</h2>
       <p>
         Already have an account?{" "}
         <Link to="/auth/login" className="text-primary">
@@ -72,7 +103,7 @@ const RegisterPage = () => {
 
       <form className="flex flex-col gap-4 mt-6" onSubmit={handleSubmit}>
         {error && error.hasOwnProperty("message") && (
-          <div className="px-3 py-4 rounded-md border border-red-500 bg-red-100">
+          <div className="px-3 py-4 bg-red-100 border border-red-500 rounded-md">
             <p className="text-red-500">{error.message}</p>
           </div>
         )}
@@ -122,21 +153,29 @@ const RegisterPage = () => {
         </Button>
       </form>
 
-      <p className="text-center mt-10">OR</p>
+      <p className="mt-10 text-center">OR</p>
 
-      <Button
-        onClick={() => {}}
-        variant="default"
-        size="xl"
-        classes="w-full my-4 bg-white text-black"
-      >
-        Google
-      </Button>
-      <Button onClick={() => {}} size="xl" variant="dark" classes="font-bold w-full">
-        Github
-      </Button>
+      <div className="flex flex-col gap-4 mt-2">
+        <Button
+          onClick={registerWithGoogle}
+          variant="default"
+          size="xl"
+          classes="w-full bg-white text-black"
+        >
+          <span className="flex items-center">
+            <img src="/social-logos/google-g-2015.svg" alt="google" className="w-6 mr-12" />
+            Log in with Google
+          </span>
+        </Button>
+        <Button onClick={registerWithGithub} size="xl" variant="dark" classes="font-bold w-full">
+          <span className="flex items-center">
+            <img src="/social-logos/github-white.svg" alt="github" className="w-6 mr-12" />
+            Log in with Github
+          </span>
+        </Button>
+      </div>
 
-      <div className="text-right mt-2">
+      <div className="mt-2 text-right">
         <Link to="/auth/forgot-password" className="text-primary">
           Forgot Password?
         </Link>

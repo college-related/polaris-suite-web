@@ -10,6 +10,7 @@
     "test:e2e": "polaris src/__test__ --automation --only endtoend.js"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.11.1",
     "axios": "^1.4.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
