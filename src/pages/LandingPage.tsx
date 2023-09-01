@@ -27,15 +27,15 @@ const LandingPage = () => {
     <article>
       {/* Hero section */}
       <Container>
-        <div className="text-center lg:text-start w-full lg:w-1/3">
+        <div className="w-full text-center lg:text-start lg:w-1/3">
           <h1 className="text-h1 lg:tracking-wide">
             Automate Test Case With Ease
           </h1>
           <p className="">
             Easy to learn, implement and use in your project
-            <span className="text-primary font-bold"> polaris suite</span> is the testing tool you will ever need
+            <span className="font-bold text-primary"> polaris suite</span> is the testing tool you will ever need
           </p>
-          <div className="pt-3 flex items-center space-x-4 justify-center lg:justify-start">
+          <div className="flex items-center justify-center pt-3 space-x-4 lg:justify-start">
             <Button
               onClick={() => setShowInstallModel(true)}
               variant="primary"
@@ -44,7 +44,7 @@ const LandingPage = () => {
             >
               &#62; Install Polaris
             </Button>
-            <Link target="_blank" to="https://major-project-be2018se.github.io/polaris-suite-web/#/" className="text-deep_blue font-bold">Documentation</Link>
+            <Link target="_blank" to="https://major-project-be2018se.github.io/polaris-suite-web/#/" className="font-bold text-deep_blue">Documentation</Link>
           </div>
         </div>
         <img src={hero_illustration} alt="ilustration of a man working in computer and laptop" className="w-[600px]" />
@@ -52,12 +52,12 @@ const LandingPage = () => {
 
       {/* Features */}
       <Container margin="my-32">
-        <div className="w-full lg:w-1/3 flex flex-col gap-40">
+        <div className="flex flex-col w-full gap-40 lg:w-1/3">
           {
             features.map(feature => <FeatureCard key={feature.id} title={feature.title} description={feature.description} />)
           }
         </div>
-        <div className="relative flex-1 hidden lg:flex flex-col items-end">
+        <div className="relative flex-col items-end flex-1 hidden lg:flex">
           <img src={feature_illustration_1} alt="" className="w-[400px] mb-24" />
           <img src={feature_illustration_2} alt="" className="w-[400px] mr-72" />
           <img src={feature_illustration_3} alt="" className="w-[400px] mt-24" />
@@ -66,13 +66,13 @@ const LandingPage = () => {
       </Container>
 
       {/* Technologies Polaris Built on */}
-      <div className="bg-primary_light py-12">
+      <div className="py-12 bg-primary_light">
         <Container margin="my-0">
           <div className="w-full">
-            <h3 className="text-h3 font-bold sm:tracking-wider">
+            <h3 className="font-bold text-h3 sm:tracking-wider">
               Technologies Used in polaris suite
             </h3>
-            <div className="flex justify-between pt-6 flex-wrap w-full">
+            <div className="flex flex-wrap justify-between w-full pt-6">
               <img className="w-16 h-16" src={node_logo} alt="node js logo" />
               <img className="w-16 h-16" src={type_script_logo} alt="typescript logo" />
               <img className="w-16 h-16" src={js_logo} alt="javascript logo" />
@@ -87,29 +87,29 @@ const LandingPage = () => {
       {/* Usage */}
       <Container margin="my-24">
         <div className="w-full">
-          <h3 className="text-h3 text-center sm:text-start">
+          <h3 className="text-center text-h3 sm:text-start">
             Used by all these amazing products
           </h3>
-          <div className="flex items-center justify-center lg:justify-between gap-4 flex-wrap pt-6">
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-6 lg:justify-between">
             <img
               className="w-36 h-36 sm:w-56 sm:h-48"
-              src={domo_logo}
-              alt="node_logo"
+              src="/client-logos/rails.svg"
+              alt="rails logo"
             />
             <img
               className="w-36 h-36 sm:w-56 sm:h-48"
-              src={domo_logo}
-              alt="node_logo"
+              src="/client-logos/talewears.svg"
+              alt="talewears logo"
             />
             <img
               className="w-36 h-36 sm:w-56 sm:h-48"
-              src={domo_logo}
-              alt="node_logo"
+              src="/client-logos/polaris.svg"
+              alt="polaris logo"
             />
             <img
               className="w-36 h-36 sm:w-56 sm:h-48"
-              src={domo_logo}
-              alt="node_logo"
+              src="/client-logos/thankadigital.svg"
+              alt="thanka digital logo"
             />
           </div>
         </div>
