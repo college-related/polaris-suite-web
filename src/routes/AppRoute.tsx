@@ -114,7 +114,7 @@ const TestCaseTabRoutes = () => {
   return (
     <TestCaseLayout title={`${data?.linkedProject?.name} > ${data?.name}` || ""} description={data?.description || ""} url={`/polaris/projects/${projectId}`}>
       <Routes>
-        <Route path="/" element={<SingleTestCase testcase={data! as TestCase} setTestCase={setData!} testcaseId={testcaseId!} environmentId={environmentId!} />} />
+        <Route path="/" element={<SingleTestCase testcase={data! as TestCase} setTestCase={setData!} testcaseId={testcaseId!} projectId={projectId!} environmentId={environmentId!} />} />
         <Route path="settings" element={<TestCaseSettings testcase={data!} setTestCase={setData!} environmentId={environmentId!} projectId={projectId!} />} />
         <Route path="activities" element={<ProjectActivityPage projectId={projectId!} testcaseId={testcaseId!} />} />
       </Routes>

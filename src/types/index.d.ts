@@ -74,15 +74,12 @@ type TestRun = {
 }
 
 type TestSchema = {
-  name: string;
-  params: TestSchemaParam[];
-  functionType: "inbuilt" | "custom" | "not-function";
-  path: string | null;
-  inbuiltFunction: "suite" | "expect" | "test" | "api" | "call" | "component" | "page" | "polaris-none";
-  customSchema: string | null;
-  returns: string | null;
-  siblingTest: string | number | null;
-  anonymousTestChildren: string | number | null;
+  name: String,
+  params: Array<any>,
+  returns: string | null,
+  children: TestSchema[],
+  customSchema: string | null,
+  customFunctions: {name: string, path: string}[],
 }
 
 type TestSchemaParam =  string | number | boolean | Object | Array | "polaris-anom-function" | Function;
