@@ -88,7 +88,7 @@ const TestCases = ({ project, projectId }: ITestCasesProps) => {
       <div className="flex flex-wrap gap-4">
         {
           testCases?.map((testcase) =>
-            <Link key={testcase._id} to={`/polaris/projects/${projectId}/testcase/${testcase.environment}/${testcase._id}`}>
+            <Link key={testcase._id} to={`/polaris/projects/${projectId}/testcase/${(testcase.environment as Environment)?._id}/${testcase._id}`}>
               <div className="flex items-center gap-4 p-4 bg-white rounded-md">
                 <div>
                     <h5 className="text-h5">{testcase.name}</h5>

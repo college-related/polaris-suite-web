@@ -20,6 +20,7 @@ interface ISingleTestCaseProps {
 
 const SingleTestCase = ({ testcase, setTestCase, testcaseId, environmentId, projectId }: ISingleTestCaseProps) => {
   const [comment, setComment] = useState<string>("");
+  const [isRunningTest, setIsRunningTest] = useState<boolean>(false);
 
   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,6 +65,20 @@ const SingleTestCase = ({ testcase, setTestCase, testcaseId, environmentId, proj
     }
   }
 
+  const runTest = async () => {
+    setIsRunningTest(true);
+
+    const { statusCode, data, error } = await APICaller(`/testcases/${projectId}/${environmentId}/${testcase._id}/runTest`, "POST", {})
+
+    if(statusCode === 200) {
+      setTestCase(data.testcase);
+    } else {
+      console.log(error)
+    }
+
+    setIsRunningTest(false);
+  }
+
   return (
     <section>
       <div className="flex items-center justify-between">
@@ -95,7 +110,7 @@ const SingleTestCase = ({ testcase, setTestCase, testcaseId, environmentId, proj
           <h5 className="mt-4 text-h6">Type: <span className="text-primary">{testcase?.type}</span></h5>
         </div>
         <div className="flex flex-col items-end">
-          <Button variant="primary" onClick={() => {}}>
+          <Button disabled={isRunningTest} isLoading={isRunningTest} loadingText="Running Test" variant="primary" onClick={runTest}>
             <span className="flex gap-2">
               <Play />
               Run Test
@@ -105,7 +120,7 @@ const SingleTestCase = ({ testcase, setTestCase, testcaseId, environmentId, proj
         </div>
       </div>
 
-      <SingleTestCaseSkeleton testSchema={testcase?.testSchema} setTestCase={setTestCase} />
+      <SingleTestCaseSkeleton testSchema={testcase?.testSchema} setTestCase={setTestCase} testRuns={testcase?.testRuns} />
 
       <Button variant="primary" classes="mt-2" onClick={handleTestSchemaUpdate}>Update Test Schema</Button>
 
@@ -187,7 +202,7 @@ const SingleTestCase = ({ testcase, setTestCase, testcaseId, environmentId, proj
   )
 }
 
-const SingleTestCaseSkeleton = ({ testSchema, setTestCase }: { testSchema: TestSchema[], setTestCase: React.Dispatch<React.SetStateAction<TestCase | null>> }) => {
+const SingleTestCaseSkeleton = ({ testSchema, setTestCase, testRuns }: { testSchema: TestSchema[], setTestCase: React.Dispatch<React.SetStateAction<TestCase | null>>, testRuns: TestRun[] }) => {
   const { openModel, closeModel, isModelOpen } = useModel();
   const [toPlaceIndex, setToPlaceIndex] = useState(0);
   const [newSchema, setNewSchema] = useState<TestSchema>({
@@ -255,6 +270,21 @@ const SingleTestCaseSkeleton = ({ testSchema, setTestCase }: { testSchema: TestS
       {isModelOpen && <AddSchemaModel closeModel={closeModel} addSchema={addTestSchemaPart} schema={newSchema} setSchema={setNewSchema} toPlaceIndex={toPlaceIndex} />}
       <div className="w-[40%] p-4 text-white bg-deep_blue">
         <p className="font-bold underline">RUN LOG</p>
+        {
+          testRuns === undefined ? (
+            <p className="mt-4 text-white">No logs found</p>
+          ) : (
+            <>
+              {
+                testRuns[testRuns.length - 1]?.logs.map((log, i) => (
+                  <p key={i} className="mt-4 text-white">
+                    {log}
+                  </p>
+                ))
+              }
+            </>
+          )
+        }
       </div>
     </div>
   )
