@@ -271,8 +271,12 @@ interface IAddSchemaProps {
 const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex }: IAddSchemaProps) => {
   const [funType, setFunType] = useState("builtIn");
   const [builtInType, setBuiltInType] = useState("Suite");
+  const [customFunctions, setCustomFunctions] = useState<Pick<TestSchema, "customFunctions">>({ customFunctions: [
+    { name: "", path: "" },
+  ] });
+  const [params, setParams] = useState<string[]>([]);
 
-  const handleBuiltIn = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleBuiltIn = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const value = e.target.value;
 
     switch (value) {
@@ -286,6 +290,7 @@ const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex
           customFunctions: [],
           customSchema: null,
         }))
+        setParams(["", "() => {}"]);
         break;
       case "Test":
         setSchema(prev => ({ 
@@ -297,6 +302,7 @@ const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex
           customFunctions: [],
           customSchema: null,
         }))
+        setParams(["", "() => {}"]);
         break;
       case "Expect":
         setSchema(prev => ({ 
@@ -308,6 +314,7 @@ const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex
           customFunctions: [],
           customSchema: null,
         }))
+        setParams([""]);
         break;
       case "Call":
         setSchema(prev => ({ 
@@ -319,6 +326,43 @@ const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex
           customFunctions: [],
           customSchema: null,
         }))
+        setParams(["", ""]);
+        break;
+      case "API":
+        setSchema(prev => ({ 
+          ...prev,
+          name: "API",
+          params: ["", "", ""],
+          returns: "next-return",
+          children: [],
+          customFunctions: [],
+          customSchema: null,
+        }))
+        setParams(["", "", ""]);
+        break;
+      case "Goto":
+        setSchema(prev => ({
+          ...prev,
+          name: "Goto",
+          params: [""],
+          returns: "next-return",
+          children: [],
+          customFunctions: [],
+          customSchema: null,
+        }))
+        setParams([""]);
+        break;
+      case "Component":
+        setSchema(prev => ({
+          ...prev,
+          name: "Component",
+          params: [""],
+          returns: null,
+          children: [],
+          customFunctions: [],
+          customSchema: null,
+        }))
+        setParams([""]);
         break;
       default:
         break;
@@ -329,7 +373,7 @@ const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex
   
   return (
     <Backdrop closeModel={closeModel}>
-      <div onClick={e => e.stopPropagation()} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[50%] p-4 bg-white rounded-md">
+      <div onClick={e => e.stopPropagation()} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[50%] p-4 bg-white rounded-md h-[500px] overflow-y-scroll">
         <p className="mb-4 font-bold underline">ADD NEW SCHEMA</p>
         <div className="flex flex-col gap-4">
           <Select 
@@ -348,8 +392,8 @@ const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex
                 <Select 
                   label="Built in Function"
                   name="builtInfunction"
-                  value={funType}
-                  onChange={(e)=>setFunType(e.target.value)}
+                  value={builtInType}
+                  onChange={handleBuiltIn}
                   options={[
                     { name: "Suite", value: "Suite" },
                     { name: "Test", value: "Test" },
@@ -371,29 +415,66 @@ const AddSchemaModel = ({ addSchema, closeModel, schema, setSchema, toPlaceIndex
                   placeholder="Name"
                   classes="mb-2 w-full"
                 />
+                <Select 
+                  label="Returns"
+                  name="returns"
+                  value={schema?.returns || ""}
+                  onChange={(e)=>setSchema(prev => ({ ...prev, returns: e.target.value || null }))}
+                  options={[
+                    { name: "Next function", value: "next-return" },
+                    { name: "No Return", value: "" },
+                  ]}
+                />
               </>
             )
           }
-          {/* <Input 
-            label="Params"
-            name="params"
-            value={schema?.params}
-            onChange={(e) => setScschema(prev => ({ ...prev, params: e.target.value.split(",") }))}
-            placeholder="Params"
-            classes="mb-2 w-full"
-          /> */}
-          <Input 
-            label="Returns"
-            name="returns"
-            value={schema?.returns || ""}
-            onChange={(e) => setSchema(prev => ({ ...prev, returns: e.target.value }))}
-            placeholder="Returns"
-            classes="mb-2 w-full"
-          />
+          {
+            params.map((param, i) => (
+              <Input 
+                label={`Parameter ${i+1}`}
+                name="name"
+                value={param}
+                onChange={(e) => {setParams(prev => prev.map((p, j) => i === j ? e.target.value : p)); setSchema(prev => ({ ...prev, params: prev.params?.map((p, j) => i === j ? e.target.value : p) }))}}
+                placeholder="Enter parameter"
+                classes="mb-2 w-full"
+              />
+            ))
+          }
+          {
+            (funType === "custom" || builtInType === "Call") && (
+              <>
+                <p className="font-bold">Custom Functions:</p>
+                <div className="flex gap-2">
+                  {
+                    customFunctions.customFunctions?.map((fun, i) => (
+                      <>
+                        <Input 
+                          label="Custom function Name"
+                          name="name"
+                          value={fun.name}
+                          onChange={(e) => setCustomFunctions(prev => ({ ...prev, customFunctions: prev.customFunctions?.map((f, j) => i === j ? { ...f, name: e.target.value } : f) }))}
+                          placeholder="Name"
+                          classes="mb-2 w-full"
+                        />
+                        <Input 
+                          label="Custom function Path"
+                          name="path"
+                          value={fun.path}
+                          onChange={(e) => setCustomFunctions(prev => ({ ...prev, customFunctions: prev.customFunctions?.map((f, j) => i === j ? { ...f, path: e.target.value } : f) }))}
+                          placeholder="Name"
+                          classes="mb-2 w-full"
+                        />
+                      </>
+                    ))
+                  }
+                </div>
+              </>
+            )
+          }
         </div>
-        <div className="flex items-center gap-4">
-          <Button variant="primary" onClick={()=>{addSchema(0, schema, toPlaceIndex); closeModel()}}>Add</Button>
-          <Button variant="default" onClick={closeModel}>Cancel</Button>
+        <div className="flex items-center gap-4 mt-2">
+          <Button variant="success" onClick={()=>{addSchema(0, schema, toPlaceIndex); closeModel()}}>Add</Button>
+          <Button variant="danger" onClick={closeModel}>Cancel</Button>
         </div>
       </div>
     </Backdrop>
